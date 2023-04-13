@@ -55,7 +55,7 @@ void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
     }
     else if (e.mouseButton.button==sf::Mouse::Right)    //USER LOST
     {
-        if(!mImage.loadFromFile("Images/youWonResize.png"))
+        if(!mImage.loadFromFile("Images/youLostResize.png"))
         {
             cout<<"Error opening 'youLost.png' screen file.\n";
             exit(1);

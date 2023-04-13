@@ -8,7 +8,7 @@
 #include "gameObjects.h"
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800,500), "Battleship");
+    sf::RenderWindow window(sf::VideoMode(800,500), "Battleship");//
     Screen myScreen;
     while (window.isOpen())
     {
