@@ -19,7 +19,7 @@ Screen::Screen()
         cout<<"Error opening intro screen file.\n";
         exit(1);
     }
-    setPrivateVariables();
+    setPrivateVariables(mImage);
 }
 
 /**
@@ -51,7 +51,7 @@ void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
             cout<<"Error opening 'youWon.png' screen file.\n";
             exit(1);
         }
-        setPrivateVariables();
+        setPrivateVariables(mImage,0.97);
     }
     else if (e.mouseButton.button==sf::Mouse::Right)    //USER LOST
     {
@@ -60,7 +60,7 @@ void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
             cout<<"Error opening 'youLost.png' screen file.\n";
             exit(1);
         }
-        setPrivateVariables();
+        setPrivateVariables(mImage,.97);
     }
     }
 }
@@ -69,10 +69,10 @@ void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
  * @brief sets background screen specific variables
  * 
  */
-void Screen::setPrivateVariables()
+void Screen::setPrivateVariables(sf::Texture &i,float scale)
 {
     screenBckgrnd.setTexture(&mImage);
-    screenBckgrnd.setSize(screenSize);
+    screenBckgrnd.setSize({screenSize.x/scale,screenSize.y/scale});
     screenBckgrnd.setOrigin(screenSize.x/2, screenSize.y/2);
     screenBckgrnd.setPosition(screenSize.x/2, screenSize.y/2);
 }

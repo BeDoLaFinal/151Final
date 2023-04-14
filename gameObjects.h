@@ -28,10 +28,10 @@ public:
     Vector2f getScreenSize();
     void updateScreen(sf::Event& e, sf::RenderWindow& window); //change later to input from game instead of screen event
 private:
-    void setPrivateVariables();
+    void setPrivateVariables(sf::Texture &i,float scale=1);
     RectangleShape screenBckgrnd;
     Texture mImage;
-    Vector2f screenSize={800,500};
+    Vector2f screenSize={1920/1.545,1080/1.545};
 };
 
 /**
