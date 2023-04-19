@@ -12,7 +12,7 @@
 #ifndef TILES_H
 #define TILES_H
 #include <iostream>
-//#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 enum state {base, shipF, shipM, shipR, clicked, hit, miss};  //maybe this is what we want to use for states of tiles? Obviously if we just use an if statement in the class to recognize the array value that is good for rendering, but we can define these states by that I think. 
 
@@ -20,17 +20,17 @@ class Tile: public sf::Drawable
 {
 public: 
     Tile();
-    Tile(sf::Vector2f position, sf::Vector2f size);//need to clarify the array position type and if it's one char or a pair
+    Tile(sf::Vector2f position, sf::Vector2f size, char arrayX,char arrayY);//need to clarify the array position type and if it's one char or a pair
     ~Tile(){};
     void getState(char row, char col)//I'm assuming we're using Char for the array identifier/input. 
-    void setPosition(sf::Vector2f position)
+    void setPosition(sf::Vector2f position)//I just copy pasted these two functions from the lab, I haven't tweaked them for our purpose at all yet. 
     {   
         mPosition=position;
         mButton.setPosition(position);
         mText.setPosition(position.x, position.y-mText.getCharacterSize()/4);
         
     }
-    void setSize(sf::Vector2f  size)
+    void setSize(sf::Vector2f  size)// I just copy pasted these two functions from the lab, I haven't tweaked them for our purpose at all yet. 
     {
         sf::Vector2u imageSize=mTexture.getSize();
         mButton.setScale(size.x/imageSize.x, size.y/imageSize.y);

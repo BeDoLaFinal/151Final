@@ -1,19 +1,17 @@
-/**
- * @file    main.cpp
- * @author  Lacey Hunt, Ben Givens, Dominic Acia
- * @brief   test main that opens window and displays
- * @date    2023-04-10
- * 
- */
-#include "gameObjects.h"
+
+
+
+
+
 #include "tiles.h"
 
-void creatTileArray();
+void createTileArray();
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");//
     Screen myScreen;
+    createTileArray();
     while (window.isOpen())
     {
         sf::Event event;
@@ -35,7 +33,7 @@ int main()
  * @brief Create a Tile Array object function to start the game with blank screen. 
  * 
  */
-void createTileArray ()
+void createTileArray()
 {
     char x= 'A';
     int count=0;
@@ -46,7 +44,7 @@ void createTileArray ()
         for(int j=0; j<451; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
         {   
             char y= '0'+count;            
-            Tile boardTile( {i,j}, {50,50});
+            Tile boardTile( {i,j}, {50,50}, x, y);
             tileArray[x][y]=boardTile; //assuming arrays are in char Letter/Number format
             count++;
 
@@ -56,4 +54,4 @@ void createTileArray ()
     }
 
 
-}
+};
