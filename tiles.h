@@ -11,18 +11,21 @@
 
 #ifndef TILES_H
 #define TILES_H
-#include <iostream>
+
 #include <SFML/Graphics.hpp>
+#include <iostream>
+ 
+ 
 
 enum state {base, shipF, shipM, shipR, clicked, hit, miss};  //maybe this is what we want to use for states of tiles? Obviously if we just use an if statement in the class to recognize the array value that is good for rendering, but we can define these states by that I think. 
 
-class Tile: public sf::Drawable
+class Tile : public sf::Drawable
 {
 public: 
     Tile();
     Tile(sf::Vector2f position, sf::Vector2f size, char arrayX,char arrayY);//need to clarify the array position type and if it's one char or a pair
     ~Tile(){};
-    void getState(char row, char col)//I'm assuming we're using Char for the array identifier/input. 
+    void getState(char row, char col);//I'm assuming we're using Char for the array identifier/input. 
     void setPosition(sf::Vector2f position)//I just copy pasted these two functions from the lab, I haven't tweaked them for our purpose at all yet. 
     {   
         mPosition=position;
@@ -59,6 +62,8 @@ private:
     sf::Texture mTexture;    
     sf::Vector2f mPosition;
     sf::Uint32 mBtnState;
+    sf::Text mText;
+
     
    
     

@@ -6,8 +6,10 @@
  * @date    2023-04-13
  * 
  */
-#include "gameObjects.h"
 
+#include <iostream>
+#include "gameObjects.h" 
+using std::cout; 
 /**
  * @brief Constructs a default screen (intro)
  * 
@@ -48,7 +50,7 @@ void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
     {
         if(!mImage.loadFromFile("Images/youWonResize.png"))
         {
-            cout<<"Error opening 'youWon.png' screen file.\n";
+            std::cout<<"Error opening 'youWon.png' screen file.\n";
             exit(1);
         }
         setPrivateVariables(mImage,0.97);
@@ -57,7 +59,7 @@ void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
     {
         if(!mImage.loadFromFile("Images/youLostResize.png"))
         {
-            cout<<"Error opening 'youLost.png' screen file.\n";
+            std::cout<<"Error opening 'youLost.png' screen file.\n";
             exit(1);
         }
         setPrivateVariables(mImage,.97);

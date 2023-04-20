@@ -1,8 +1,7 @@
 
-
-
-
-
+#include <SFML/Graphics.hpp>
+#include <iostream>                  // today after struggling for hours with my vscode and getting almost nothing done, I learned that you have to put the #includes with <> BEFORE any includes with "". 
+#include "gameObjects.h"
 #include "tiles.h"
 
 void createTileArray();

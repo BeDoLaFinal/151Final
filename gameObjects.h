@@ -8,10 +8,12 @@
 #ifndef GAMEOBJECTS_H
 #define GAMEOBJECTS_H
 
-#include <sfml-app>
 #include <SFML/Graphics.hpp>
+#include <sfml-app>
 #include <string>
 #include <iostream>
+
+
 using std::cout;
 using std::endl;
 using namespace sf;
