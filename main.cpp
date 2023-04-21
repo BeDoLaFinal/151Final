@@ -3,6 +3,7 @@
 #include <iostream>                  // today after struggling for hours with my vscode and getting almost nothing done, I learned that you have to put the #includes with <> BEFORE any includes with "". 
 #include "gameObjects.h"
 #include "tiles.h"
+#include "introScreen.h"
 
 void createTileArray();
 
@@ -10,6 +11,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");//
     Screen myScreen;
+    //testingPurposes(window);
     createTileArray();
     while (window.isOpen())
     {
