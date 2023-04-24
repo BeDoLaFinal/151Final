@@ -9,7 +9,7 @@
  * 
  */
 
-#include "tiles.h"
+#include "classDefinitions/tiles.h"
 
 void getState(char row, char col)//I'm assuming we're using Char for the array identifier/input. 
 {

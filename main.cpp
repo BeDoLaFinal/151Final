@@ -1,27 +1,58 @@
+/**
+ * @file    main.cpp
+ * @author  Ben Givens, Dominic Acia, Lacey Hunt
+ * @brief   Main game for battleship final project.
+ *              All team members contributed
+ * @date    2023-04-23
+ * 
+ */
+#include "classDefinitions/introScreen.h"
+#include "classDefinitions/tiles.h"
+#include "gameLogic/battleship.h"
+#include "gameFunctions.h"
+#include "classDefinitions/ScreenClass.h"
 
-#include <SFML/Graphics.hpp>
-#include <iostream>                  // today after struggling for hours with my vscode and getting almost nothing done, I learned that you have to put the #includes with <> BEFORE any includes with "". 
-#include "gameObjects.h"
-#include "tiles.h"
-#include "introScreen.h"
 
-void createTileArray();
+//
+//
+//
+//// SEE 'gameFunctions.cpp' FOR TENTATIVE MAIN GAME FUNCTION PSEUDOCODE, STILL ROUGH SKETCH
+//
+//
+//
+
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");//
-    Screen myScreen;
+    int userMove[2];
+
+    sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
+    Screen myScreen;                                                    //MAKE THIS PLAYSCREEN BACKGROUND
     //testingPurposes(window);
-    createTileArray();
     while (window.isOpen())
     {
         sf::Event event;
+        //DISPLAY INTRO SCREEN
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            myScreen.updateScreen(event,window);
+
+            
+            //myScreen.updateScreen(event,window); //used to test
+            else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
+            {
+                //for testing, shows location of click
+                mouseClickLocation(event,userMove);
+                
+                //if (user clicks instructions)
+                showInstructions(window, myScreen);
+
+                //else if (user clicks play)
+                playGame(window, myScreen);
+            }
         }
+        
         window.clear();
         window.draw(myScreen.getScreen());
         window.display();
@@ -29,30 +60,3 @@ int main()
 
     return 0;
 }
-
-/**
- * @brief Create a Tile Array object function to start the game with blank screen. 
- * 
- */
-void createTileArray()
-{
-    char x= 'A';
-    int count=0;
-    Tile tileArray[10][10];
-    for(int i=0; i<451; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
-    {
-        
-        for(int j=0; j<451; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
-        {   
-            char y= '0'+count;            
-            Tile boardTile( {i,j}, {50,50}, x, y);
-            tileArray[x][y]=boardTile; //assuming arrays are in char Letter/Number format
-            count++;
-
-        }
-        count=0;
-        x++;
-    }
-
-
-};
