@@ -17,7 +17,7 @@ using std::cout;
 Screen::Screen()
 {
     //if(!mImage.loadFromFile("Images/introTest.png"))
-    if(!mImage.loadFromFile("Images/gameBoard.png"))
+    if(!mImage.loadFromFile("Images/gameboard.bmp"))
     {
         cout<<"Error opening intro screen file.\n";
         exit(1);
