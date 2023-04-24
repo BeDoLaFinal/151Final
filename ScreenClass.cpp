@@ -7,8 +7,8 @@
  * 
  */
 
-#include <iostream>
-#include "gameObjects.h" 
+#include "classDefinitions/ScreenClass.h" 
+
 using std::cout; 
 /**
  * @brief Constructs a default screen (intro)
@@ -16,7 +16,8 @@ using std::cout;
  */
 Screen::Screen()
 {
-    if(!mImage.loadFromFile("Images/introTest.png"))
+    //if(!mImage.loadFromFile("Images/introTest.png"))
+    if(!mImage.loadFromFile("Images/gameBoard.png"))
     {
         cout<<"Error opening intro screen file.\n";
         exit(1);

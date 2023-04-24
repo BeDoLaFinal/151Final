@@ -7,6 +7,19 @@ Contributions
 - DOMINIC:
 - LACEY: 
 
+
+
+/**
+ * @brief exit code meanings for debugging purposes
+ * 
+ * 1: error opening a png file
+ *      will output specific file name to console
+ * 2: user clicked 'quit' on board
+ * 
+ */
+
+ 
+
 Rules
 
 Compile and Run
