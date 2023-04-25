@@ -24,9 +24,8 @@ void mouseClickLocation(sf::Event &click,int arr[2])
         int spanX=0;
         int spanY=0;
         for(int i=0; i<click.mouseButton.x; i++)
-        {   spanX=i*50;
-            //cout<<spanX<<endl;
-            if(spanX+220>=click.mouseButton.x)
+        {   
+            if(i*50+220>=click.mouseButton.x)
             {
                 if(click.mouseButton.x<200) 
                 {
@@ -39,8 +38,8 @@ void mouseClickLocation(sf::Event &click,int arr[2])
             } 
         }
         for(int j=0; j<click.mouseButton.y;j++)
-        {   spanY=j*50;
-            if(spanY+200>=click.mouseButton.y)
+        {  
+            if(j*50+200>=click.mouseButton.y)
             {
                 if(click.mouseButton.y<199) 
                 {
