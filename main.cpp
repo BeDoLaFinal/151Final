@@ -25,7 +25,9 @@
 int main()
 {
     int userMove[2];
-
+    Tile playertileArray[11][11];
+    createTileArray(playertileArray);
+    
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
     Screen myScreen;                                                    //MAKE THIS PLAYSCREEN BACKGROUND
     //testingPurposes(window);
@@ -55,6 +57,7 @@ int main()
         
         window.clear();
         window.draw(myScreen.getScreen());
+        displayTileArray(playertileArray);
         window.display();
     }
 

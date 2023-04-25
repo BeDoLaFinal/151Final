@@ -20,6 +20,8 @@ using std::cout;
 using std::endl;
 using namespace sf;
 
+void createTileArray(Tile tileArray[11][11]);
+void displayTileArray(Tile tileArray[11][11]);
 void mouseClickLocation(Event &click,int arr[2]);
 void showInstructions(RenderWindow& window, Screen &screen);
 void playGame(RenderWindow& window, Screen &screen);

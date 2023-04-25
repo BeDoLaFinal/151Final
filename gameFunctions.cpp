@@ -7,7 +7,10 @@
  */
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <array>
 #include "gameFunctions.h"
+#include "classDefinitions/tiles.h"
+
 
 /**
  * @brief   a funtion to return the mouse position click as an int array
@@ -140,18 +143,18 @@ how to read the array:
  * @brief Create a Tile Array object function to start the game with blank screen. 
  * 
  */
-/*void createTileArray()
+void createTileArray(Tile tileArray[11][11])
 {
-    char x= 'A';
+    int x=1;
     int count=0;
-    Tile tileArray[10][10];
+    
     //create tile out here . . .
-    for(int i=0; i<451; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
+    for(float i=200; i<651; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
     {
         
-        for(int j=0; j<451; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
+        for(float j=197; j<649; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
         {   
-            char y= '0'+count;            
+            int y= 1+count;            
             Tile boardTile( {i,j}, {50,50}, x, y);
             tileArray[x][y]=boardTile; //assuming arrays are in char Letter/Number format
             //. . . and reassign here? so we don't have to create a ton at once
@@ -163,4 +166,21 @@ how to read the array:
     }
 
 
-};*/
+};
+
+void displayTileArray(Tile ta[11][11])
+{
+    for(int i=1; i==10; i++)
+    {
+        for(int j=1; j==10; j++)
+        {
+
+            sf::RenderWindow ta[i][j];
+        }
+
+
+
+
+    }
+
+};
