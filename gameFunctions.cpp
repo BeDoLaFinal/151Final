@@ -21,24 +21,28 @@ void mouseClickLocation(sf::Event &click,int arr[2])
         cout << "the left button was pressed" <<endl;   //for testing
         cout << "mouse x: " << click.mouseButton.x <<endl; //for testing
         cout << "mouse y: " << click.mouseButton.y <<endl; //for testing
-        for(int i=1; i<click.mouseButton.x; i++)
-        {
-            if(131+32*i>=click.mouseButton.x)
+        int spanX=0;
+        int spanY=0;
+        for(int i=0; i<click.mouseButton.x; i++)
+        {   spanX=i*50;
+            //cout<<spanX<<endl;
+            if(spanX+220>=click.mouseButton.x)
             {
-                if(click.mouseButton.x<131) 
+                if(click.mouseButton.x<200) 
                 {
                     arr[0]=-1;
                     break;
                 }
+                //cout<<i<<endl;
                 arr[0]=i;
                 break;
             } 
         }
-        for(int j=1; j<click.mouseButton.y;j++)
-        {
-            if(126+32*j>=click.mouseButton.y)
+        for(int j=0; j<click.mouseButton.y;j++)
+        {   spanY=j*50;
+            if(spanY+200>=click.mouseButton.y)
             {
-                if(click.mouseButton.y<126) 
+                if(click.mouseButton.y<199) 
                 {
                     arr[1]=-1;
                     break;

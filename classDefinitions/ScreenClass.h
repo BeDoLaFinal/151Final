@@ -31,7 +31,7 @@ private:
     void setPrivateVariables(sf::Texture &i,float scale=1);
     RectangleShape screenBckgrnd;
     Texture mImage;
-    Vector2f screenSize={1920/1.545,1080/1.545};
+    Vector2f screenSize={1920,1080};
 };
 
 
