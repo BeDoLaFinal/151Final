@@ -143,10 +143,11 @@ how to read the array:
  * @brief Create a Tile Array object function to start the game with blank screen. 
  * 
  */
-void createTileArray(Tile tileArray[11][11])
+void createTileArray(char tileArray[10][10])
 {
-    int x=1;
+    int x=0;
     int count=0;
+    
     
     //create tile out here . . .
     for(float i=200; i<651; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
@@ -154,11 +155,12 @@ void createTileArray(Tile tileArray[11][11])
         
         for(float j=197; j<649; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
         {   
-            int y= 1+count;            
-            Tile boardTile( {i,j}, {50,50}, x, y);
-            tileArray[x][y]=boardTile; //assuming arrays are in char Letter/Number format
+            int y= 0+count;            
+            
+            tileArray[x][y]='*';
+            tileArray[x][y+1]='-'; //assuming arrays are in char Letter/Number format
             //. . . and reassign here? so we don't have to create a ton at once
-            count++;
+            count+=2;
 
         }
         count=0;
@@ -168,19 +170,7 @@ void createTileArray(Tile tileArray[11][11])
 
 };
 
-void displayTileArray(Tile ta[11][11])
-{
-    for(int i=1; i==10; i++)
-    {
-        for(int j=1; j==10; j++)
-        {
-
-            sf::RenderWindow ta[i][j];
-        }
-
-
-
-
-    }
+void displayArrayofTiles(char ta[10][10])
+{ 
 
 };
