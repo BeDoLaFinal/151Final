@@ -33,17 +33,17 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::Texture texture;
-    texture.loadFromFile("Images/SpriteTileMiss1.png");
-        if (!texture.loadFromFile("Images/SpriteTileMiss1.png"))
+    texture.loadFromFile("Images/SpriteTileTextures.png");
+        if (!texture.loadFromFile("Images/SpriteTileTextures.png"))
         { std::cout<<"failed to load texture file";
         exit (1);
         }           
-    sf::Texture texture2;
-    texture2.loadFromFile("Images/SpriteTile.png");
-        if (!texture2.loadFromFile("Images/SpriteTile.png"))
-        { std::cout<<"failed to load texture file";
-        exit (1);
-        }                                           //MAKE THIS PLAYSCREEN BACKGROUND
+    // sf::Texture texture2;
+    // texture2.loadFromFile("Images/SpriteTile.png");
+    //     if (!texture2.loadFromFile("Images/SpriteTile.png"))
+    //     { std::cout<<"failed to load texture file";
+    //     exit (1);
+    //     }                                           //MAKE THIS PLAYSCREEN BACKGROUND
     //testingPurposes(window);
  
     while (window.isOpen())
@@ -79,8 +79,8 @@ int main()
     sf::CircleShape radar(110);
     //radar.setFillColor(sf::Color(5,5,5,90));
     radar.setPosition(855,391);
-    radar.setTexture(&texture2);
-    radar.setTextureRect(sf::IntRect(0, 0, 50, 50));
+    radar.setTexture(&texture);
+    radar.setTextureRect(sf::IntRect(350, 0, 50, 50));
     radar.setOutlineThickness(5);
     radar.setOutlineColor(sf::Color(100,250,50));
     

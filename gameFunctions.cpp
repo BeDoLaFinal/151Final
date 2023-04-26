@@ -184,13 +184,13 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
             sf::Sprite tile(texture);
             
             tile.setPosition(sf::Vector2f(i, j));
-            window.draw(tile);
+            
             if(ta[x][y]=='*')
             {
-            tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
-            else {tile.setTextureRect(sf::IntRect(0, 0, 25, 25));}
+            tile.setTextureRect(sf::IntRect(50, 0, 50, 50));}
+            else {tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
             
-             
+             window.draw(tile);
             //ta[x][y]=boardTile; //assuming arrays are in char Letter/Number format
             //. . . and reassign here? so we don't have to create a ton at once
             count++;
