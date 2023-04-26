@@ -30,12 +30,20 @@ int main()
     
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
     Screen myScreen;      
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
     sf::Texture texture;
     texture.loadFromFile("Images/SpriteTileMiss1.png");
         if (!texture.loadFromFile("Images/SpriteTileMiss1.png"))
         { std::cout<<"failed to load texture file";
         exit (1);
-        }                                              //MAKE THIS PLAYSCREEN BACKGROUND
+        }           
+    sf::Texture texture2;
+    texture2.loadFromFile("Images/SpriteTile.png");
+        if (!texture2.loadFromFile("Images/SpriteTile.png"))
+        { std::cout<<"failed to load texture file";
+        exit (1);
+        }                                           //MAKE THIS PLAYSCREEN BACKGROUND
     //testingPurposes(window);
  
     while (window.isOpen())
@@ -68,7 +76,29 @@ int main()
         displayArrayofTiles(playertileArray, texture, window, 0,0);//this displays left board
         displayArrayofTiles(playertileArray, texture, window, 974, -2); //this will display the status array on right side of board
         window.display();
+    sf::CircleShape radar(110);
+    //radar.setFillColor(sf::Color(5,5,5,90));
+    radar.setPosition(855,391);
+    radar.setTexture(&texture2);
+    radar.setTextureRect(sf::IntRect(0, 0, 50, 50));
+    radar.setOutlineThickness(5);
+    radar.setOutlineColor(sf::Color(100,250,50));
+    
+    window.draw(radar);
+    sf::RectangleShape needle(sf::Vector2f(110, 8));
+    needle.setPosition(965,501);
+    needle.setFillColor(sf::Color(100, 250, 50, 70));
 
+    for (float i=0; i<360; i+=4)
+    {   
+        needle.setRotation(i);
+        usleep(8000);
+        window.draw(needle);
+        
+        window.display();
+
+
+    }
         
        
     }

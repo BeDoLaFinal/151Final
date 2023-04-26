@@ -199,4 +199,5 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
         count=0;
         x++;
     }
+   
 };
