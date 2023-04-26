@@ -170,7 +170,33 @@ void createTileArray(char tileArray[10][10])
 
 };
 
-void displayArrayofTiles(char ta[10][10])
+void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window, int shiftx, int shiftY)
 { 
+    int x=0;
+    int count=0;
+    
+ for(float i=220+shiftx; i<675+shiftx; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
+    {
+        
+        for(float j=199+shiftY; j<659; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
+        {   
+            int y= 0+count;            
+            sf::Sprite tile(texture);
+            
+            tile.setPosition(sf::Vector2f(i, j));
+            window.draw(tile);
+            if(ta[x][y]=='*')
+            {
+            tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
+            else {tile.setTextureRect(sf::IntRect(0, 0, 25, 25));}
+            
+             
+            //ta[x][y]=boardTile; //assuming arrays are in char Letter/Number format
+            //. . . and reassign here? so we don't have to create a ton at once
+            count++;
 
+        }
+        count=0;
+        x++;
+    }
 };

@@ -31,11 +31,11 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
     Screen myScreen;      
     sf::Texture texture;
-    texture.loadFromFile("Images/SpriteTileMiss.png");
-        if (!texture.loadFromFile("Images/SpriteTileMiss.png"))
-    { std::cout<<"failed to load texture file";
-    exit (1);
-    }                                              //MAKE THIS PLAYSCREEN BACKGROUND
+    texture.loadFromFile("Images/SpriteTileMiss1.png");
+        if (!texture.loadFromFile("Images/SpriteTileMiss1.png"))
+        { std::cout<<"failed to load texture file";
+        exit (1);
+        }                                              //MAKE THIS PLAYSCREEN BACKGROUND
     //testingPurposes(window);
  
     while (window.isOpen())
@@ -65,51 +65,11 @@ int main()
         //window.clear();
         window.draw(myScreen.getScreen());
         sf::Sprite tile(texture);
-            
-            // tile.setPosition(sf::Vector2f(200, 200));
-            // if(playertileArray[2][2]=='*')
-            // {
-            // tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
-            // else {tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
-            // window.draw(tile);
-            //  window.display();
-
-        
-
-    int x=0;
-    int count=0;
-    
-
-     
-    //create tile out here . . .
-    for(float i=221; i<675; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
-    {
-        
-        for(float j=200; j<659; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
-        {   
-            int y= 0+count;            
-            // sf::Sprite tile;
-            
-            tile.setPosition(sf::Vector2f(i, j));
-            window.draw(tile);
-            if(playertileArray[x][y]=='*')
-            {
-            tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
-            else {tile.setTextureRect(sf::IntRect(0, 0, 25, 25));}
-            
-             
-            //ta[x][y]=boardTile; //assuming arrays are in char Letter/Number format
-            //. . . and reassign here? so we don't have to create a ton at once
-            count++;
-
-        }
-        count=0;
-        x++;
-    }
-
+        displayArrayofTiles(playertileArray, texture, window, 0,0);//this displays left board
+        displayArrayofTiles(playertileArray, texture, window, 974, -2); //this will display the status array on right side of board
         window.display();
 
-        //displayArrayofTiles(playertileArray);
+        
        
     }
 
