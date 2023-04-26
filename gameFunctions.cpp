@@ -7,7 +7,10 @@
  */
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <array>
 #include "gameFunctions.h"
+#include "classDefinitions/tiles.h"
+
 
 /**
  * @brief   a funtion to return the mouse position click as an int array
@@ -140,22 +143,24 @@ how to read the array:
  * @brief Create a Tile Array object function to start the game with blank screen. 
  * 
  */
-/*void createTileArray()
+void createTileArray(char tileArray[10][10])
 {
-    char x= 'A';
+    int x=0;
     int count=0;
-    Tile tileArray[10][10];
+    
+    
     //create tile out here . . .
-    for(int i=0; i<451; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
+    for(float i=200; i<651; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
     {
         
-        for(int j=0; j<451; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
+        for(float j=197; j<649; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
         {   
-            char y= '0'+count;            
-            Tile boardTile( {i,j}, {50,50}, x, y);
-            tileArray[x][y]=boardTile; //assuming arrays are in char Letter/Number format
+            int y= 0+count;            
+            
+            tileArray[x][y]='*';
+            tileArray[x][y+1]='-'; //assuming arrays are in char Letter/Number format
             //. . . and reassign here? so we don't have to create a ton at once
-            count++;
+            count+=2;
 
         }
         count=0;
@@ -163,4 +168,36 @@ how to read the array:
     }
 
 
-};*/
+};
+
+void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window, int shiftx, int shiftY)
+{ 
+    int x=0;
+    int count=0;
+    
+ for(float i=220+shiftx; i<675+shiftx; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
+    {
+        
+        for(float j=199+shiftY; j<659; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
+        {   
+            int y= 0+count;            
+            sf::Sprite tile(texture);
+            
+            tile.setPosition(sf::Vector2f(i, j));
+            window.draw(tile);
+            if(ta[x][y]=='*')
+            {
+            tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
+            else {tile.setTextureRect(sf::IntRect(0, 0, 25, 25));}
+            
+             
+            //ta[x][y]=boardTile; //assuming arrays are in char Letter/Number format
+            //. . . and reassign here? so we don't have to create a ton at once
+            count++;
+
+        }
+        count=0;
+        x++;
+    }
+   
+};

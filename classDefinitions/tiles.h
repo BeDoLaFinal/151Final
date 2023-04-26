@@ -19,10 +19,18 @@ enum state {base, shipF, shipM, shipR, clicked, hit, miss};  //maybe this is wha
 class Tile : public sf::Drawable
 {
 public: 
-    Tile();
-    Tile(sf::Vector2f position, sf::Vector2f size, char arrayX,char arrayY);//need to clarify the array position type and if it's one char or a pair
+    Tile(){};
+    Tile(sf::Vector2f position, sf::Vector2f size, int arrayX,int arrayY)
+    { 
+        setPosition(position);
+        setSize(size);
+        arrayLocationx=arrayX;
+        arrayLocationy=arrayY;
+        mTexture.loadFromFile("Images/SpriteTileMiss.png");
+
+    }; 
     ~Tile(){};
-    void getState(char row, char col);//I'm assuming we're using Char for the array identifier/input. 
+    void setState(char ta[11][11], Tile ta2[11][11]);//I'm assuming we're using Char for the array identifier/input. 
     void setPosition(sf::Vector2f position)//I just copy pasted these two functions from the lab, I haven't tweaked them for our purpose at all yet. 
     {   
         mPosition=position;
@@ -51,8 +59,8 @@ public:
     {
         return mBtnState;
     }
-    void update(sf::Event& e, sf::RenderWindow& window);
-    virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const;
+    //void update(sf::Event& e, sf::RenderWindow& window);
+    virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const{};
 
 private:
     sf::Sprite mButton;
@@ -60,6 +68,9 @@ private:
     sf::Vector2f mPosition;
     sf::Uint32 mBtnState;
     sf::Text mText;
+    int arrayLocationx;
+    int arrayLocationy;
+
 };
 
 #endif
