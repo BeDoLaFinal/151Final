@@ -121,17 +121,7 @@ int main()
             window.draw(needleTrace[k]);
         }
 
-        
-        // for(int k=0; k<90;k+=2){
-        //     sf::RectangleShape needle2(sf::Vector2f(8, 116-k));
-        //     needle2.setPosition(965,501);
-        //     needle2.setFillColor(sf::Color(100, 250, 50, 128-k));
-        //     needle2.setOrigin(5,10);   
-        //     needle2.setRotation(i-k); 
-        //     window.draw(needle2);
-        //     window.display();
-        // }
-        
+       
        
         
         
@@ -140,16 +130,7 @@ int main()
         
         
 
-        // for (float i=0; i<360; i+=4)
-        // {   
-        //     needle.setRotation(i);
-        //     usleep(8000);
-        //     window.draw(needle);
-            
-        //    window.display();
-
         
-        // }
     }
     return 0;
 }
