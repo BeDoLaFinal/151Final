@@ -8,6 +8,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <array>
+#include <string>
+#include <sstream>
 #include "gameFunctions.h"
 #include "classDefinitions/tiles.h"
 
@@ -17,13 +19,17 @@
  * @author  Lacey
  * @return  void // changes array of movement made in main 
  */
-void mouseClickLocation(sf::Event &click,int arr[2])
-{
+String mouseClickLocation(sf::Event &click,int arr[2])
+{   
+    String mouse;
+    std::stringstream ss;
+    ss.str();
+
     if (click.type == sf::Event::MouseButtonPressed&&click.mouseButton.button == sf::Mouse::Left)
     {
-        cout << "the left button was pressed" <<endl;   //for testing
-        cout << "mouse x: " << click.mouseButton.x <<endl; //for testing
-        cout << "mouse y: " << click.mouseButton.y <<endl; //for testing
+        ss<<"the left button was pressed\n";   //for testing
+        ss<< "mouse x: " << click.mouseButton.x<<"--"; //for testing
+        ss << "mouse y: " << click.mouseButton.y <<endl; //for testing
         int spanX=0;
         int spanY=0;
         for(int i=0; i<click.mouseButton.x; i++)
@@ -61,7 +67,9 @@ void mouseClickLocation(sf::Event &click,int arr[2])
         }*/
     }
     if(arr[0]>10||arr[1]>10||arr[0]==-1||arr[1]==-1) cout<<"Out of Bounds!\n";
-    else cout<<"array location: "<<arr[0]<<" "<<arr[1]<<endl;
+    else {cout<<"array location: "<<arr[0]<<" "<<arr[1]<<endl;}
+    mouse = ss.str();
+    return mouse;
 }
 
 /**
@@ -201,3 +209,14 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
     }
    
 };
+
+void displayPrompt(std::string s, sf::Font &font,RenderWindow &window)
+{
+    sf::Text status;
+        status.setCharacterSize(50);
+        status.setPosition(505,810);
+        status.setFillColor(sf::Color(100, 250, 50, 100));
+        status.setFont(font);
+        status.setString(s);
+        window.draw(status);
+}

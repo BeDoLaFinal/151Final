@@ -22,8 +22,9 @@ using namespace sf;
 
 void createTileArray(char tileArray[10][10]);
 void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window, int shiftx, int shiftY);
-void mouseClickLocation(Event &click,int arr[2]);
+String mouseClickLocation(Event &click,int arr[2]);
 void showInstructions(RenderWindow& window, Screen &screen);
+void displayPrompt(std::string s, sf::Font &font,RenderWindow &window);
 void playGame(RenderWindow& window, Screen &screen);
 
 #endif

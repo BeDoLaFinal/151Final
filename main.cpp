@@ -27,6 +27,12 @@ int main()
     int userMove[2];
     char playertileArray[10][10];
     createTileArray(playertileArray);
+    sf::Font fontStatus;
+        if (!fontStatus.loadFromFile("Images/LiquidCrystal-BoldItalic.otf"))
+        {
+            cout<<"error loading file\n";
+            exit(1);
+        }
     
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
     Screen myScreen;      
@@ -45,7 +51,7 @@ int main()
     //     exit (1);
     //     }                                           //MAKE THIS PLAYSCREEN BACKGROUND
     //testingPurposes(window);
- 
+    String mouseClick;
     while (window.isOpen())
     {
         sf::Event event;
@@ -60,7 +66,7 @@ int main()
             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
             {
                 //for testing, shows location of click
-                mouseClickLocation(event,userMove);
+                mouseClick=mouseClickLocation(event,userMove);
                 
                 //if (user clicks instructions)
                 showInstructions(window, myScreen);
@@ -75,33 +81,34 @@ int main()
         sf::Sprite tile(texture);
         displayArrayofTiles(playertileArray, texture, window, 0,0);//this displays left board
         displayArrayofTiles(playertileArray, texture, window, 974, -2); //this will display the status array on right side of board
-        window.display();
-    sf::CircleShape radar(110);
-    //radar.setFillColor(sf::Color(5,5,5,90));
-    radar.setPosition(855,391);
-    radar.setTexture(&texture);
-    radar.setTextureRect(sf::IntRect(350, 0, 50, 50));
-    radar.setOutlineThickness(5);
-    radar.setOutlineColor(sf::Color(100,250,50));
-    
-    window.draw(radar);
-    sf::RectangleShape needle(sf::Vector2f(110, 8));
-    needle.setPosition(965,501);
-    needle.setFillColor(sf::Color(100, 250, 50, 70));
-
-    for (float i=0; i<360; i+=4)
-    {   
-        needle.setRotation(i);
-        usleep(8000);
-        window.draw(needle);
+        //window.display();
+        displayPrompt(mouseClick, fontStatus,window);
+        sf::CircleShape radar(110);
+        //radar.setFillColor(sf::Color(5,5,5,90));
+        radar.setPosition(855,391);
+        radar.setTexture(&texture);
+        radar.setTextureRect(sf::IntRect(350, 0, 50, 50));
+        radar.setOutlineThickness(5);
+        radar.setOutlineColor(sf::Color(100,250,50));
         
-        window.display();
+        window.draw(radar);
+        sf::RectangleShape needle(sf::Vector2f(110, 8));
+        needle.setPosition(965,501);
+        needle.setFillColor(sf::Color(100, 250, 50, 70));
+
+        for (float i=0; i<360; i+=4)
+        {   
+            needle.setRotation(i);
+            usleep(8000);
+            window.draw(needle);
+            
+            window.display();
 
 
-    }
+        }
+            
         
-       
-    }
+        }
 
     return 0;
 }
