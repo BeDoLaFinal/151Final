@@ -24,8 +24,12 @@
 
 int main()
 {
+    int i=0;
     int userMove[2];
     char playertileArray[10][10];
+    vector<RectangleShape> needleTrace;
+    
+
     createTileArray(playertileArray);
     sf::Font fontStatus;
         if (!fontStatus.loadFromFile("Images/LiquidCrystal-BoldItalic.otf"))
@@ -50,12 +54,12 @@ int main()
     {
         sf::Event event;
         //DISPLAY INTRO SCREEN
-       
-
-        
+      
             
         while (window.pollEvent(event))
         {
+
+
             if (event.type == sf::Event::Closed)
                 window.close();
 
@@ -73,9 +77,16 @@ int main()
                 playGame(window, myScreen);
             }
              
-        
+       
         
         }
+
+          if(i<180){
+        needleTrace.push_back(RectangleShape());
+        needleTrace.back().setSize(sf::Vector2f(4, 116));
+        needleTrace.back().setPosition(965,501);
+        needleTrace.back().setOrigin(2,10);
+        needleTrace.back().setFillColor(sf::Color(100,250,50, 180-(i)));}
 
 
        // window.clear();
@@ -99,20 +110,46 @@ int main()
         window.draw(radar);
         sf::RectangleShape needle(sf::Vector2f(8, 116));
         needle.setPosition(965,501);
-        needle.setFillColor(sf::Color(100, 250, 50, 70));
+        needle.setFillColor(sf::Color(100, 250, 50, 166));
         needle.setOrigin(5,10);
+        needle.setRotation(i);  
+        window.draw(needle);
         
-
-        for (float i=0; i<360; i+=4)
-        {   
-            needle.setRotation(i);
-            usleep(8000);
-            window.draw(needle);
-            
-           window.display();
-
-        
+        for(int k=0; k<needleTrace.size();k++)
+        {
+            needleTrace[k].setRotation((-2*k)+i);
+            window.draw(needleTrace[k]);
         }
+
+        
+        // for(int k=0; k<90;k+=2){
+        //     sf::RectangleShape needle2(sf::Vector2f(8, 116-k));
+        //     needle2.setPosition(965,501);
+        //     needle2.setFillColor(sf::Color(100, 250, 50, 128-k));
+        //     needle2.setOrigin(5,10);   
+        //     needle2.setRotation(i-k); 
+        //     window.draw(needle2);
+        //     window.display();
+        // }
+        
+       
+        
+        
+        window.display();
+        i+=4;
+        
+        
+
+        // for (float i=0; i<360; i+=4)
+        // {   
+        //     needle.setRotation(i);
+        //     usleep(8000);
+        //     window.draw(needle);
+            
+        //    window.display();
+
+        
+        // }
     }
     return 0;
 }

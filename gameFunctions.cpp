@@ -69,6 +69,8 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
                 break;
             }
         }
+
+        if((click.mouseButton.x<720 && click.mouseButton.y<700)&&(click.mouseButton.x>200 && click.mouseButton.y>199)){
         sf::Sprite clickTile;
         
             clickTile.setTexture(texture);
@@ -76,7 +78,7 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
             clickTile.setPosition(cellX,cellY);
             window.draw(clickTile);
             window.display();
-        
+        }
         if ( click.type== sf::Event::MouseButtonReleased &&click.mouseButton.button == sf::Mouse::Left)
         {
             window.clear();
@@ -214,7 +216,13 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
 { 
     int x=0;
     int count=0;
-    
+    int carrier=0;
+    int sub=0;
+    int dest=0;
+    int batt=0;
+    int cruis=0;
+    int ship=0;
+
  for(float i=220+shiftx; i<675+shiftx; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
     {
         
@@ -222,26 +230,43 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
         {   
             int y= 0+count;            
             sf::Sprite tile(texture);
-            
-            tile.setPosition(sf::Vector2f(i, j));
+            tile.setOrigin(25,25);
+            tile.setPosition(sf::Vector2f(i+25, j+25));
             //bool isMiddle()
-                int ship;
-                if(ta[x][y]=='c'||ta[x][y]=='d'||ta[x][y]=='s'||ta[x][y]=='r'||ta[x][y]=='b')
+                
+                
+            if(ta[x][y]=='c'||ta[x][y]=='d'||ta[x][y]=='s'||ta[x][y]=='r'||ta[x][y]=='b')
                 {ship=1;}
                 else ship=0;
-            
-            
+            if(ta[x][y]=='c') carrier+=1;
+            else if(ta[x][y]=='d') dest+=1;
+            else if(ta[x][y]=='s') sub+=1;
+            else if(ta[x][y]=='r') cruis+=1;  
+            else if(ta[x][y]=='b') batt+=1;
+            else ship+=0;
             if(ta[x][y]=='*')
             {
             tile.setTextureRect(sf::IntRect(50, 0, 50, 50));}
-            else if(ta[x][y]=='-') {tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}//should be correct
+            else if(ta[x][y]=='-'){tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}//should be correct
             else if(ta[x][y]=='m'){tile.setTextureRect(sf::IntRect(100, 0, 50, 50));}//should be correct
-            else if(ta[x][y]=='c'){tile.setTextureRect(sf::IntRect(200, 0, 50, 50));}
-            else if(ta[x][y] + ta[x][y-1]==2*'c'){tile.setTextureRect(sf::IntRect(250, 0, 50, 50));}
-            else if(ta[x][y] + ta[x][y-1]==2*'c' &&ta[x][y] + ta[x][y+1]==2*'c'){tile.setTextureRect(sf::IntRect(300, 0, 50, 50));}//these are not correct
+            else if(ta[x][y]=='c'&& carrier==1)
+            {   
+                tile.setTextureRect(sf::IntRect(200, 0, 50, 50));
+                if (ta[x][y+1]!= 'c'){tile.setRotation(270);}
+                }
+            else if(ta[x][y] =='c'&& carrier>=2)
+            {
+                tile.setTextureRect(sf::IntRect(250, 0, 50, 50));
+                if(ta[x-1][y]=='c'){tile.setRotation(90);}
+            }
+            else if(ta[x][y] =='c' &&carrier==5)
+            {   
+                tile.setTextureRect(sf::IntRect(300, 0, 50, 50));
+                if(ta[x][y-1]!='c'){tile.setRotation(270);}
+            } 
             else if(ta[x][y]=='s'){tile.setTextureRect(sf::IntRect(250, 0, 50, 50));}//these are not correct
             else if(ta[x][y]=='d'){tile.setTextureRect(sf::IntRect(300, 0, 50, 50));}//these are not correct
-            
+            else tile.setTextureRect(sf::IntRect(0,0,50,50));
              window.draw(tile);
             //ta[x][y]=boardTile; //assuming arrays are in char Letter/Number format
             //. . . and reassign here? so we don't have to create a ton at once
