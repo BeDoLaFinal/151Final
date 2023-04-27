@@ -54,16 +54,16 @@ void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
             std::cout<<"Error opening 'youWon.png' screen file.\n";
             exit(1);
         }
-        setPrivateVariables(mImage,0.97);
+        setPrivateVariables(mImage,1);
     }
     else if (e.mouseButton.button==sf::Mouse::Right)    //USER LOST
     {
-        if(!mImage.loadFromFile("Images/youLostResize.png"))
+        if(!mImage.loadFromFile("Images/youLostUPDATE.png"))
         {
             std::cout<<"Error opening 'youLost.png' screen file.\n";
             exit(1);
         }
-        setPrivateVariables(mImage,.97);
+        setPrivateVariables(mImage,1);
     }
     }
 }
@@ -76,6 +76,7 @@ void Screen::setPrivateVariables(sf::Texture &i,float scale)
 {
     screenBckgrnd.setTexture(&mImage);
     screenBckgrnd.setSize({screenSize.x/scale,screenSize.y/scale});
-    screenBckgrnd.setOrigin(screenSize.x/2, screenSize.y/2);
-    screenBckgrnd.setPosition(screenSize.x/2, screenSize.y/2);
+    screenBckgrnd.setOrigin(0, 0);
+    screenBckgrnd.setPosition(0,0);
+    
 }

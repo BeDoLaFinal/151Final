@@ -13,7 +13,7 @@
 #include "classDefinitions/ScreenClass.h"
 
 
-//
+//g++ *.cpp -o test -lpthread -lsfml-system -lsfml-window -lsfml-graphics
 //
 //
 //// SEE 'gameFunctions.cpp' FOR TENTATIVE MAIN GAME FUNCTION PSEUDOCODE, STILL ROUGH SKETCH
@@ -24,8 +24,12 @@
 
 int main()
 {
+    int i=0;
     int userMove[2];
     char playertileArray[10][10];
+    vector<RectangleShape> needleTrace;
+    
+
     createTileArray(playertileArray);
     sf::Font fontStatus;
         if (!fontStatus.loadFromFile("Images/LiquidCrystal-BoldItalic.otf"))
@@ -44,24 +48,18 @@ int main()
         { std::cout<<"failed to load texture file";
         exit (1);
         }           
-    // sf::Texture texture2;
-    // texture2.loadFromFile("Images/SpriteTile.png");
-    //     if (!texture2.loadFromFile("Images/SpriteTile.png"))
-    //     { std::cout<<"failed to load texture file";
-    //     exit (1);
-    //     }                                           //MAKE THIS PLAYSCREEN BACKGROUND
-    //testingPurposes(window);
+                                      
     String mouseClick;
     while (window.isOpen())
     {
         sf::Event event;
         //DISPLAY INTRO SCREEN
-       
-
-        
+      
             
         while (window.pollEvent(event))
         {
+
+
             if (event.type == sf::Event::Closed)
                 window.close();
 
@@ -79,43 +77,64 @@ int main()
                 playGame(window, myScreen);
             }
              
-        
+       
         
         }
 
+          if(i<200){
+        needleTrace.push_back(RectangleShape());
+        needleTrace.back().setSize(sf::Vector2f(2, 116));
+        needleTrace.back().setPosition(965,501);
+        needleTrace.back().setOrigin(1,10);
+        needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));}
 
-        //window.clear();
+
+       // window.clear();
         window.draw(myScreen.getScreen());
-        sf::Sprite tile(texture);
+        sf::Sprite tile(texture);        
+  
         displayArrayofTiles(playertileArray, texture, window, 0,0);//this displays left board
         displayArrayofTiles(playertileArray, texture, window, 974, -2); //this will display the status array on right side of board
         //window.display();
         displayPrompt(mouseClick, fontStatus,window);
-        sf::CircleShape radar(110);
+        
+         
+        sf::CircleShape radar(105);
         //radar.setFillColor(sf::Color(5,5,5,90));
-        radar.setPosition(855,391);
+        radar.setPosition(860,396);
         radar.setTexture(&texture);
-        radar.setTextureRect(sf::IntRect(350, 0, 50, 50));
-        radar.setOutlineThickness(5);
-        radar.setOutlineColor(sf::Color(110,250,70));
+        radar.setTextureRect(sf::IntRect(352, 2, 45, 45));
+        radar.setOutlineThickness(8);
+        radar.setOutlineColor(sf::Color(60,90,90));
         
         window.draw(radar);
-        sf::RectangleShape needle(sf::Vector2f(8, 116));
+         
+        sf::RectangleShape needle(sf::Vector2f(3, 111));
         needle.setPosition(965,501);
-        needle.setFillColor(sf::Color(100, 250, 50, 70));
-        needle.setOrigin(5,10);
+        needle.setFillColor(sf::Color(100, 250, 50, 210));
+        needle.setOutlineThickness(1);
+        needle.setOutlineColor(sf::Color(10,10,10));
+        needle.setOrigin(3,5);
+        needle.setRotation(i);  
+        
+        
+        
+        for(int k=0; k<needleTrace.size();k++)
+        {
+            needleTrace[k].setRotation((-k)+i);
+            window.draw(needleTrace[k]);
+        }
+        window.draw(needle);
+       
+       
+        
+        
+        window.display();
+        i++;
+        
         
 
-        for (float i=0; i<360; i+=4)
-        {   
-            needle.setRotation(i);
-            usleep(8000);
-            window.draw(needle);
-            
-            window.display();
-
-        }
-        }
-
+        
+    }
     return 0;
 }
