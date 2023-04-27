@@ -8,6 +8,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <array>
+#include <string>
+#include <sstream>
 #include "gameFunctions.h"
 #include "classDefinitions/tiles.h"
 
@@ -17,15 +19,22 @@
  * @author  Lacey
  * @return  void // changes array of movement made in main 
  */
-void mouseClickLocation(sf::Event &click,int arr[2])
-{
+String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderWindow &window)
+{   
+    String mouse;
+    std::stringstream ss;
+    ss.str();
+
     if (click.type == sf::Event::MouseButtonPressed&&click.mouseButton.button == sf::Mouse::Left)
     {
-        cout << "the left button was pressed" <<endl;   //for testing
-        cout << "mouse x: " << click.mouseButton.x <<endl; //for testing
-        cout << "mouse y: " << click.mouseButton.y <<endl; //for testing
+        ss<<"the left button was pressed\n";   //for testing
+        ss<< "mouse x: " << click.mouseButton.x<<"--"; //for testing
+        ss << "mouse y: " << click.mouseButton.y <<endl; //for testing
+        
         int spanX=0;
         int spanY=0;
+        int cellX;
+        int cellY;
         for(int i=0; i<click.mouseButton.x; i++)
         {   spanX=i*50;
             //cout<<spanX<<endl;
@@ -38,6 +47,7 @@ void mouseClickLocation(sf::Event &click,int arr[2])
                 }
                 //cout<<i<<endl;
                 arr[0]=i;
+                cellX=spanX+170;
                 break;
             } 
         }
@@ -51,17 +61,32 @@ void mouseClickLocation(sf::Event &click,int arr[2])
                     break;
                 }
                 arr[1]=j;
+                cellY=spanY+150;
                 break;
             }
         }
-        /*if (click.mouseButton.x>50 && click.mouseButton.x<150&&click.mouseButton.y>930 && click.mouseButton.y<980)
+        sf::Sprite clickTile;
+        
+            clickTile.setTexture(texture);
+            clickTile.setTextureRect(sf::IntRect(150, 0, 50, 50));
+            clickTile.setPosition(cellX,cellY);
+            window.draw(clickTile);
+            window.display();
+        
+        if ( click.type== sf::Event::MouseButtonReleased &&click.mouseButton.button == sf::Mouse::Left)
+        {
+            window.clear();
+        }
+        if (click.mouseButton.x>125 && click.mouseButton.x<320&&click.mouseButton.y>780 && click.mouseButton.y<906)
         {   
             //user clicked quit
             exit(2);
-        }*/
+        }
     }
     if(arr[0]>10||arr[1]>10||arr[0]==-1||arr[1]==-1) cout<<"Out of Bounds!\n";
-    else cout<<"array location: "<<arr[0]<<" "<<arr[1]<<endl;
+    else {cout<<"array location: "<<arr[0]<<" "<<arr[1]<<endl;}
+    mouse = ss.str();
+    return mouse;
 }
 
 /**
@@ -184,13 +209,13 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
             sf::Sprite tile(texture);
             
             tile.setPosition(sf::Vector2f(i, j));
-            window.draw(tile);
+            
             if(ta[x][y]=='*')
             {
-            tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
-            else {tile.setTextureRect(sf::IntRect(0, 0, 25, 25));}
+            tile.setTextureRect(sf::IntRect(50, 0, 50, 50));}
+            else {tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
             
-             
+             window.draw(tile);
             //ta[x][y]=boardTile; //assuming arrays are in char Letter/Number format
             //. . . and reassign here? so we don't have to create a ton at once
             count++;
@@ -201,3 +226,14 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
     }
    
 };
+
+void displayPrompt(std::string s, sf::Font &font,RenderWindow &window)
+{
+    sf::Text status;
+        status.setCharacterSize(50);
+        status.setPosition(505,810);
+        status.setFillColor(sf::Color(100, 250, 50, 100));
+        status.setFont(font);
+        status.setString(s);
+        window.draw(status);
+}
