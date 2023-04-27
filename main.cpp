@@ -81,12 +81,12 @@ int main()
         
         }
 
-          if(i<180){
+          if(i<200){
         needleTrace.push_back(RectangleShape());
-        needleTrace.back().setSize(sf::Vector2f(4, 116));
+        needleTrace.back().setSize(sf::Vector2f(2, 116));
         needleTrace.back().setPosition(965,501);
-        needleTrace.back().setOrigin(2,10);
-        needleTrace.back().setFillColor(sf::Color(100,250,50, 180-(i)));}
+        needleTrace.back().setOrigin(1,10);
+        needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));}
 
 
        // window.clear();
@@ -99,34 +99,38 @@ int main()
         displayPrompt(mouseClick, fontStatus,window);
         
          
-        sf::CircleShape radar(110);
+        sf::CircleShape radar(105);
         //radar.setFillColor(sf::Color(5,5,5,90));
-        radar.setPosition(855,391);
+        radar.setPosition(860,396);
         radar.setTexture(&texture);
-        radar.setTextureRect(sf::IntRect(350, 0, 50, 50));
-        radar.setOutlineThickness(5);
-        radar.setOutlineColor(sf::Color(110,250,70));
+        radar.setTextureRect(sf::IntRect(352, 2, 45, 45));
+        radar.setOutlineThickness(8);
+        radar.setOutlineColor(sf::Color(60,90,90));
         
         window.draw(radar);
-        sf::RectangleShape needle(sf::Vector2f(8, 116));
+         
+        sf::RectangleShape needle(sf::Vector2f(3, 111));
         needle.setPosition(965,501);
-        needle.setFillColor(sf::Color(100, 250, 50, 166));
-        needle.setOrigin(5,10);
+        needle.setFillColor(sf::Color(100, 250, 50, 210));
+        needle.setOutlineThickness(1);
+        needle.setOutlineColor(sf::Color(10,10,10));
+        needle.setOrigin(3,5);
         needle.setRotation(i);  
-        window.draw(needle);
+        
+        
         
         for(int k=0; k<needleTrace.size();k++)
         {
-            needleTrace[k].setRotation((-2*k)+i);
+            needleTrace[k].setRotation((-k)+i);
             window.draw(needleTrace[k]);
         }
-
+        window.draw(needle);
        
        
         
         
         window.display();
-        i+=4;
+        i++;
         
         
 
