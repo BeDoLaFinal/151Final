@@ -1,6 +1,6 @@
 /**
  * @file gameFunctions.h
- * @author 
+ * @author Dominic Acia, Lacey Hunt, Ben Givens
  * @brief various function definitions needed for gameplay
  * @date 2023-04-23
  * 
@@ -25,6 +25,8 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
 String mouseClickLocation(Event &click,int arr[2], Texture &texture, RenderWindow &window);
 void showInstructions(RenderWindow& window, Screen &screen);
 void displayPrompt(std::string s, sf::Font &font,RenderWindow &window);
+//void radarDisplay(RenderWindow &window, Texture &texture, int angle);
+ 
 void playGame(RenderWindow& window, Screen &screen);
 
 #endif

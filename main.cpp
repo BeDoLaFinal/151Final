@@ -13,7 +13,7 @@
 #include "classDefinitions/ScreenClass.h"
 
 
-//
+//g++ *.cpp -o test -lpthread -lsfml-system -lsfml-window -lsfml-graphics
 //
 //
 //// SEE 'gameFunctions.cpp' FOR TENTATIVE MAIN GAME FUNCTION PSEUDOCODE, STILL ROUGH SKETCH
@@ -44,13 +44,7 @@ int main()
         { std::cout<<"failed to load texture file";
         exit (1);
         }           
-    // sf::Texture texture2;
-    // texture2.loadFromFile("Images/SpriteTile.png");
-    //     if (!texture2.loadFromFile("Images/SpriteTile.png"))
-    //     { std::cout<<"failed to load texture file";
-    //     exit (1);
-    //     }                                           //MAKE THIS PLAYSCREEN BACKGROUND
-    //testingPurposes(window);
+                                      
     String mouseClick;
     while (window.isOpen())
     {
@@ -84,13 +78,16 @@ int main()
         }
 
 
-        //window.clear();
+       // window.clear();
         window.draw(myScreen.getScreen());
-        sf::Sprite tile(texture);
+        sf::Sprite tile(texture);        
+  
         displayArrayofTiles(playertileArray, texture, window, 0,0);//this displays left board
         displayArrayofTiles(playertileArray, texture, window, 974, -2); //this will display the status array on right side of board
         //window.display();
         displayPrompt(mouseClick, fontStatus,window);
+        
+         
         sf::CircleShape radar(110);
         //radar.setFillColor(sf::Color(5,5,5,90));
         radar.setPosition(855,391);
@@ -112,10 +109,10 @@ int main()
             usleep(8000);
             window.draw(needle);
             
-            window.display();
+           window.display();
 
+        
         }
-        }
-
+    }
     return 0;
 }

@@ -1,6 +1,6 @@
 /**
  * @file    gameFunctions.cpp
- * @author  Lacey Hunt (lhunt2@students.nic.edu)
+ * @author  Lacey Hunt (lhunt2@students.nic.edu), Dominic Acia
  * @brief   various function definitions needed for gameplay
  * @date    2023-04-23
  * 
@@ -10,13 +10,17 @@
 #include <array>
 #include <string>
 #include <sstream>
+#include <chrono>
+#include <unistd.h>
+#include <thread>
+
 #include "gameFunctions.h"
 #include "classDefinitions/tiles.h"
 
 
 /**
  * @brief   a funtion to return the mouse position click as an int array
- * @author  Lacey
+ * @author  Lacey and Dominic
  * @return  void // changes array of movement made in main 
  */
 String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderWindow &window)
@@ -164,9 +168,11 @@ how to read the array:
 
 
 */
+
 /**
- * @brief Create a Tile Array object function to start the game with blank screen. 
+ * @brief Create a Tile Array object
  * 
+ * @param tileArray the chosen array name
  */
 void createTileArray(char tileArray[10][10])
 {
@@ -175,14 +181,14 @@ void createTileArray(char tileArray[10][10])
     
     
     //create tile out here . . .
-    for(float i=200; i<651; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
+    for(float i=220; i<651; i+=50) 
     {
         
-        for(float j=197; j<649; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
+        for(float j=199; j<649; j+=50)  
         {   
             int y= 0+count;            
             
-            tileArray[x][y]='*';
+            tileArray[x][y]='-';
             tileArray[x][y+1]='-'; //assuming arrays are in char Letter/Number format
             //. . . and reassign here? so we don't have to create a ton at once
             count+=2;
@@ -195,6 +201,15 @@ void createTileArray(char tileArray[10][10])
 
 };
 
+/**
+ * @brief function to display the correct tile based on player and computer array contents. 
+ * @author Dominic Acia
+ * @param ta  the chosen array to display
+ * @param texture texture file for sprites
+ * @param window game window in which we're drawing
+ * @param shiftx a modifier to allow the left or right board to be drawn
+ * @param shiftY a modifier to allow the left or right board to be drawn
+ */
 void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window, int shiftx, int shiftY)
 { 
     int x=0;
@@ -209,11 +224,23 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
             sf::Sprite tile(texture);
             
             tile.setPosition(sf::Vector2f(i, j));
+            //bool isMiddle()
+                int ship;
+                if(ta[x][y]=='c'||ta[x][y]=='d'||ta[x][y]=='s'||ta[x][y]=='r'||ta[x][y]=='b')
+                {ship=1;}
+                else ship=0;
+            
             
             if(ta[x][y]=='*')
             {
             tile.setTextureRect(sf::IntRect(50, 0, 50, 50));}
-            else {tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}
+            else if(ta[x][y]=='-') {tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}//should be correct
+            else if(ta[x][y]=='m'){tile.setTextureRect(sf::IntRect(100, 0, 50, 50));}//should be correct
+            else if(ta[x][y]=='c'){tile.setTextureRect(sf::IntRect(200, 0, 50, 50));}
+            else if(ta[x][y] + ta[x][y-1]==2*'c'){tile.setTextureRect(sf::IntRect(250, 0, 50, 50));}
+            else if(ta[x][y] + ta[x][y-1]==2*'c' &&ta[x][y] + ta[x][y+1]==2*'c'){tile.setTextureRect(sf::IntRect(300, 0, 50, 50));}//these are not correct
+            else if(ta[x][y]=='s'){tile.setTextureRect(sf::IntRect(250, 0, 50, 50));}//these are not correct
+            else if(ta[x][y]=='d'){tile.setTextureRect(sf::IntRect(300, 0, 50, 50));}//these are not correct
             
              window.draw(tile);
             //ta[x][y]=boardTile; //assuming arrays are in char Letter/Number format
@@ -227,6 +254,13 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
    
 };
 
+/**
+ * @brief Function to display the information screen on game board
+ * @author Dominic Acia
+ * @param s string to be displayed
+ * @param font assigned font
+ * @param window game window
+ */
 void displayPrompt(std::string s, sf::Font &font,RenderWindow &window)
 {
     sf::Text status;
@@ -237,3 +271,50 @@ void displayPrompt(std::string s, sf::Font &font,RenderWindow &window)
         status.setString(s);
         window.draw(status);
 }
+
+
+/**
+ * @brief an attempt to create a multi-thread rendering so the radar would rotate on the background and not affect player input. 
+ * SFML does not allow more than one thread to share the same window. 
+ * Thoughts are to use a thread to calculate teh position of the radar needle and stream it to the needle rotation command, 
+ * but so far I've been unsuccessful. 
+ *  
+ * 
+ */
+// void radarDisplay(RenderWindow &window, Texture& texture, int angle)
+// {   
+
+    
+
+//         sf::CircleShape radar(110);
+
+//         //radar.setFillColor(sf::Color(5,5,5,90));
+//         radar.setPosition(855,391);
+//         radar.setTexture(&texture);
+//         radar.setTextureRect(sf::IntRect(350, 0, 50, 50));
+//         radar.setOutlineThickness(5);
+//         radar.setOutlineColor(sf::Color(110,250,70));
+        
+//         window.draw(radar);
+//         sf::RectangleShape needle(sf::Vector2f(8, 116));
+//         needle.setPosition(965,501);
+//         needle.setFillColor(sf::Color(100, 250, 50, 70));
+//         needle.setOrigin(5,10);
+        
+
+//     while (window.isOpen())
+//     {
+      
+    
+        
+           
+//             needle.setRotation(angle);
+//             //usleep(8000);
+//             window.draw(needle);
+//             window.display();
+//     }
+           
+
+//         }
+
+//         ;
