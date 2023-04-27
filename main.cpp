@@ -56,6 +56,10 @@ int main()
     {
         sf::Event event;
         //DISPLAY INTRO SCREEN
+       
+
+        
+            
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
@@ -66,7 +70,7 @@ int main()
             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
             {
                 //for testing, shows location of click
-                mouseClick=mouseClickLocation(event,userMove);
+                mouseClick=mouseClickLocation(event,userMove, texture, window);
                 
                 //if (user clicks instructions)
                 showInstructions(window, myScreen);
@@ -74,8 +78,12 @@ int main()
                 //else if (user clicks play)
                 playGame(window, myScreen);
             }
-        }
+             
         
+        
+        }
+
+
         //window.clear();
         window.draw(myScreen.getScreen());
         sf::Sprite tile(texture);
@@ -89,12 +97,14 @@ int main()
         radar.setTexture(&texture);
         radar.setTextureRect(sf::IntRect(350, 0, 50, 50));
         radar.setOutlineThickness(5);
-        radar.setOutlineColor(sf::Color(100,250,50));
+        radar.setOutlineColor(sf::Color(110,250,70));
         
         window.draw(radar);
-        sf::RectangleShape needle(sf::Vector2f(110, 8));
+        sf::RectangleShape needle(sf::Vector2f(8, 116));
         needle.setPosition(965,501);
         needle.setFillColor(sf::Color(100, 250, 50, 70));
+        needle.setOrigin(5,10);
+        
 
         for (float i=0; i<360; i+=4)
         {   
@@ -104,10 +114,7 @@ int main()
             
             window.display();
 
-
         }
-            
-        
         }
 
     return 0;
