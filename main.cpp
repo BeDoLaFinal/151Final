@@ -105,8 +105,8 @@ int main()
                         window.display();
         }
         trackOne.stop();
-        trackTwo.play("radarChatter.wav");
-
+        trackTwo.play("audio/radarChatter.wav");
+        window.display();
         cout << "You have chosen to randomly place your ships.\n";
         randomlyPlaceShipsOnBoard(board1);
         //place opponent ships
@@ -124,7 +124,6 @@ int main()
         gameOver1 = isWinner(board1);
         gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
         player=1;//user goes first
-
         while (!gameOver1 && !gameOver2) //main game loop
         {
             //DISPLAY MAIN GAME SCREEN and radar
@@ -162,16 +161,18 @@ int main()
             window.draw(needle);
             i++;
 
-            displayArrayofTiles(board1, texture, window, 974, -2);//this displays right board
-            displayArrayofTiles(boardSeen, texture, window,  0,0);//this displays left board BOARDSEEN
+            displayArrayofTiles(board1, texture, window, 974, -2);//right board
+            displayArrayofTiles(boardSeen, texture, window,  0,0);//left board 
+
+            window.display();
                 if (player==1)//user's turn
                 {
                     logFile << "Player1: ";
-                    displayPrompt("It's your turn! Select where you would like to go.",fontStatus,window,message);
-                    //do //get valid move location
-                    //{
+                    displayPrompt("It's your turn! Select where you would like to go.",fontStatus,window,message);//go away
+                    do //get valid move location
+                    {
                         //GET USER MOVE
-                        while (window.pollEvent(event))
+                        if(window.pollEvent(event))
                         {
                             if (event.type == sf::Event::Closed)
                                 window.close();
@@ -191,8 +192,8 @@ int main()
                                 // }
                             }
                         }
-                        //sleep(2);
-                    //} while (!moveOK);
+                        window.display();
+                    } while (!moveOK);
                 }
                 /*else if(player==2)//computer's turn
                 {
@@ -256,7 +257,6 @@ int main()
                     player=switchPlayer(player);
                     system("clear"); 
                 }*/
-            //window.display();
             
         }
     logFile.close();       

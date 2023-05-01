@@ -228,8 +228,6 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
  */
 void displayPrompt(std::string s, sf::Font &font,RenderWindow &window,sf::Text &message)
 {
-    message.setString(" ");
-    window.draw(message);
     message.setCharacterSize(50);
     message.setPosition(505,810);
     message.setFillColor(sf::Color(100, 250, 50, 100));
