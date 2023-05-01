@@ -93,6 +93,9 @@ int main()
         }
         trackOne.stop();
         trackTwo.play("radarChatter.wav");
+        bool gameLoop=false;
+        while (!gameLoop)
+        {
         // DISPLAY MAIN GAME SCREEN
         while (window.pollEvent(event))
         {
@@ -148,6 +151,7 @@ int main()
         
         window.display();
         i++;
+        }
     }
     return 0;
 }
