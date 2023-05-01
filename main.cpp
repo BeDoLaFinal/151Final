@@ -105,7 +105,7 @@ int main()
             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
             {
                 //for testing, shows location of click
-                // mouseClick=mouseClickLocation(event,userMove, texture, window);
+                mouseClickLocation(event,userMove, texture, window);
             }
         }
         window.draw(myScreen.getScreen());
