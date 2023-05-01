@@ -9,7 +9,13 @@
 #define INTROSCREEN_H
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
+using std::cout;
+using std::endl;
+using namespace sf;
+/**
+ * @brief Class for the intro button and rules button
+ * 
+ */
 class IntroButton{
 public:
     IntroButton(sf::Vector2f position);
@@ -24,6 +30,20 @@ private:
     sf::Font font;
 };
 
-void testingPurposes(sf::RenderWindow& window);
-
+/**
+ * @brief   Class for intro screen
+ * @author  Ben/Lacey
+ * 
+ */
+class IntroScreen
+{
+public:
+    IntroScreen();
+    RectangleShape getIntroScreen();
+private:
+    void setPrivateVariables(sf::Texture &i,float scale=1);
+    RectangleShape screenBckgrnd;
+    Texture mImage;
+    Vector2f screenSize={1920,1080};
+};
 #endif
