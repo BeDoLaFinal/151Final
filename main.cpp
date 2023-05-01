@@ -54,11 +54,11 @@ int main()
     bool startGame=false;                         
     String mouseClick;
     SoundClass hitSound, missSound;
+    MusicClass trackOne, trackTwo;
     while (window.isOpen())
     {
         sf::Event event;
-        MusicClass trackOne, trackTwo, trackThree;
-        trackOne.play("audio/music/firstSong.wav");
+        trackOne.play("audio/music/trackOne.wav");
         while(!startGame)
         {
             // DISPLAY INTRO SCREEN
@@ -82,7 +82,7 @@ int main()
                     //else if (user clicks play)
                     if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
                     {
-                        missSound.play("audio/Sounds/Bomb Miss Sound.wav");
+                        missSound.play("audio/Sounds/BombMiss.wav");
                         startGame=true;
                         std::cout <<"They pressed the play button"<<std::endl;
                         playGame(window, myScreen);
@@ -91,7 +91,8 @@ int main()
             }
             window.display();
         }
-        // trackOne.stop();
+        trackOne.stop();
+        trackTwo.play("radarChatter.wav");
         // DISPLAY MAIN GAME SCREEN
         while (window.pollEvent(event))
         {
