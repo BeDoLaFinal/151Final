@@ -95,66 +95,6 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
     return mouse;
 }
 
-/**
- * @brief displays instructions
- * @author
- * @param window 
- * @param screen 
- */
-void showInstructions(RenderWindow& window, Screen &screen)
-{
-    //change screen image
-    //show instructions
-    //user clicks to exit and return to play screen
-}
-
-/**
- * @brief handle all gamePlay elements
- * @author Lacey
- * 
- * @param window 
- * @param screen 
- */
-void playGame(sf::RenderWindow& window, Screen &screen)
-{
-    //INITIALIZE GAME ELEMENTS
-    /*int placeSelect, player, col, row;
-    bool moveOK=false, gameOver1, gameOver2;
-
-    int userMiss=0;
-    int userHit=0;
-    int computerHit=0;
-    int computerMiss=0;
-
-    char board1[NUM_ROWS][NUM_COLS]; //initializes array for the board of player 1 (user)
-    char board2[NUM_ROWS][NUM_COLS]; //initializes array for the board of player 2 (computer)
-    char boardSeen[NUM_ROWS][NUM_COLS]; //initializes array for board seen by user (showing hits and misses but not opponent ships)
-    initializeBoard(board1); //user ships
-    initializeBoard(board2); //computer ships
-    initializeBoard(boardSeen); //computer board seen by user
-    */
-
-    //PLACE SHIPS (RANDOM FOR NOW) for both players
-
-    //display ships
-    /*do
-    {
-        display
-        PLAY
-        display
-    }while(!gameOver1&&!gameOver2);
-    if(gameOver1)
-        display correct end
-    else if(gameOver2)
-        display correct end
-    */
-}
-
-
-
-
-
-
 /*
 how to read the array:
     
@@ -175,7 +115,7 @@ how to read the array:
  * @brief Create a Tile Array object
  * 
  * @param tileArray the chosen array name
- */
+
 void createTileArray(char tileArray[10][10])
 {
     int x=0;
@@ -201,7 +141,7 @@ void createTileArray(char tileArray[10][10])
     }
 
 
-};
+}; */
 
 /**
  * @brief function to display the correct tile based on player and computer array contents. 
