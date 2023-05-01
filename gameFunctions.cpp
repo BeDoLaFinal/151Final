@@ -70,7 +70,7 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
             }
         }
 
-        if((click.mouseButton.x<720 && click.mouseButton.y<700)&&(click.mouseButton.x>200 && click.mouseButton.y>199)){
+        if((click.mouseButton.x<720 && click.mouseButton.y<700)&&(click.mouseButton.x>220 && click.mouseButton.y>199)){
         sf::Sprite clickTile;
         
             clickTile.setTexture(texture);
