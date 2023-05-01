@@ -244,21 +244,12 @@ void randomlyPlaceShipsOnBoard(char board[][NUM_COLS])
  * @param player current player, -1 if game is just starting
  * @return int player up next
  */
-int selectOrSwitchPlayer(int player) 
+int switchPlayer(int player) 
 {
-    if(player==-1)
-    {
-        int starter = rand()%2+1;
-        return starter;
-    }
-    else if(player==1)
-    {
+    if(player==1)
         return 2;
-    }
     else if(player==2)
-    {
         return 1;
-    }
     return 0;
 }
 
@@ -381,7 +372,7 @@ bool checkIfSunk(int shipLength,char shipChar,char board[][NUM_COLS])
  * @param boardSeen board seen by user
  * @param logFile log file tracking moves
  */
-void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss,sf::Font &font,RenderWindow &window)  
+void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss,sf::Font &font,RenderWindow &window,sf::Text &message)  
 {
     int hitLocation = checkShot(row, col, board2); //find what ship user hit
     int shipLength = SHIP_SIZES[hitLocation];
@@ -390,14 +381,14 @@ void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM
     if (hitLocation==-1)//hit was a miss
     {
         logFile<<row+1<<","<<col+1<<" Miss!"<<endl;
-        displayPrompt("You missed!",font,window);
+        displayPrompt("You missed!",font,window,message);
         boardSeen[row][col]='m';
         userMiss++;
     }
     else
     {
         logFile<<row+1<<","<<col+1<<" Hit! ";
-        displayPrompt("You hit an enemy ship!",font,window);
+        displayPrompt("You hit an enemy ship!",font,window,message);
         boardSeen[row][col]='*';
         board2[row][col]='-';
         userHit++;
@@ -405,30 +396,11 @@ void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM
         if (checkIfSunk(shipLength,shipChar,board2)) //check if sunk
         {
             logFile << SHIP_NAMES[hitLocation] << " sunk!";
-            displayPrompt("You sunk the enemy's "+SHIP_NAMES[hitLocation]+"!",font,window);
+            //displayPrompt("You sunk the enemy's "+SHIP_NAMES[hitLocation]+"!",font,window,message);
         }
         logFile << endl;
     }
 }
-
-/**
- * @brief displays banner between player turns
- * 
- * @param player whose turn it is
- */
-void banner(int player,sf::Font &font,RenderWindow &window)
-{
-    if (player==1)
-    {
-        displayPrompt("It's your turn! Select where you would like to go.",font,window);
-    }
-    else
-    {
-        displayPrompt("Incoming attack!!!",font,window);
-        sleep(2);
-    }
-}
-
 /**
  * @brief completes battleship.log file info after gameplay
  * 

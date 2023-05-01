@@ -29,6 +29,7 @@ int main()
     int i=0;
     int userMove[2];
     vector<RectangleShape> needleTrace;
+    sf::Text message;
     
     int placeSelect, player, col, row;
     bool moveOK=false, gameOver1, gameOver2;
@@ -58,7 +59,6 @@ int main()
     IntroScreen IntroScreen;       
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-  //  testingPurposes(window);
     sf::Texture texture;
     texture.loadFromFile("Images/SpriteTileTextures.png");
         if (!texture.loadFromFile("Images/SpriteTileTextures.png"))
@@ -83,7 +83,6 @@ int main()
                             introButtons.draw(window);   
                             if (event.type == sf::Event::Closed)
                                 window.close();
-                            //myScreen.updateScreen(event,window); //used to test
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
                             {
                                 //if (user clicks instructions)
@@ -107,21 +106,28 @@ int main()
         }
         trackOne.stop();
         trackTwo.play("radarChatter.wav");
-        bool gameLoop=false;
-        while (!gameLoop)
+
+        cout << "You have chosen to randomly place your ships.\n";
+        randomlyPlaceShipsOnBoard(board1);
+        //place opponent ships
+        randomlyPlaceShipsOnBoard(board2);
+
+        //test console displays
+        displayBoard(1,board1);
+        displayBoard(2,board2);
+
+        //create and open log file, we can use to test stuff and remove later if wanted
+        ofstream logFile;
+        logFile.open("battleship.log");
+        
+        //initialize gameOver flags to false
+        gameOver1 = isWinner(board1);
+        gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
+        player=1;//user goes first
+
+        while (!gameOver1 && !gameOver2) //main game loop
         {
-            // DISPLAY MAIN GAME SCREEN
-            while (window.pollEvent(event))
-            {
-                if (event.type == sf::Event::Closed)
-                    window.close();
-                //myScreen.updateScreen(event,window); //used to test
-                else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
-                {
-                    //for testing, shows location of click
-                    mouseClick=mouseClickLocation(event,userMove, texture, window);
-                }
-            }
+            //DISPLAY MAIN GAME SCREEN and radar
             window.draw(myScreen.getScreen());
             if(i<200){
             needleTrace.push_back(RectangleShape());
@@ -129,11 +135,7 @@ int main()
             needleTrace.back().setPosition(965,501);
             needleTrace.back().setOrigin(1,10);
             needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));}
-            window.draw(myScreen.getScreen());      
-    
-            displayArrayofTiles(board1, texture, window, 0,0);//this displays left board
-            displayArrayofTiles(boardSeen, texture, window, 974, -2); //this will display the status array on right side of board
-            displayPrompt(mouseClick, fontStatus,window);  
+            window.draw(myScreen.getScreen());       
             
             sf::CircleShape radar(105);
             radar.setPosition(860,396);
@@ -158,98 +160,44 @@ int main()
                 window.draw(needleTrace[k]);
             }
             window.draw(needle);
-            
-            window.display();
             i++;
 
-            //User determines ship placement
-            /* do
-            {
-                cout << "Select how you would like to place your ships:\n";
-
-                cout << "1. Manually Place\n2. Randomly Place\n";
-                cin>>placeSelect;
-                cin.ignore();
-                if(placeSelect<1 || placeSelect>2)
-                {
-                    cout << "Invalid Entry. ";
-                }
-            } while (placeSelect<1 || placeSelect>2);*/
-
-            //user chose manual placement
-            /*if(placeSelect==1)
-            {
-                displayPrompt("Manually placing your ships...", fontStatus,window); 
-                manuallyPlaceShipsOnBoard(board1);
-            }*/
-            //user chose random placement
-            //else if(placeSelect==2)
-            //{
-            cout << "You have chosen to randomly place your ships.\n";
-            randomlyPlaceShipsOnBoard(board1);
-            displayArrayofTiles(board1, texture, window, 0,0);//this displays left board
-            displayBoard(1,board1);
-            //}
-        } 
-            //place opponent ships
-            randomlyPlaceShipsOnBoard(board2);
-
-            //displayBoard(1, board1);
-            displayArrayofTiles(board1, texture, window, 0,0);//this displays left board
-            displayArrayofTiles(board2, texture, window,  974, -2);//this displays right board
-
-          /**COMMENT SECTION START
-            //sleep(4);
-            //pressEnterToContinue();
-            //system("clear");
-
-            player = selectOrSwitchPlayer(-1); //select first player
-            //displayBoard(2,boardSeen); //only shows dashes since no spots guessed yet
-
-            //create and open log file
-            ofstream logFile;
-            logFile.open("battleship.log");
-            
-            //initialize gameOver flags to false
-            gameOver1 = isWinner(board1);
-            gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
-
-            while (!gameOver1 && !gameOver2) //while game not over
-            {
+            displayArrayofTiles(board1, texture, window, 974, -2);//this displays right board
+            displayArrayofTiles(boardSeen, texture, window,  0,0);//this displays left board BOARDSEEN
                 if (player==1)//user's turn
                 {
-                    //displayBoard(player+1, boardSeen);//Displays the player's board when the computer is making their move
                     logFile << "Player1: ";
-                    do //get valid move location
-                    {
-                        banner(player,fontStatus,window);
+                    displayPrompt("It's your turn! Select where you would like to go.",fontStatus,window,message);
+                    //do //get valid move location
+                    //{
                         //GET USER MOVE
                         while (window.pollEvent(event))
+                        {
+                            if (event.type == sf::Event::Closed)
+                                window.close();
+                            else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
                             {
-                                if (event.type == sf::Event::Closed)
-                                    window.close();
-                                else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
+                                mouseClick=mouseClickLocation(event,userMove, texture, window);
+                                userMove[0]--;
+                                userMove[1]--;
+                                moveOK = checkShotIsAvailable(userMove[0], userMove[1], boardSeen);     //row and col may be switched
+                                if (moveOK)
                                 {
-                                    mouseClick=mouseClickLocation(event,userMove, texture, window);
+                                    updateBoard(row, col, board2, boardSeen, logFile, userHit,userMiss,fontStatus,window,message); //check shot and update board
                                 }
+                                // else 
+                                // {
+                                //     displayPrompt("Not a valid move. Try again.",fontStatus,window,message);
+                                // }
                             }
-                        userMove[0]--;
-                        userMove[1]--;
-                        moveOK = checkShotIsAvailable(userMove[0], userMove[1], boardSeen);     //row and col may be switched
-                        if (moveOK)
-                        {
-                            updateBoard(row, col, board2, boardSeen, logFile, userHit,userMiss,fontStatus,window); //check shot and update board
                         }
-                        else 
-                        {
-                            displayPrompt("Not a valid move. Try again.",fontStatus,window);
-                        }
-                    } while (!moveOK);
-                    displayArrayofTiles(boardSeen,texture,window,974,-2);
+                        //sleep(2);
+                    //} while (!moveOK);
                 }
-                else if(player==2)//computer's turn
+                /*else if(player==2)//computer's turn
                 {
                     logFile << "Player2: ";
+                    displayPrompt("Incoming attack!!!",font,window,message);
                     do //get valid move location
                     {
                         row=rand()%10+1;
@@ -298,21 +246,20 @@ int main()
                 if(gameOver1==true||gameOver2==true) //game over
                 {
                     cout << "\n----- G A M E   O V E R ! -----\n";
-                    displayPrompt("Game Over!",fontStatus,window);
+                    //display end screen
                     logFile << "Player " << player << " wins! ";
-                    logFile << "Player " << selectOrSwitchPlayer(player) << " loses. ";
+                    logFile << "Player " << switchPlayer(player) << " loses. ";
                     outputStats(logFile, userHit, userMiss, computerHit, computerMiss);
                 }
                 else //game still going
                 {
-                    player=selectOrSwitchPlayer(player);
+                    player=switchPlayer(player);
                     system("clear"); 
-                }
-            }
-
-            //close the log file
-            logFile.close();*/
+                }*/
+            //window.display();
+            
+        }
+    logFile.close();       
     }
-    
     return 0;
 }

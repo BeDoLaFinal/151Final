@@ -226,15 +226,16 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
  * @param font assigned font
  * @param window game window
  */
-void displayPrompt(std::string s, sf::Font &font,RenderWindow &window)
+void displayPrompt(std::string s, sf::Font &font,RenderWindow &window,sf::Text &message)
 {
-    sf::Text status;
-        status.setCharacterSize(50);
-        status.setPosition(505,810);
-        status.setFillColor(sf::Color(100, 250, 50, 100));
-        status.setFont(font);
-        status.setString(s);
-        window.draw(status);
+    message.setString(" ");
+    window.draw(message);
+    message.setCharacterSize(50);
+    message.setPosition(505,810);
+    message.setFillColor(sf::Color(100, 250, 50, 100));
+    message.setFont(font);
+    message.setString(s);
+    window.draw(message);
 }
 
 
@@ -283,3 +284,32 @@ void displayPrompt(std::string s, sf::Font &font,RenderWindow &window)
 //         }
 
 //         ;
+
+
+/**
+ * @brief FOR MANUAL PLACEMENT IF NEEDED
+ * 
+ */
+//User determines ship placement
+            /* do
+            {
+                cout << "Select how you would like to place your ships:\n";
+
+                cout << "1. Manually Place\n2. Randomly Place\n";
+                cin>>placeSelect;
+                cin.ignore();
+                if(placeSelect<1 || placeSelect>2)
+                {
+                    cout << "Invalid Entry. ";
+                }
+            } while (placeSelect<1 || placeSelect>2);*/
+
+            //user chose manual placement
+            /*if(placeSelect==1)
+            {
+                displayPrompt("Manually placing your ships...", fontStatus,window); 
+                manuallyPlaceShipsOnBoard(board1);
+            }*/
+            //user chose random placement
+            //else if(placeSelect==2)
+            //{
