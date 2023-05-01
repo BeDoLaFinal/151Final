@@ -25,36 +25,34 @@
 
 int main()
 {
+    //initilize parameters for game operation
+    bool startGame=false; 
     int i=0;
     int userMove[2];
-    char playertileArray[10][10];
-    vector<RectangleShape> needleTrace;
-    
+    // char playertileArray[10][10];
+    vector<RectangleShape> needleTrace; //vector of shapes for radar needle trace
 
-    createTileArray(playertileArray);
-    sf::Font fontStatus;
-        if (!fontStatus.loadFromFile("Images/LiquidCrystal-BoldItalic.otf"))
-        {
-            cout<<"error loading file\n";
-            exit(1);
-        }
-    
+    //calling window for game display and setting parameters  
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
     Screen myScreen;
     IntroScreen IntroScreen;       
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-  //  testingPurposes(window);
+    
+    //set texture file for display tiles/arrays
     sf::Texture texture;
     texture.loadFromFile("Images/SpriteTileTextures.png");
         if (!texture.loadFromFile("Images/SpriteTileTextures.png"))
         { std::cout<<"failed to load texture file";
         exit (1);
         }           
-    bool startGame=false;                         
-    String mouseClick;
+
+
+    //calling sounds
     SoundClass hitSound, missSound;
     MusicClass trackOne, trackTwo;
+
+    //start looping window
     while (window.isOpen())
     {
         sf::Event event;
@@ -94,6 +92,8 @@ int main()
         trackOne.stop();
         trackTwo.play("radarChatter.wav");
         bool gameLoop=false;
+        
+        //start gameloop
         while (!gameLoop)
         {
         // DISPLAY MAIN GAME SCREEN
@@ -105,51 +105,50 @@ int main()
             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
             {
                 //for testing, shows location of click
-                mouseClick=mouseClickLocation(event,userMove, texture, window);
+                // mouseClick=mouseClickLocation(event,userMove, texture, window);
             }
         }
         window.draw(myScreen.getScreen());
+       
+
         if(i<200){
         needleTrace.push_back(RectangleShape());
         needleTrace.back().setSize(sf::Vector2f(2, 116));
         needleTrace.back().setPosition(965,501);
         needleTrace.back().setOrigin(1,10);
         needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));}
-       // window.clear();
+        //window.clear();
         window.draw(myScreen.getScreen());
-    //     sf::Sprite tile(texture);        
-  
-        displayArrayofTiles(playertileArray, texture, window, 0,0);//this displays left board
-        displayArrayofTiles(playertileArray, texture, window, 974, -2); //this will display the status array on right side of board
-        //window.display();
-        displayPrompt(mouseClick, fontStatus,window);  
+             
+        //displays the player boards left and right by offsetting the origin (974, -2) is the offset for right board display
+        // displayArrayofTiles(playertileArray, texture, window, 0,0);//this displays left board
+        // displayArrayofTiles(playertileArray, texture, window, 974, -2); //this will display the status array on right side of board
+        
+        // displayPrompt(mouseClick, fontStatus,window);  
          
+         //rendering in the radar shape and texture to display over game board
         sf::CircleShape radar(105);
-        //radar.setFillColor(sf::Color(5,5,5,90));
         radar.setPosition(860,396);
         radar.setTexture(&texture);
         radar.setTextureRect(sf::IntRect(353, 3, 44, 44));
         radar.setOutlineThickness(8);
         radar.setOutlineColor(sf::Color(60,90,90));
-        
         window.draw(radar);
-         
-        sf::RectangleShape needle(sf::Vector2f(3, 111));
-        needle.setPosition(965,501);
-        needle.setFillColor(sf::Color(100, 250, 50, 210));
-        needle.setOutlineThickness(1);
-        needle.setOutlineColor(sf::Color(10,10,10));
-        needle.setOrigin(3,5);
-        needle.setRotation(i);  
-         
+        
+        //loop needed to make the needle trace fade correctly
         for(int k=0; k<needleTrace.size();k++)
         {
             needleTrace[k].setRotation((-k)+i);
             window.draw(needleTrace[k]);
         }
+        //drawing the needle over the trace
+        sf::RectangleShape needle(sf::Vector2f(3, 111));
+        needleDesign(needle, i, window);           
         window.draw(needle);
         
+        //display the drawn window
         window.display();
+        //increment the loop counter, needed for needle trace to work correctly and prevent the game from leaking memory by calling and drawing infinite trace elements
         i++;
         }
     }

@@ -26,7 +26,7 @@ String mouseClickLocation(Event &click,int arr[2], Texture &texture, RenderWindo
 void showInstructions(RenderWindow& window, Screen &screen);
 void displayPrompt(std::string s, sf::Font &font,RenderWindow &window);
 //void radarDisplay(RenderWindow &window, Texture &texture, int angle);
- 
+
 void playGame(RenderWindow& window, Screen &screen);
 
 #endif

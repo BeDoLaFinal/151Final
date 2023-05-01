@@ -73,4 +73,7 @@ private:
 
 };
 
+void needleDesign(sf::RectangleShape needle, int i,sf::RenderWindow &window);
+// void needleTracer(vector <sf::RectangleShape> &needleTrace, int i, sf::RenderWindow &window);
+
 #endif
