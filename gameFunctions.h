@@ -26,4 +26,5 @@ String mouseClickLocation(Event &click,int arr[2], Texture &texture, RenderWindo
 void displayPrompt(std::string s, sf::Font &font,RenderWindow &window,sf::Text &message);
 //void radarDisplay(RenderWindow &window, Texture &texture, int angle);
 
+
 #endif

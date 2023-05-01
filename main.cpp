@@ -26,6 +26,8 @@
 
 int main()
 {
+    //initilize parameters for game operation
+    bool startGame=false; 
     int i=0;
     int userMove[2];
     vector<RectangleShape> needleTrace;
@@ -54,21 +56,28 @@ int main()
             exit(1);
         }
     
+
+    //calling window for game display and setting parameters  
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
     Screen myScreen;
     IntroScreen IntroScreen;       
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
+    
+    //set texture file for display tiles/arrays
     sf::Texture texture;
     texture.loadFromFile("Images/SpriteTileTextures.png");
         if (!texture.loadFromFile("Images/SpriteTileTextures.png"))
         { std::cout<<"failed to load texture file";
         exit (1);
         }           
-    bool startGame=false;                         
-    String mouseClick;
+
+
+    //calling sounds
     SoundClass hitSound, missSound;
     MusicClass trackOne, trackTwo;
+
+    //start looping window
     while (window.isOpen())
     {
         sf::Event event;
@@ -136,6 +145,7 @@ int main()
             needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));}
             window.draw(myScreen.getScreen());       
             
+            //rendering in the radar shape and texture to display over game board
             sf::CircleShape radar(105);
             radar.setPosition(860,396);
             radar.setTexture(&texture);
@@ -145,6 +155,7 @@ int main()
             
             window.draw(radar);
             
+            //drawing the needle over the trace
             sf::RectangleShape needle(sf::Vector2f(3, 111));
             needle.setPosition(965,501);
             needle.setFillColor(sf::Color(100, 250, 50, 210));
@@ -153,13 +164,14 @@ int main()
             needle.setOrigin(3,5);
             needle.setRotation(i);  
             
+            //loop needed to make the needle trace fade correctly
             for(int k=0; k<needleTrace.size();k++)
             {
+
                 needleTrace[k].setRotation((-k)+i);
                 window.draw(needleTrace[k]);
             }
             window.draw(needle);
-            i++;
 
             displayArrayofTiles(board1, texture, window, 974, -2);//right board
             displayArrayofTiles(boardSeen, texture, window,  0,0);//left board 
@@ -259,7 +271,14 @@ int main()
                 }*/
             
         }
+
     logFile.close();       
+    
+        //display the drawn window
+        window.display();
+        //increment the loop counter, needed for needle trace to work correctly and prevent the game from leaking memory by calling and drawing infinite trace elements
+        i++;
+        }
     }
     return 0;
 }
