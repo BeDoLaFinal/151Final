@@ -5,40 +5,8 @@
  * @date    2022-11-23
  */
 
-#include "battleship.h"
-
-/**
- * @brief displays an initial program welcome message along with the rules of Battleship.
- * 
- */
-void welcomeScreen()
-{
-    cout <<"\n***** Welcome to Battleship! *****\n\n";
-    pressEnterToContinue();
-    system("clear");
-    cout <<"***** Welcome to Battleship! *****\n\n";
-    cout<< "\n\nThis game will test your ability to attack enemy ships and defend your fleet.\n\n";
-    sleep(1);
-    cout <<"\nThis is a two player game.\n";
-    sleep(1);
-    cout <<"\nPlayer 1 is you and Player 2 is the computer.";
-    sleep(1);
-    cout<< "\n\nAre you ready?\n\n";
-    pressEnterToContinue();
-    system("clear");
-    cout <<"\nR U L E S :\n";
-    sleep(1);
-    cout<<"\n1. Each turn, you will have the opportunity to guess where the computer placed their ships.";
-    sleep(1);
-    cout<<"\n\t However, the computer will also have a turn in which they can guess where you placed your ships.";
-    sleep(1);
-    cout<<"\n\n2. The goal of this game is to guess all of the locations of the computer's ships, before they guess yours.";
-    sleep(1);
-    cout<<"\n\n3. Good luck, and have fun!\n"<<endl;
-    pressEnterToContinue();
-    system("clear");
-    return;
-}
+#include "classDefinitions/battleship.h"
+#include "gameFunctions.h"
 
 /**
  * @brief sets each cell in a game board to -
@@ -276,21 +244,12 @@ void randomlyPlaceShipsOnBoard(char board[][NUM_COLS])
  * @param player current player, -1 if game is just starting
  * @return int player up next
  */
-int selectOrSwitchPlayer(int player) 
+int switchPlayer(int player) 
 {
-    if(player==-1)
-    {
-        int starter = rand()%2+1;
-        return starter;
-    }
-    else if(player==1)
-    {
+    if(player==1)
         return 2;
-    }
     else if(player==2)
-    {
         return 1;
-    }
     return 0;
 }
 
@@ -413,7 +372,7 @@ bool checkIfSunk(int shipLength,char shipChar,char board[][NUM_COLS])
  * @param boardSeen board seen by user
  * @param logFile log file tracking moves
  */
-void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss)  
+void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss,sf::Font &font,RenderWindow &window,sf::Text &message)  
 {
     int hitLocation = checkShot(row, col, board2); //find what ship user hit
     int shipLength = SHIP_SIZES[hitLocation];
@@ -422,14 +381,14 @@ void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM
     if (hitLocation==-1)//hit was a miss
     {
         logFile<<row+1<<","<<col+1<<" Miss!"<<endl;
-        cout<<"\nYou missed!"<<endl;
+        displayPrompt("You missed!",font,window,message);
         boardSeen[row][col]='m';
         userMiss++;
     }
     else
     {
         logFile<<row+1<<","<<col+1<<" Hit! ";
-        cout<<"\nYou hit an enemy ship! ";
+        displayPrompt("You hit an enemy ship!",font,window,message);
         boardSeen[row][col]='*';
         board2[row][col]='-';
         userHit++;
@@ -437,50 +396,11 @@ void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM
         if (checkIfSunk(shipLength,shipChar,board2)) //check if sunk
         {
             logFile << SHIP_NAMES[hitLocation] << " sunk!";
-            cout << SHIP_NAMES[hitLocation] << " sunk!";
+            //displayPrompt("You sunk the enemy's "+SHIP_NAMES[hitLocation]+"!",font,window,message);
         }
-        cout << endl;
-    }
-    pressEnterToContinue();
-}
-
-/**
- * @brief Makes the user press enter to continue the program. This is to ensure proper pacing of gameplay elements.
- */
-void pressEnterToContinue()
-{
-    cout << "Press Enter to Continue\n";
-    cin.ignore();
-}
-
-/**
- * @brief displays banner between player turns
- * 
- * @param player whose turn it is
- */
-void banner(int player)
-{
-    if (player==1)
-    {
-        cout<<setw(21)<<"\n----- It's your turn! -----"<<endl;
-        /*for(int i=0; i<30; i++)
-        {
-            cout << "~";
-        }
-        cout <<endl;*/
-    }
-    else
-    {
-        cout<<setw(21)<<"\n----- It's the Computer's turn! -----"<<endl;
-        sleep(2);
-        /*for(int i=0; i<30; i++)
-        {
-            cout << "~";
-        }
-        cout <<endl;*/
+        logFile << endl;
     }
 }
-
 /**
  * @brief completes battleship.log file info after gameplay
  * 

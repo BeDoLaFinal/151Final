@@ -9,11 +9,13 @@
 #define BATTLESHIP_H
 
 // Includes
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 #include <iomanip>
 #include <fstream>
 #include <unistd.h>
+using sf::RenderWindow;
 using namespace std;
 
 // Globals
@@ -27,12 +29,11 @@ const char SHIP_SYMBOLS[] = {'c', 'b', 'r', 's', 'd'};
 const int SHIP_SIZES[] = {5, 4, 3, 3, 2};
 
 // Prototypes
-void welcomeScreen(); //displays an initial program welcome message along with the rules of Battleship.
 void initializeBoard(char board[][NUM_COLS]); //sets each cell in a game board to -
 void displayBoard(int player, char board[][NUM_COLS]); // displays a board to the screen
 void manuallyPlaceShipsOnBoard(char board[][NUM_COLS]); //allows the user to place each of the 5 types of ships on his/her game board.
 void randomlyPlaceShipsOnBoard(char board[][NUM_COLS]); //randomly places the 5 types of ships on a given board.
-int selectOrSwitchPlayer(int player); //if start of game, determines who goes first if game already started, switches player up next
+int switchPlayer(int player); //if start of game, determines who goes first if game already started, switches player up next
 bool checkShotIsAvailable(int row, int col, const char board[NUM_ROWS][NUM_COLS]); //returns true if position entered is still available, otherwise return false.
 bool isWinner(char board[][NUM_COLS]);//determins if a winner exists
 int checkShot(int row, int col, char board[][NUM_COLS]); 
@@ -40,9 +41,7 @@ int checkShot(int row, int col, char board[][NUM_COLS]);
                     //function return 0 for hitting the carrier, 1 for hitting the battleship, 2 for hitting the cruiser, 
                     //3 for hitting the submarine, and 4 for hitting the destroyer.
 bool checkIfSunk(int shipLength,char shipChar,char board[][NUM_COLS]);//checks to see if ship sunk
-void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss); // checks if hit, miss, sunk and writes to log
+void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss,sf::Font &font,RenderWindow &window,sf::Text &message); // checks if hit, miss, sunk and writes to log
                     //then updates board
-void pressEnterToContinue();
-void banner(int player);
 void outputStats(ofstream& logFile, int userHit, int userMiss, int computerHit, int computerMiss); //displays stats after game
 #endif
