@@ -124,7 +124,7 @@ int main()
         //radar.setFillColor(sf::Color(5,5,5,90));
         radar.setPosition(860,396);
         radar.setTexture(&texture);
-        radar.setTextureRect(sf::IntRect(352, 2, 45, 45));
+        radar.setTextureRect(sf::IntRect(353, 3, 44, 44));
         radar.setOutlineThickness(8);
         radar.setOutlineColor(sf::Color(60,90,90));
         
