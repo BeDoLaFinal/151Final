@@ -87,8 +87,8 @@ int main()
     
     
     //calling sounds
-    SoundClass hitSound, missSound;
-    MusicClass  trackTwo;
+    SoundClass hitSound, missSound, selectionSound;
+    MusicClass  trackTwo, trackWin, trackLoss;
     sf::Sound trackOne;
     //calling main sound with default class instead of overloaded class
 
@@ -126,16 +126,16 @@ int main()
                                 //if (user clicks instructions)
                                 if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
                                 {
-                                    //std::cout<<"They pressed the rules button"<<std::endl;
-                                    // hitSound.play("audio/Sounds/BombHit.wav");
+                                     selectionSound.play("audio/Sounds/selection.wav");
                                     //showInstructions(window, myScreen);
                                 }
                                 //else if (user clicks play)
                                 if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
                                 {
                                     // /
-                                    startGame=true;
-                                    //std::cout <<"They pressed the play button"<<std::endl;
+                                    selectionSound.play("audio/Sounds/selection.wav");   
+                                    sleep(1);
+                                    startGame=true;                                 //std::cout <<"They pressed the play button"<<std::endl;
                                     //playGame(window, myScreen);
                                 }
                             }
@@ -143,7 +143,7 @@ int main()
                         window.display();
         }
         trackOne.stop();
-        trackTwo.play("audio/radarChatter.wav");
+        trackTwo.play("audio/music/radarChatter.wav");
         window.display();
         cout << "You have chosen to randomly place your ships.\n";
         randomlyPlaceShipsOnBoard(board1);
@@ -264,6 +264,7 @@ int main()
                                     if (hOm==1)
                                     {
                                         missSound.play("audio/Sounds/BombMiss.wav");
+
                                         triggerMove=1;
                                     }
                                     else if (hOm==2)
@@ -273,6 +274,7 @@ int main()
                                     }
                                         
                                     trackTwo.play("audio/radarChatter.wav");
+
                                 }
                                 else 
                                 {
@@ -333,8 +335,14 @@ int main()
                 gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
 
                 if(gameOver1==true||gameOver2==true) //game over
-                {   trackTwo.stop();
-                    trackOne.play();
+                {   
+                    trackTwo.stop();
+                    if (player==1)
+                        trackWin.play("audio/music/winScreen.wav");
+                    else
+                    {
+                        trackLoss.play("audio/music/lossScreen.wav");
+                    }
                     sleep(3);
                     message.setString( "   G A M E   O V E R !  ");
                     window.clear();

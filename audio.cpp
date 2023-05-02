@@ -44,6 +44,7 @@ void MusicClass::play(const std::string& filename)
         return;
     }
     mMusic.play();
+    mMusic.setLoop(true);
 }
 
 /**
