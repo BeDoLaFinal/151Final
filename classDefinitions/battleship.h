@@ -41,7 +41,8 @@ int checkShot(int row, int col, char board[][NUM_COLS]);
                     //function return 0 for hitting the carrier, 1 for hitting the battleship, 2 for hitting the cruiser, 
                     //3 for hitting the submarine, and 4 for hitting the destroyer.
 bool checkIfSunk(int shipLength,char shipChar,char board[][NUM_COLS]);//checks to see if ship sunk
-int updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss, sf::Font &font,RenderWindow &window, sf::Text &message); // checks if hit, miss, sunk and writes to log
+int updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss,sf::Font &font,RenderWindow &window,sf::Text &message); // checks if hit, miss, sunk and writes to log
                     //then updates board
+int computerUpdateBoard(int row, int col, char board[][NUM_COLS], ofstream& logFile, int &computerHit, int &computerMiss,RenderWindow &window,sf::Text &message);
 void outputStats(ofstream& logFile, int userHit, int userMiss, int computerHit, int computerMiss); //displays stats after game
 #endif
