@@ -75,8 +75,17 @@ int main()
 
     //calling sounds
     SoundClass hitSound, missSound;
-    MusicClass trackOne, trackTwo;
-trackOne.play("audio/music/trackOne.wav");
+    MusicClass  trackTwo;
+    sf::Sound trackOne;
+    //calling main sound with default class instead of overloaded class
+    
+    sf::SoundBuffer bufferOne;
+    if (!bufferOne.loadFromFile("audio/music/trackOne.wav"))
+    {
+        cout<<"error...";
+    }
+    trackOne.setBuffer(bufferOne);
+    trackOne.play();
     //start looping window
     while (window.isOpen())
     {
@@ -273,7 +282,7 @@ trackOne.play("audio/music/trackOne.wav");
 
                 if(gameOver1==true||gameOver2==true) //game over
                 {   trackTwo.stop();
-                    trackOne.play("audio/music/trackOne.wav");
+                    trackOne.play();
                     sleep(3);
                     message.setString( "   G A M E   O V E R !  ");
                     window.clear();
