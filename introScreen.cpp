@@ -1,6 +1,6 @@
 /**
  * @file    introScreen.cpp
- * @author  Ben Givens
+ * @author  Ben Givens, Dominic Acia
  * @brief   Contains the definitions for the functions in the introscreen.h files
  * @date    2023-04-23
  * 
@@ -15,29 +15,45 @@ IntroButton::IntroButton(sf::Vector2f position)
 
     //Create the font by loading from file
     font.loadFromFile("Images/LiquidCrystal-BoldItalic.otf");
+    //logoFont.loadFromFile("Images/MachineStd-Bold.otf");
+    
 
     //playButton Setup
-    playButton.setSize(sf::Vector2f(200,100)); //Sets the size of the button
+    playButton.setSize(sf::Vector2f(300,150)); //Sets the size of the button
     playButton.setPosition(position.x, position.y); //Sets the posistion of the button based on the Y and X axis
-    playButton.setFillColor(sf::Color::Red); //Color of the button
+    playButton.setFillColor(sf::Color(230,230,230,0)); //Color of the button
 
     //rulesButton Setup
-    rulesButton.setSize(sf::Vector2f(200,100));//Sets the size of the button
+    rulesButton.setSize(sf::Vector2f(300,150));//Sets the size of the button
     rulesButton.setPosition(position.x+480, position.y);//Sets the posistion of the button based on the Y and X axis
-    rulesButton.setFillColor(sf::Color::Green);//Color of the button
+    rulesButton.setFillColor(sf::Color(230,230,230,0));//Color of the button
 
     //Labels for play and rule buttons
     playLabel.setFont(font);//Sets the font of the play button based off of what was previous loaded into font
     playLabel.setString("Play");//The string value that displays on the play button.
-    playLabel.setCharacterSize(30);//Sets The size of the words on the button
+    playLabel.setCharacterSize(75);//Sets The size of the words on the button
     playLabel.setFillColor(sf::Color::White);//Sets the color of the letters
     playLabel.setPosition(position.x+70, position.y+30);//Sets the posistion offset from the button
 
     rulesLabel.setFont(font);//Sets the font of the rules button
     rulesLabel.setString("Rules"); //Sets the string value which displays on the button
-    rulesLabel.setCharacterSize(30);//Sets size of the words on the button
+    rulesLabel.setCharacterSize(75);//Sets size of the words on the button
     rulesLabel.setFillColor(sf::Color::White);//Color of the letters
     rulesLabel.setPosition(position.x+540, position.y+30);//Sets posistion offset from the button
+
+    
+    // logo.setFont(logoFont);
+    // logo.setString("BATTLESHIP");
+    // logo.setCharacterSize(150);
+    // logo.setFillColor(sf::Color(192,192,192));    
+    // logo.setPosition(200,100);
+
+    // logo2.setFont(logoFont);
+    // logo2.setString("BATTLESHIP");
+    // logo2.setCharacterSize(160);
+    // logo2.setLetterSpacing(.9);
+    // logo2.setFillColor(sf::Color(5,5,5));    
+    // logo2.setPosition(195,95);
 
 }
 /**
@@ -50,6 +66,8 @@ void IntroButton::draw(sf::RenderWindow& window){
     window.draw(rulesButton);//Displays the Rules button on the window
     window.draw(playLabel);//Displays the play label
     window.draw(rulesLabel);//Displays the rules label
+    //window.draw(logo2);
+    window.draw(logo);
 }
 /**
  * @brief Returns true if the play button has been pressed
@@ -85,7 +103,7 @@ bool IntroButton::isRulesButtonPressed(sf::RenderWindow& window,sf::Vector2i mou
  */
 IntroScreen::IntroScreen()
 {
-    if(!mImage.loadFromFile("IntroScreen.png"))
+    if(!mImage.loadFromFile("IntroScreen2.png"))
     {
         cout<<"Error opening intro screen file.\n";
         exit(1);

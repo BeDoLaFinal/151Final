@@ -88,7 +88,7 @@ int main()
                         while (window.pollEvent(event))
                         {
                             window.draw(IntroScreen.getIntroScreen());
-                            IntroButton introButtons(sf::Vector2f (600, 800));
+                            IntroButton introButtons(sf::Vector2f (600, 500));
                             introButtons.draw(window);   
                             if (event.type == sf::Event::Closed)
                                 window.close();
@@ -98,13 +98,13 @@ int main()
                                 if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
                                 {
                                     std::cout<<"They pressed the rules button"<<std::endl;
-                                    hitSound.play("audio/Sounds/BombHit.wav");
+                                    // hitSound.play("audio/Sounds/BombHit.wav");
                                     //showInstructions(window, myScreen);
                                 }
                                 //else if (user clicks play)
                                 if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
                                 {
-                                    missSound.play("audio/Sounds/BombMiss.wav");
+                                    // /
                                     startGame=true;
                                     std::cout <<"They pressed the play button"<<std::endl;
                                     //playGame(window, myScreen);
@@ -133,8 +133,9 @@ int main()
         gameOver1 = isWinner(board1);
         gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
         player=1;//user goes first
+        message.setString("To start the game \nSelect a Target, Captain.");
         while (!gameOver1 && !gameOver2) //main game loop
-        {
+        {   i++;
             //DISPLAY MAIN GAME SCREEN and radar
             window.draw(myScreen.getScreen());
             if(i<200){
@@ -143,7 +144,7 @@ int main()
             needleTrace.back().setPosition(965,501);
             needleTrace.back().setOrigin(1,10);
             needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));}
-            window.draw(myScreen.getScreen());       
+            //window.draw(myScreen.getScreen());       
             
             //rendering in the radar shape and texture to display over game board
             sf::CircleShape radar(105);
@@ -167,7 +168,6 @@ int main()
             //loop needed to make the needle trace fade correctly
             for(int k=0; k<needleTrace.size();k++)
             {
-
                 needleTrace[k].setRotation((-k)+i);
                 window.draw(needleTrace[k]);
             }
@@ -175,36 +175,51 @@ int main()
 
             displayArrayofTiles(board1, texture, window, 974, -2);//right board
             displayArrayofTiles(boardSeen, texture, window,  0,0);//left board 
+            message.setCharacterSize(50);
+            message.setPosition(505,815);
+            message.setFillColor(sf::Color(100, 250, 50, 150));
+            message.setFont(fontStatus);
+            
+            window.draw(message);
+
 
             window.display();
                 if (player==1)//user's turn
                 {
                     logFile << "Player1: ";
-                    displayPrompt("It's your turn! Select where you would like to go.",fontStatus,window,message);//go away
+                    
+                    window.display();
+                    
                     do //get valid move location
-                    {
+                    { 
                         //GET USER MOVE
                         if(window.pollEvent(event))
                         {
                             if (event.type == sf::Event::Closed)
                                 window.close();
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
-                            {
-                                mouseClick=mouseClickLocation(event,userMove, texture, window);
-                                userMove[0]--;
-                                userMove[1]--;
+                            {   int hOm=0;
+                                mouseClickLocation(event,userMove, texture, window, message);
+                                userMove[0];
+                                userMove[1];
+                                row=userMove[0];
+                                col=userMove[1];
                                 moveOK = checkShotIsAvailable(userMove[0], userMove[1], boardSeen);     //row and col may be switched
                                 if (moveOK)
-                                {
-                                    updateBoard(row, col, board2, boardSeen, logFile, userHit,userMiss,fontStatus,window,message); //check shot and update board
+                                {   
+                                    trackTwo.pause();
+                                    hOm=updateBoard(row, col, board2, boardSeen, logFile, userHit,userMiss,fontStatus,window,message); 
+                                    if (hOm==1){missSound.play("audio/Sounds/BombMiss.wav");}
+                                    else if (hOm==2){hitSound.play("audio/Sounds/BombHit.wav");}
+                                    trackTwo.play("audio/radarChatter.wav");
                                 }
-                                // else 
-                                // {
-                                //     displayPrompt("Not a valid move. Try again.",fontStatus,window,message);
-                                // }
+                                else 
+                                {
+                                    message.setString("Not a valid move. Try again.");
+                                }
                             }
                         }
-                        window.display();
+                       
                     } while (!moveOK);
                 }
                 /*else if(player==2)//computer's turn
@@ -252,33 +267,42 @@ int main()
                     displayArrayofTiles(board1,texture,window,0,0); 
                     sleep(3);
                 }             
-                
+                */
                 gameOver1 = isWinner(board1);
                 gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
 
                 if(gameOver1==true||gameOver2==true) //game over
-                {
-                    cout << "\n----- G A M E   O V E R ! -----\n";
-                    //display end screen
+                {   trackTwo.stop();
+                    trackOne.play("audio/music/trackOne.wav");
+                    sleep(3);
+                    message.setString( "   G A M E   O V E R !  ");
+                    window.clear();
+                    window.draw(message);
+                    window.display();
+                    
+                    sleep(5);//need to change to game time offset
+                    if (player==1){myScreen.updateScreen(1,window);}
+                    else if (player==2){myScreen.updateScreen(2,window);}
+                    window.draw(myScreen.getScreen());
+                    window.display();
+                    sleep(25);
                     logFile << "Player " << player << " wins! ";
                     logFile << "Player " << switchPlayer(player) << " loses. ";
                     outputStats(logFile, userHit, userMiss, computerHit, computerMiss);
+                    exit(3);
                 }
                 else //game still going
                 {
-                    player=switchPlayer(player);
-                    system("clear"); 
-                }*/
+                    //player=switchPlayer(player);
+                    //system("clear"); 
+                }
             
         }
 
     logFile.close();       
     
-        //display the drawn window
-        window.display();
-        //increment the loop counter, needed for needle trace to work correctly and prevent the game from leaking memory by calling and drawing infinite trace elements
-        i++;
+        
         }
-    }
-    return 0;
 }
+    
+
