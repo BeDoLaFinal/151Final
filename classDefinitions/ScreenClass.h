@@ -9,6 +9,7 @@
 #ifndef GAMEOBJECTS_H
 #define GAMEOBJECTS_H
 #include <SFML/Graphics.hpp>
+
 #include <string>
 #include <iostream>
 

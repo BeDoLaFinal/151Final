@@ -62,11 +62,20 @@ int main()
 
     //calling window for game display and setting parameters  
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
+    
     window.setFramerateLimit(250);
     Screen myScreen;
     IntroScreen IntroScreen;       
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
+    
+    sf::Cursor cursor;
+    
+    if (cursor.loadFromSystem(sf::Cursor::Hand))
+    {   
+        window.setMouseCursor(cursor);
+        
+    }
     
     //set texture file for display tiles/arrays
     sf::Texture texture;
@@ -75,8 +84,8 @@ int main()
         { std::cout<<"failed to load texture file";
         exit (1);
         }           
-
-
+    
+    
     //calling sounds
     SoundClass hitSound, missSound;
     MusicClass  trackTwo;
@@ -95,8 +104,11 @@ int main()
     {
         sf::Event event;
         
+        
         while(!startGame)
         {   
+           
+            
                         // DISPLAY INTRO SCREEN
                         while (window.pollEvent(event))
                         {
@@ -192,7 +204,7 @@ int main()
                 triggerCount=0;
                 triggerMove=2;
             }
-            else if(triggerMove==2&&triggerCount==700)
+            else if(triggerMove==2&&triggerCount==750)
             {
                 displayArrayofTiles(boardSeen, texture, window,  0,0);
                 triggerMove=0;
