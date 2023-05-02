@@ -101,8 +101,10 @@ int main()
                             introButtons.draw(window); 
 
                             if (event.type == sf::Event::Closed)
-                               { window.close();
-                               exit(1);}
+                            {
+                               window.close();
+                               exit(1);
+                            }
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
                             {
                                 //if (user clicks instructions)
@@ -207,8 +209,10 @@ int main()
                         if(window.pollEvent(event))
                         {
                             if (event.type==sf::Event::Closed)
-                                {window.close();
-                                exit(1);}
+                                {   logFile.close();
+                                    window.close();
+                                    exit(1);
+                                }
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
                             {   int hOm=0;
                                 mouseClickLocation(event,userMove, texture, window, message);
@@ -301,6 +305,7 @@ int main()
                     logFile << "Player " << player << " wins! ";
                     logFile << "Player " << switchPlayer(player) << " loses. ";
                     outputStats(logFile, userHit, userMiss, computerHit, computerMiss);
+                    logFile.close(); 
                     exit(3);
                 }
                 else //game still going
