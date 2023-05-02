@@ -86,9 +86,13 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
         if (click.mouseButton.x>125 && click.mouseButton.x<320&&click.mouseButton.y>780 && click.mouseButton.y<906)
         {   
             //user clicked quit
-            message.setString("Desertion is punishable \n by death!");
+            String exitWarning="\nDesertion is punishable by death!";
+            
+            message.setString(exitWarning);
             window.draw(message);
             window.display();
+            sleep(3);
+            window.close();
             exit(2);
         }
     }
