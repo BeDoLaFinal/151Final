@@ -78,7 +78,7 @@ int main()
     MusicClass  trackTwo;
     sf::Sound trackOne;
     //calling main sound with default class instead of overloaded class
-    
+
     sf::SoundBuffer bufferOne;
     if (!bufferOne.loadFromFile("audio/music/trackOne.wav"))
     {
@@ -98,9 +98,11 @@ int main()
                         {
                             window.draw(IntroScreen.getIntroScreen());
                             IntroButton introButtons(sf::Vector2f (600, 500));
-                            introButtons.draw(window);   
+                            introButtons.draw(window); 
+
                             if (event.type == sf::Event::Closed)
-                                window.close();
+                               { window.close();
+                               exit(1);}
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
                             {
                                 //if (user clicks instructions)
@@ -197,15 +199,16 @@ int main()
                 {
                     logFile << "Player1: ";
                     
-                    window.display();
+                    //window.display();
                     
                     do //get valid move location
                     { 
                         //GET USER MOVE
                         if(window.pollEvent(event))
                         {
-                            if (event.type == sf::Event::Closed)
-                                window.close();
+                            if (event.type==sf::Event::Closed)
+                                {window.close();
+                                exit(1);}
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
                             {   int hOm=0;
                                 mouseClickLocation(event,userMove, texture, window, message);
