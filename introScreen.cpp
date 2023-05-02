@@ -42,18 +42,7 @@ IntroButton::IntroButton(sf::Vector2f position)
     rulesLabel.setPosition(position.x+540, position.y+30);//Sets posistion offset from the button
 
     
-    // logo.setFont(logoFont);
-    // logo.setString("BATTLESHIP");
-    // logo.setCharacterSize(150);
-    // logo.setFillColor(sf::Color(192,192,192));    
-    // logo.setPosition(200,100);
-
-    // logo2.setFont(logoFont);
-    // logo2.setString("BATTLESHIP");
-    // logo2.setCharacterSize(160);
-    // logo2.setLetterSpacing(.9);
-    // logo2.setFillColor(sf::Color(5,5,5));    
-    // logo2.setPosition(195,95);
+    
 
 }
 /**

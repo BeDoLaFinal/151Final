@@ -31,9 +31,9 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
 
     if (click.type == sf::Event::MouseButtonPressed&&click.mouseButton.button == sf::Mouse::Left)
     {
-        ss<<"the left button was pressed\n";   //for testing
-        ss<< "mouse x: " << click.mouseButton.x<<"__"; //for testing
-        ss << "mouse y: " << click.mouseButton.y <<endl; //for testing
+        // ss<<"the left button was pressed\n";   //for testing
+        // ss<< "mouse x: " << click.mouseButton.x<<"__"; //for testing
+        // ss << "mouse y: " << click.mouseButton.y <<endl; //for testing
         
         int spanX=0;
         int spanY=0;

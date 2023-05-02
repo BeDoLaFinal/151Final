@@ -6,7 +6,7 @@
  * @date    2022-11-23
  */
 
-#include "battleship.h"
+#include "classDefinitions/battleship.h"
 
 int main()
 {
