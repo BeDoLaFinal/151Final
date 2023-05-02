@@ -133,7 +133,7 @@ int main()
         gameOver1 = isWinner(board1);
         gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
         player=1;//user goes first
-        message.setString("Select a Target, Captain.");
+        message.setString("To start the game \nSelect a Target, Captain.");
         while (!gameOver1 && !gameOver2) //main game loop
         {   i++;
             //DISPLAY MAIN GAME SCREEN and radar
@@ -189,7 +189,7 @@ int main()
                     logFile << "Player1: ";
                     
                     window.display();
-                    ;//go away
+                    
                     do //get valid move location
                     { 
                         //GET USER MOVE
@@ -199,7 +199,7 @@ int main()
                                 window.close();
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
                             {   int hOm=0;
-                                mouseClickLocation(event,userMove, texture, window);
+                                mouseClickLocation(event,userMove, texture, window, message);
                                 userMove[0];
                                 userMove[1];
                                 row=userMove[0];
@@ -219,7 +219,7 @@ int main()
                                 }
                             }
                         }
-                        // window.display();
+                       
                     } while (!moveOK);
                 }
                 /*else if(player==2)//computer's turn
@@ -285,7 +285,7 @@ int main()
                     else if (player==2){myScreen.updateScreen(2,window);}
                     window.draw(myScreen.getScreen());
                     window.display();
-                    sleep(10);
+                    sleep(25);
                     logFile << "Player " << player << " wins! ";
                     logFile << "Player " << switchPlayer(player) << " loses. ";
                     outputStats(logFile, userHit, userMiss, computerHit, computerMiss);
@@ -301,9 +301,6 @@ int main()
 
     logFile.close();       
     
-        //display the drawn window
-        //window.display();
-        //increment the loop counter, needed for needle trace to work correctly and prevent the game from leaking memory by calling and drawing infinite trace elements
         
         }
 }

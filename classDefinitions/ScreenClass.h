@@ -1,6 +1,6 @@
 /**
  * @file    ScreenClass.h
- * @author  Screen: Lacey
+ * @author  Screen: Lacey, Dominmic Acia
  * @brief   declaration file for Screen class
  *          definition of mouseClickLocation function
  * @date    2023-04-10

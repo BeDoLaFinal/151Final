@@ -1,6 +1,6 @@
 /**
  * @file    introScreen.cpp
- * @author  Ben Givens
+ * @author  Ben Givens, Dominic Acia
  * @brief   Contains the definitions for the functions in the introscreen.h files
  * @date    2023-04-23
  * 

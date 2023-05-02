@@ -23,7 +23,7 @@
  * @author  Lacey and Dominic
  * @return  void // changes array of movement made in main 
  */
-String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderWindow &window)
+String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderWindow &window, sf::Text &message)
 {   
     String mouse;
     std::stringstream ss;
@@ -81,11 +81,14 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
         }
         if ( click.type== sf::Event::MouseButtonReleased &&click.mouseButton.button == sf::Mouse::Left)
         {
-            window.clear();
+            //window.clear();
         }
         if (click.mouseButton.x>125 && click.mouseButton.x<320&&click.mouseButton.y>780 && click.mouseButton.y<906)
         {   
             //user clicked quit
+            message.setString("Desertion is punishable \n by death!");
+            window.draw(message);
+            window.display();
             exit(2);
         }
     }
@@ -95,53 +98,7 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
     return mouse;
 }
 
-/*
-how to read the array:
-    
-    
-    char *p;
 
-    p = mouseClickLocation();
-    
-    for ( int i = 0; i < 2; i++ ) {
-        cout << "*(p + " << i << ") : ";
-        cout << *(p + i) << endl;
-    }
-
-
-*/
-
-/**
- * @brief Create a Tile Array object
- * 
- * @param tileArray the chosen array name
-
-void createTileArray(char tileArray[10][10])
-{
-    int x=0;
-    int count=0;
-    
-    
-    //create tile out here . . .
-    for(float i=220; i<651; i+=50) 
-    {
-        
-        for(float j=199; j<649; j+=50)  
-        {   
-            int y= 0+count;            
-            
-            tileArray[x][y]='-';
-            tileArray[x][y+1]='-'; //assuming arrays are in char Letter/Number format
-            //. . . and reassign here? so we don't have to create a ton at once
-            count+=2;
-
-        }
-        count=0;
-        x++;
-    }
-
-
-}; */
 
 /**
  * @brief function to display the correct tile based on player and computer array contents. 
@@ -188,7 +145,7 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
                 tile.setTextureRect(sf::IntRect(200, 0, 50, 50));
                 if (ta[y][x+1]== 'c'){tile.setRotation(270);}
                 }
-                else if(ta[y][x] =='c'&& carrier>=2)
+                else if(ta[y][x] =='c'&& carrier>=2 && carrier<5)
                 {
                     tile.setTextureRect(sf::IntRect(250, 0, 50, 50));
                     if(ta[y-1][x]!='c'){tile.setRotation(270);}
@@ -196,7 +153,7 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
                 else if(ta[y][x] =='c' &&carrier==5)
                 {   
                     tile.setTextureRect(sf::IntRect(300, 0, 50, 50));
-                    if(ta[x][y-1]=='c'){tile.setRotation(270);}
+                    if(ta[y][x-1]=='c'){tile.setRotation(270);}
                 } 
             else if(ta[y][x]=='d') 
             {
@@ -210,7 +167,7 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
                 else if(ta[y][x] =='d' &&dest==2)
                 {   
                     tile.setTextureRect(sf::IntRect(300, 0, 50, 50));
-                    if(ta[x][y-1]=='d'){tile.setRotation(270);}
+                    if(ta[y][x-1]=='d'){tile.setRotation(270);}
                 } 
 
             }
@@ -230,7 +187,7 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
                 else if(ta[y][x] =='s' &&sub==3)
                 {   
                     tile.setTextureRect(sf::IntRect(300, 0, 50, 50));
-                    if(ta[x][y-1]=='s'){tile.setRotation(270);}
+                    if(ta[y][x-1]=='s'){tile.setRotation(270);}
                 } 
             }   
             else if(ta[y][x]=='r') 
@@ -249,7 +206,7 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
                 else if(ta[y][x] =='r' &&cruis==3)
                 {   
                     tile.setTextureRect(sf::IntRect(300, 0, 50, 50));
-                    if(ta[x][y-1]=='r'){tile.setRotation(270);}
+                    if(ta[y][x-1]=='r'){tile.setRotation(270);}
                 } 
             }
             else if(ta[y][x]=='b') 
@@ -270,7 +227,7 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
                 else if(ta[y][x] =='b' &&batt==4)
                 {   
                     tile.setTextureRect(sf::IntRect(300, 0, 50, 50));
-                    if(ta[x][y-1]=='b'){tile.setRotation(270);}
+                    if(ta[y][x-1]=='b'){tile.setRotation(270);}
                     window.draw(tile);
                 } 
             }

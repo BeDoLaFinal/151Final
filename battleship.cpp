@@ -1,6 +1,6 @@
 /**
  * @file    battleship.cpp
- * @author  Lacey Hunt | Ben Givens
+ * @author  Lacey Hunt | Ben Givens,  Modified for SFML by Dominic and Lacey
  * @brief   function definitions for battleship assignment
  * @date    2022-11-23
  */

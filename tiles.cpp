@@ -38,21 +38,6 @@ void needleDesign(sf::RectangleShape needle, int i, sf::RenderWindow& window)
         needle.setOrigin(3,5);
         needle.setRotation(i); 
         window.draw(needle);
-          };
+};
 
 
-// void needleTracer(vector <Shape> &needleTrace, int i, sf::RenderWindow &window)
-// {
-
-//     if(i<200)
-//     {
-//         needleTrace.push_back(RectangleShape());
-//         needleTrace.back().setSize(sf::Vector2f(2, 116));
-//         needleTrace.back().setPosition(965,501);
-//         needleTrace.back().setOrigin(1,10);
-//         needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));
-        
-//     }}
-
-
-    ;
