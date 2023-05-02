@@ -15,6 +15,8 @@ IntroButton::IntroButton(sf::Vector2f position)
 
     //Create the font by loading from file
     font.loadFromFile("Images/LiquidCrystal-BoldItalic.otf");
+    //logoFont.loadFromFile("Images/MachineStd-Bold.otf");
+    
 
     //playButton Setup
     playButton.setSize(sf::Vector2f(300,150)); //Sets the size of the button
@@ -39,6 +41,20 @@ IntroButton::IntroButton(sf::Vector2f position)
     rulesLabel.setFillColor(sf::Color::White);//Color of the letters
     rulesLabel.setPosition(position.x+540, position.y+30);//Sets posistion offset from the button
 
+    
+    // logo.setFont(logoFont);
+    // logo.setString("BATTLESHIP");
+    // logo.setCharacterSize(150);
+    // logo.setFillColor(sf::Color(192,192,192));    
+    // logo.setPosition(200,100);
+
+    // logo2.setFont(logoFont);
+    // logo2.setString("BATTLESHIP");
+    // logo2.setCharacterSize(160);
+    // logo2.setLetterSpacing(.9);
+    // logo2.setFillColor(sf::Color(5,5,5));    
+    // logo2.setPosition(195,95);
+
 }
 /**
  * @brief Writes the two buttons and labels onto the window 
@@ -50,6 +66,8 @@ void IntroButton::draw(sf::RenderWindow& window){
     window.draw(rulesButton);//Displays the Rules button on the window
     window.draw(playLabel);//Displays the play label
     window.draw(rulesLabel);//Displays the rules label
+    //window.draw(logo2);
+    window.draw(logo);
 }
 /**
  * @brief Returns true if the play button has been pressed
@@ -85,7 +103,7 @@ bool IntroButton::isRulesButtonPressed(sf::RenderWindow& window,sf::Vector2i mou
  */
 IntroScreen::IntroScreen()
 {
-    if(!mImage.loadFromFile("IntroScreen.png"))
+    if(!mImage.loadFromFile("IntroScreen2.png"))
     {
         cout<<"Error opening intro screen file.\n";
         exit(1);

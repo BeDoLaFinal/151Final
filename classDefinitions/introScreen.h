@@ -28,6 +28,10 @@ private:
     sf::Text playLabel;
     sf::Text rulesLabel;
     sf::Font font;
+    sf::Text logo;
+    sf::Font logoFont;
+    sf::Text logo2;
+
 };
 
 /**
