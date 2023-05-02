@@ -15,7 +15,7 @@
 
 
 
-//g++ *.cpp -o test -lpthread -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
+//g++ *.cpp -o test   -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
 //
 //
 //// SEE 'gameFunctions.cpp' FOR TENTATIVE MAIN GAME FUNCTION PSEUDOCODE, STILL ROUGH SKETCH
@@ -76,12 +76,12 @@ int main()
     //calling sounds
     SoundClass hitSound, missSound;
     MusicClass trackOne, trackTwo;
-
+trackOne.play("audio/music/trackOne.wav");
     //start looping window
     while (window.isOpen())
     {
         sf::Event event;
-        trackOne.play("audio/music/trackOne.wav");
+        
         while(!startGame)
         {
                         // DISPLAY INTRO SCREEN
