@@ -40,6 +40,9 @@ int main()
     int userHit=0;
     int computerHit=0;
     int computerMiss=0;
+    int triggerCount=0;
+    int triggerMove=0;
+    int hOm=0;
 
     char board1[NUM_ROWS][NUM_COLS]; //initializes array for the board of player 1 (user)
     char board2[NUM_ROWS][NUM_COLS]; //initializes array for the board of player 2 (computer)
@@ -59,10 +62,20 @@ int main()
 
     //calling window for game display and setting parameters  
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
+    
+    window.setFramerateLimit(250);
     Screen myScreen;
     IntroScreen IntroScreen;       
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
+    
+    sf::Cursor cursor;
+    
+    if (cursor.loadFromSystem(sf::Cursor::Hand))
+    {   
+        window.setMouseCursor(cursor);
+        
+    }
     
     //set texture file for display tiles/arrays
     sf::Texture texture;
@@ -71,8 +84,8 @@ int main()
         { std::cout<<"failed to load texture file";
         exit (1);
         }           
-
-
+    
+    
     //calling sounds
     SoundClass hitSound, missSound, selectionSound;
     MusicClass  trackTwo, trackWin, trackLoss;
@@ -91,15 +104,15 @@ int main()
     {
         sf::Event event;
         
+        
         while(!startGame)
-        {
-            // DISPLAY INTRO SCREEN
-            while (window.pollEvent(event))
-            {
-                window.draw(IntroScreen.getIntroScreen());
-                IntroButton introButtons(sf::Vector2f (600, 500));
-                introButtons.draw(window); 
-
+        {   
+                // DISPLAY INTRO SCREEN
+                while (window.pollEvent(event))
+                {
+                    window.draw(IntroScreen.getIntroScreen());
+                    IntroButton introButtons(sf::Vector2f (600, 500));
+                    introButtons.draw(window); 
                 if (event.type == sf::Event::Closed)
                 {
                 window.close();
@@ -147,17 +160,19 @@ int main()
         gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
         player=1;//user goes first
         message.setString("To start the game \nSelect a Target, Captain.");
+        window.draw(myScreen.getScreen());
         while (!gameOver1 && !gameOver2) //main game loop
         {   i++;
             //DISPLAY MAIN GAME SCREEN and radar
-            window.draw(myScreen.getScreen());
+            
+
             if(i<200){
             needleTrace.push_back(RectangleShape());
             needleTrace.back().setSize(sf::Vector2f(2, 116));
             needleTrace.back().setPosition(965,501);
             needleTrace.back().setOrigin(1,10);
             needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));}
-            //window.draw(myScreen.getScreen());       
+                  
             
             //rendering in the radar shape and texture to display over game board
             sf::CircleShape radar(105);
@@ -167,7 +182,7 @@ int main()
             radar.setOutlineThickness(8);
             radar.setOutlineColor(sf::Color(60,90,90));
             
-            window.draw(radar);
+            
             
             //drawing the needle over the trace
             sf::RectangleShape needle(sf::Vector2f(3, 111));
@@ -178,29 +193,45 @@ int main()
             needle.setOrigin(3,5);
             needle.setRotation(i);  
             
+            
+            
+            if(triggerMove==0){window.draw(myScreen.getScreen());displayArrayofTiles(boardSeen, texture, window,  0,0);}//left board 
+            else if(triggerMove==1)
+            {   message.setString("   ");
+                triggerCount=0;
+                triggerMove=2;
+            }
+            else if(triggerMove==2&&triggerCount==750)
+            {
+                displayArrayofTiles(boardSeen, texture, window,  0,0);
+                triggerMove=0;
+                if(hOm==1)message.setString("You missed!");
+                else if(hOm==2)message.setString("You hit an enemy ship!");
+            }
+            else {triggerCount++;}
+            cout<<triggerCount<<endl;
+            
+            displayArrayofTiles(board1, texture, window, 974, -2);//right board
+            window.draw(radar);
+            window.draw(needle);
+
             //loop needed to make the needle trace fade correctly
             for(int k=0; k<needleTrace.size();k++)
             {
                 needleTrace[k].setRotation((-k)+i);
                 window.draw(needleTrace[k]);
             }
-            window.draw(needle);
 
-            displayArrayofTiles(board1, texture, window, 974, -2);//right board
-            displayArrayofTiles(boardSeen, texture, window,  0,0);//left board 
             message.setCharacterSize(50);
             message.setPosition(505,815);
             message.setFillColor(sf::Color(100, 250, 50, 150));
-            message.setFont(fontStatus);
-            
+            message.setFont(fontStatus);            
             window.draw(message);
 
-
-            window.display();
+            window.display();//display the layers we've layed down above
                 if (player==1)//user's turn
                 {
                     logFile << "Player1: ";
-                    
                     do //get valid move location
                     { 
                         //GET USER MOVE
@@ -212,24 +243,30 @@ int main()
                                     exit(1);
                                 }
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
-                            {   int hOm=0;
+                            {   hOm=0;
+                               
                                 mouseClickLocation(event,userMove, texture, window, message);
                                 row=userMove[0];
                                 col=userMove[1];
                                 moveOK = checkShotIsAvailable(row, col, boardSeen);
                                 if (moveOK)
-                                {   
+                                {                                       
                                     trackTwo.pause();
                                     hOm=updateBoard(row, col, board2, boardSeen, logFile, userHit,userMiss,fontStatus,window,message); 
                                     if (hOm==1)
                                     {
                                         missSound.play("audio/Sounds/BombMiss.wav");
+
+                                        triggerMove=1;
                                     }
                                     else if (hOm==2)
-                                    {
-                                        hitSound.play("audio/Sounds/BombHit.wav"); 
+                                    {   
+                                        hitSound.play("audio/Sounds/BombHit.wav");
+                                        triggerMove=1;
                                     }
-                                    trackTwo.play("audio/music/radarChatter.wav");
+                                        
+                                    trackTwo.play("audio/radarChatter.wav");
+
                                 }
                                 else 
                                 {
