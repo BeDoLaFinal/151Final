@@ -107,40 +107,37 @@ int main()
         
         while(!startGame)
         {   
-           
-            
-                        // DISPLAY INTRO SCREEN
-                        while (window.pollEvent(event))
-                        {
-                            window.draw(IntroScreen.getIntroScreen());
-                            IntroButton introButtons(sf::Vector2f (600, 500));
-                            introButtons.draw(window); 
-
-                            if (event.type == sf::Event::Closed)
-                            {
-                               window.close();
-                               exit(1);
-                            }
-                            else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
-                            {
-                                //if (user clicks instructions)
-                                if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
-                                {
-                                     selectionSound.play("audio/Sounds/selection.wav");
-                                    //showInstructions(window, myScreen);
-                                }
-                                //else if (user clicks play)
-                                if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
-                                {
-                                    // /
-                                    selectionSound.play("audio/Sounds/selection.wav");   
-                                    sleep(1);
-                                    startGame=true;                                 //std::cout <<"They pressed the play button"<<std::endl;
-                                    //playGame(window, myScreen);
-                                }
-                            }
-                        }
-                        window.display();
+                // DISPLAY INTRO SCREEN
+                while (window.pollEvent(event))
+                {
+                    window.draw(IntroScreen.getIntroScreen());
+                    IntroButton introButtons(sf::Vector2f (600, 500));
+                    introButtons.draw(window); 
+                if (event.type == sf::Event::Closed)
+                {
+                window.close();
+                exit(1);
+                }
+                else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
+                {
+                    //if (user clicks instructions)
+                    if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
+                    {
+                        selectionSound.play("audio/Sounds/selection.wav");
+                        //showInstructions(window, myScreen);
+                    }
+                    //else if (user clicks play)
+                    if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
+                    {
+                        // /
+                        selectionSound.play("audio/Sounds/selection.wav");   
+                        sleep(1);
+                        startGame=true;                                 //std::cout <<"They pressed the play button"<<std::endl;
+                        //playGame(window, myScreen);
+                    }
+                }
+            }
+            window.display();
         }
         trackOne.stop();
         trackTwo.play("audio/music/radarChatter.wav");
@@ -235,9 +232,6 @@ int main()
                 if (player==1)//user's turn
                 {
                     logFile << "Player1: ";
-                    
-                    
-                    
                     do //get valid move location
                     { 
                         //GET USER MOVE
@@ -252,11 +246,9 @@ int main()
                             {   hOm=0;
                                
                                 mouseClickLocation(event,userMove, texture, window, message);
-                                userMove[0];
-                                userMove[1];
                                 row=userMove[0];
                                 col=userMove[1];
-                                moveOK = checkShotIsAvailable(userMove[0], userMove[1], boardSeen);     //row and col may be switched
+                                moveOK = checkShotIsAvailable(row, col, boardSeen);
                                 if (moveOK)
                                 {                                       
                                     trackTwo.pause();
@@ -285,10 +277,10 @@ int main()
                        
                     } while (!moveOK);
                 }
-                /*else if(player==2)//computer's turn
+                else if(player==2)//computer's turn
                 {
                     logFile << "Player2: ";
-                    displayPrompt("Incoming attack!!!",font,window,message);
+                    message.setString("Incoming attack!!!");
                     do //get valid move location
                     {
                         row=rand()%10+1;
@@ -298,39 +290,21 @@ int main()
                         moveOK = checkShotIsAvailable(row, col, board1);
                         if(moveOK)
                         {
-                            int hitLocation = checkShot(row, col, board1);
-                            int shipLength = SHIP_SIZES[hitLocation];
-                            int shipChar = SHIP_SYMBOLS[hitLocation];
-                
-                            if (hitLocation==-1)//hit was a miss
+                            trackTwo.pause();
+                            int hOm=computerUpdateBoard(row,col,board1,logFile,computerHit,computerMiss,window,message);
+                            if (hOm==1)
                             {
-                                logFile<<row+1<<","<<col+1<<" Miss!"<<endl;
-                                displayPrompt("The enemy missed!",fontStatus,window);
-                                board1[row][col]='m';
-                                computerMiss++;
+                                missSound.play("audio/Sounds/BombMiss.wav");
                             }
-                            else
+                            else if (hOm==2)
                             {
-                                logFile <<row<<","<<col<<" Hit! ";
-                                displayPrompt("The enemy hit one of your ships!",fontStatus,window);
-                                sleep(3);
-                                board1[row][col]='*';
-                                computerHit++;
-                                if (checkIfSunk(shipLength,shipChar,board1)) //check if sunk
-                                {
-                                    logFile << SHIP_NAMES[hitLocation] << " sunk!";
-                                    cout << SHIP_NAMES[hitLocation] << " sunk!";
-                                    displayPrompt("The enemy sunk "+SHIP_NAMES[hitLocation],fontStatus,window);
-                                }
-                                logFile << endl;
+                                hitSound.play("audio/Sounds/BombHit.wav"); 
                             }
+                            trackTwo.play("audio/music/radarChatter.wav");
                         }
-
                     } while (!moveOK); 
-                    displayArrayofTiles(board1,texture,window,0,0); 
-                    sleep(3);
                 }             
-                */
+                
                 gameOver1 = isWinner(board1);
                 gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
 
@@ -359,20 +333,15 @@ int main()
                     logFile << "Player " << switchPlayer(player) << " loses. ";
                     outputStats(logFile, userHit, userMiss, computerHit, computerMiss);
                     logFile.close(); 
-                    exit(3);
+                    //exit(3);
                 }
                 else //game still going
                 {
-                    //player=switchPlayer(player);
-                    //system("clear"); 
+                    player=switchPlayer(player);
                 }
-            
         }
-
-    logFile.close();       
-    
-        
-        }
+        logFile.close();       
+    }
 }
     
 

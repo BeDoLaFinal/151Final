@@ -410,6 +410,44 @@ int updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_
     }
     return isHit;
 }
+
+int computerUpdateBoard(int row, int col, char board[][NUM_COLS], ofstream& logFile, int &computerHit, int &computerMiss,RenderWindow &window,sf::Text &message)  
+{
+    int isHit=0;
+    int hitLocation = checkShot(row, col, board); //find what ship computer hit
+    int shipLength = SHIP_SIZES[hitLocation];
+    int shipChar = SHIP_SYMBOLS[hitLocation];
+        
+    if (hitLocation==-1)//hit was a miss
+    {
+        logFile<<row+1<<","<<col+1<<" Miss!"<<endl;
+        message.setString("The enemy missed!");
+        board[row][col]='m';
+        computerMiss++;
+        isHit=1;
+    }
+    else
+    {
+        logFile<<row+1<<","<<col+1<<" Hit! ";
+        message.setString("The enemy hit your ship!");
+        board[row][col]='*';
+        computerHit++;
+        isHit=2;
+    
+        if (checkIfSunk(shipLength,shipChar,board)) //check if sunk
+        {
+            String ship;
+            std::stringstream ss;
+            ss.str();
+            logFile << SHIP_NAMES[hitLocation] << " sunk!";
+            ss<<SHIP_NAMES[hitLocation];
+            ship="The enemy sunk your "+ss.str()+".";
+            message.setString(ship);
+        }
+        logFile << endl;
+    }
+    return isHit;
+}
 /**
  * @brief completes battleship.log file info after gameplay
  * 
