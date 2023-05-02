@@ -382,7 +382,7 @@ int updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_
     if (hitLocation==-1)//hit was a miss
     {
         logFile<<row+1<<","<<col+1<<" Miss!"<<endl;
-        message.setString("You missed!");
+        // message.setString("You missed!");
         boardSeen[row][col]='m';
         userMiss++;
         isHit=1;
@@ -390,7 +390,7 @@ int updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_
     else
     {
         logFile<<row+1<<","<<col+1<<" Hit! ";
-        message.setString("You hit an enemy ship!");
+        // message.setString("You hit an enemy ship!");
         boardSeen[row][col]='*';
         board2[row][col]='-';
         userHit++;
