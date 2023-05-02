@@ -75,8 +75,17 @@ int main()
 
     //calling sounds
     SoundClass hitSound, missSound;
-    MusicClass trackOne, trackTwo;
-trackOne.play("audio/music/trackOne.wav");
+    MusicClass  trackTwo;
+    sf::Sound trackOne;
+    //calling main sound with default class instead of overloaded class
+
+    sf::SoundBuffer bufferOne;
+    if (!bufferOne.loadFromFile("audio/music/trackOne.wav"))
+    {
+        cout<<"error...";
+    }
+    trackOne.setBuffer(bufferOne);
+    trackOne.play();
     //start looping window
     while (window.isOpen())
     {
@@ -89,9 +98,13 @@ trackOne.play("audio/music/trackOne.wav");
                         {
                             window.draw(IntroScreen.getIntroScreen());
                             IntroButton introButtons(sf::Vector2f (600, 500));
-                            introButtons.draw(window);   
+                            introButtons.draw(window); 
+
                             if (event.type == sf::Event::Closed)
-                                window.close();
+                            {
+                               window.close();
+                               exit(1);
+                            }
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
                             {
                                 //if (user clicks instructions)
@@ -188,15 +201,18 @@ trackOne.play("audio/music/trackOne.wav");
                 {
                     logFile << "Player1: ";
                     
-                    window.display();
+                    //window.display();
                     
                     do //get valid move location
                     { 
                         //GET USER MOVE
                         if(window.pollEvent(event))
                         {
-                            if (event.type == sf::Event::Closed)
-                                window.close();
+                            if (event.type==sf::Event::Closed)
+                                {   logFile.close();
+                                    window.close();
+                                    exit(1);
+                                }
                             else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
                             {   int hOm=0;
                                 mouseClickLocation(event,userMove, texture, window, message);
@@ -273,7 +289,7 @@ trackOne.play("audio/music/trackOne.wav");
 
                 if(gameOver1==true||gameOver2==true) //game over
                 {   trackTwo.stop();
-                    trackOne.play("audio/music/trackOne.wav");
+                    trackOne.play();
                     sleep(3);
                     message.setString( "   G A M E   O V E R !  ");
                     window.clear();
@@ -289,6 +305,7 @@ trackOne.play("audio/music/trackOne.wav");
                     logFile << "Player " << player << " wins! ";
                     logFile << "Player " << switchPlayer(player) << " loses. ";
                     outputStats(logFile, userHit, userMiss, computerHit, computerMiss);
+                    logFile.close(); 
                     exit(3);
                 }
                 else //game still going
