@@ -17,25 +17,25 @@ IntroButton::IntroButton(sf::Vector2f position)
     font.loadFromFile("Images/LiquidCrystal-BoldItalic.otf");
 
     //playButton Setup
-    playButton.setSize(sf::Vector2f(200,100)); //Sets the size of the button
+    playButton.setSize(sf::Vector2f(300,150)); //Sets the size of the button
     playButton.setPosition(position.x, position.y); //Sets the posistion of the button based on the Y and X axis
-    playButton.setFillColor(sf::Color::Red); //Color of the button
+    playButton.setFillColor(sf::Color(230,230,230,0)); //Color of the button
 
     //rulesButton Setup
-    rulesButton.setSize(sf::Vector2f(200,100));//Sets the size of the button
+    rulesButton.setSize(sf::Vector2f(300,150));//Sets the size of the button
     rulesButton.setPosition(position.x+480, position.y);//Sets the posistion of the button based on the Y and X axis
-    rulesButton.setFillColor(sf::Color::Green);//Color of the button
+    rulesButton.setFillColor(sf::Color(230,230,230,0));//Color of the button
 
     //Labels for play and rule buttons
     playLabel.setFont(font);//Sets the font of the play button based off of what was previous loaded into font
     playLabel.setString("Play");//The string value that displays on the play button.
-    playLabel.setCharacterSize(30);//Sets The size of the words on the button
+    playLabel.setCharacterSize(75);//Sets The size of the words on the button
     playLabel.setFillColor(sf::Color::White);//Sets the color of the letters
     playLabel.setPosition(position.x+70, position.y+30);//Sets the posistion offset from the button
 
     rulesLabel.setFont(font);//Sets the font of the rules button
     rulesLabel.setString("Rules"); //Sets the string value which displays on the button
-    rulesLabel.setCharacterSize(30);//Sets size of the words on the button
+    rulesLabel.setCharacterSize(75);//Sets size of the words on the button
     rulesLabel.setFillColor(sf::Color::White);//Color of the letters
     rulesLabel.setPosition(position.x+540, position.y+30);//Sets posistion offset from the button
 

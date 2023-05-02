@@ -26,7 +26,7 @@ class Screen
 public:
     Screen();
     RectangleShape getScreen();
-    void updateScreen(sf::Event& e, sf::RenderWindow& window); //change later to input from game instead of screen event
+    void updateScreen(int i, sf::RenderWindow& window); //change later to input from game instead of screen event
 private:
     void setPrivateVariables(sf::Texture &i,float scale=1);
     RectangleShape screenBckgrnd;

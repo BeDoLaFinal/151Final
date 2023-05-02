@@ -43,11 +43,10 @@ RectangleShape Screen::getScreen()
  * @param e 
  * @param window 
  */
-void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
+void Screen::updateScreen(int i, sf::RenderWindow& window)
 {
-    if(e.type==sf::Event::MouseButtonPressed)
-    {
-    if (e.mouseButton.button==sf::Mouse::Left)         //USER WON
+    
+    if (i==1)         //USER WON
     {
         if(!mImage.loadFromFile("Images/youWonResize.png"))
         {
@@ -56,7 +55,7 @@ void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
         }
         setPrivateVariables(mImage,1);
     }
-    else if (e.mouseButton.button==sf::Mouse::Right)    //USER LOST
+    else if (i==2)    //USER LOST
     {
         if(!mImage.loadFromFile("Images/youLostUPDATE.png"))
         {
@@ -65,7 +64,7 @@ void Screen::updateScreen(sf::Event& e, sf::RenderWindow& window)
         }
         setPrivateVariables(mImage,1);
     }
-    }
+    
 }
 
 /**

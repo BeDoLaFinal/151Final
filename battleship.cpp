@@ -263,9 +263,9 @@ int switchPlayer(int player)
  */
 bool checkShotIsAvailable(int row, int col, const char board[NUM_ROWS][NUM_COLS]) 
 {
-    row++;
-    col++;
-    if(row<1 || row>10 || col<1 || col>10 || board[row][col]=='*' || board[row][col]=='m')
+    row;
+    col;
+    if(row<0 || row>9 || col<0 || col>9 || board[row][col]=='*' || board[row][col]=='m')
     {
         return false;
     }
@@ -335,7 +335,7 @@ int checkShot(int row, int col, char board[][NUM_COLS])
     {
         return 4;
     }
-    return 0;
+    return 5;
 }
 
 /**
@@ -372,8 +372,9 @@ bool checkIfSunk(int shipLength,char shipChar,char board[][NUM_COLS])
  * @param boardSeen board seen by user
  * @param logFile log file tracking moves
  */
-void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss,sf::Font &font,RenderWindow &window,sf::Text &message)  
+int updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_COLS], ofstream& logFile, int &userHit, int &userMiss,sf::Font &font,RenderWindow &window,sf::Text &message)  
 {
+    int isHit=0;
     int hitLocation = checkShot(row, col, board2); //find what ship user hit
     int shipLength = SHIP_SIZES[hitLocation];
     int shipChar = SHIP_SYMBOLS[hitLocation];
@@ -381,25 +382,33 @@ void updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM
     if (hitLocation==-1)//hit was a miss
     {
         logFile<<row+1<<","<<col+1<<" Miss!"<<endl;
-        displayPrompt("You missed!",font,window,message);
+        message.setString("You missed!");
         boardSeen[row][col]='m';
         userMiss++;
+        isHit=1;
     }
     else
     {
         logFile<<row+1<<","<<col+1<<" Hit! ";
-        displayPrompt("You hit an enemy ship!",font,window,message);
+        message.setString("You hit an enemy ship!");
         boardSeen[row][col]='*';
         board2[row][col]='-';
         userHit++;
+        isHit=2;
     
         if (checkIfSunk(shipLength,shipChar,board2)) //check if sunk
         {
+            String ship;
+            std::stringstream ss;
+            ss.str();
             logFile << SHIP_NAMES[hitLocation] << " sunk!";
-            //displayPrompt("You sunk the enemy's "+SHIP_NAMES[hitLocation]+"!",font,window,message);
+            ss<<SHIP_NAMES[hitLocation];
+            ship="You sunk the enemy's "+ss.str()+".\n Nice shooting!";
+            message.setString(ship);
         }
         logFile << endl;
     }
+    return isHit;
 }
 /**
  * @brief completes battleship.log file info after gameplay
