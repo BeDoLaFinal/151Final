@@ -97,7 +97,7 @@ int main()
                                 //if (user clicks instructions)
                                 if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
                                 {
-                                    std::cout<<"They pressed the rules button"<<std::endl;
+                                    //std::cout<<"They pressed the rules button"<<std::endl;
                                     // hitSound.play("audio/Sounds/BombHit.wav");
                                     //showInstructions(window, myScreen);
                                 }
@@ -106,7 +106,7 @@ int main()
                                 {
                                     // /
                                     startGame=true;
-                                    std::cout <<"They pressed the play button"<<std::endl;
+                                    //std::cout <<"They pressed the play button"<<std::endl;
                                     //playGame(window, myScreen);
                                 }
                             }
