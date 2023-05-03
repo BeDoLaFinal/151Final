@@ -13,17 +13,6 @@
 #include "classDefinitions/audio.h"
 #include "classDefinitions/battleship.h"
 
-
-
-//g++ *.cpp -o test   -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
-//
-//
-//// SEE 'gameFunctions.cpp' FOR TENTATIVE MAIN GAME FUNCTION PSEUDOCODE, STILL ROUGH SKETCH
-//
-//
-//
-
-
 int main()
 {
     //initilize parameters for game operation
@@ -37,30 +26,22 @@ int main()
     
     bool moveOK=false, gameOver1, gameOver2;
     
-    int userMiss=0;
-    int userHit=0;
-    int computerHit=0;
-    int computerMiss=0;
-    int triggerCount=0;
-    int triggerMove=0;
-    int hOm=0;
-    int turn=0;
-    int pending=0;
+    int userMiss=0, userHit=0, computerHit=0, computerMiss=0, triggerCount=0, triggerMove=0, hOm=0, turn=0, pending=0;
 
     char board1[NUM_ROWS][NUM_COLS]; //initializes array for the board of player 1 (user)
     char board2[NUM_ROWS][NUM_COLS]; //initializes array for the board of player 2 (computer)
     char boardSeen[NUM_ROWS][NUM_COLS]; //initializes array for board seen by user (showing hits and misses but not opponent ships)
-    //welcomeScreen();
-    initializeBoard(board1); //user ships
-    initializeBoard(board2); //computer ships
-    initializeBoard(boardSeen); //computer board seen by user
+
+    initializeBoard(board1);        //user ships
+    initializeBoard(board2);        //computer ships
+    initializeBoard(boardSeen);     //computer board seen by user
 
     sf::Font fontStatus;
-        if (!fontStatus.loadFromFile("Images/LiquidCrystal-BoldItalic.otf"))
-        {
-            cout<<"error loading font file\n";
-            exit(1);
-        }
+    if (!fontStatus.loadFromFile("Images/LiquidCrystal-BoldItalic.otf"))
+    {
+        cout<<"error loading font file\n";
+        exit(1);
+    }
     
 
     //calling window for game display and setting parameters  
@@ -82,82 +63,132 @@ int main()
     //set texture file for display tiles/arrays
     sf::Texture texture;
     texture.loadFromFile("Images/SpriteTileTextures.png");
-        if (!texture.loadFromFile("Images/SpriteTileTextures.png"))
-        { std::cout<<"failed to load texture file";
-            return 0;
-        }           
-    
-    
+    if (!texture.loadFromFile("Images/SpriteTileTextures.png"))
+    { std::cout<<"failed to load texture file";
+        return 0;
+    }      
+
     //calling sounds
     SoundClass hitSound, missSound, selectionSound;
     MusicClass  trackTwo, trackWin, trackLoss;
     sf::Sound trackOne;
+    
     //calling main sound with default class instead of overloaded class
-
     sf::SoundBuffer bufferOne;
     if (!bufferOne.loadFromFile("audio/music/trackOne.wav"))
     {
         cout<<"error...";
     }
+
     trackOne.setBuffer(bufferOne);
     trackOne.play();
     sf::Event event;
+    bool shipsDone=false;
+
     //start looping window
     while (window.isOpen())
-    {
-              
-        
+    {  
         while(!startGame)
         {   
-                // DISPLAY INTRO SCREEN
-                while (window.pollEvent(event))
-                {
-                    window.draw(IntroScreen.getIntroScreen());
-                    IntroButton introButtons(sf::Vector2f (600, 500));
-                    introButtons.draw(window); 
-                    
-                    switch (event.type)
-                    {   
-                    case sf::Event::Closed:
-                        window.close();
-                        break;
-                        exit(1);
-                    
-                    case sf::Event::MouseButtonPressed:
-                        if(event.mouseButton.button == sf::Mouse::Left)
+            // DISPLAY INTRO SCREEN
+            while (window.pollEvent(event))
+            {
+                window.draw(IntroScreen.getIntroScreen());
+                IntroButton introButtons(sf::Vector2f (600, 500));
+                introButtons.draw(window); 
+                
+                switch (event.type)
+                {   
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                    exit(1);
+                
+                case sf::Event::MouseButtonPressed:
+                    if(event.mouseButton.button == sf::Mouse::Left)
+                    {
+                    //if (user clicks instructions)
+                        if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
                         {
-                        //if (user clicks instructions)
-                            if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
-                            {
-                                selectionSound.play("audio/Sounds/selection.wav");
-                                //showInstructions(window, myScreen);
-                            }
-                        //else if (user clicks play)
-                            if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
-                            {
-                               
-                                selectionSound.play("audio/Sounds/selection.wav");   
-                                sleep(1);
-                                startGame=true;      
-                            }
+                            selectionSound.play("audio/Sounds/selection.wav");
+                            //showInstructions(window, myScreen);
+                        }
+                    //else if (user clicks play)
+                        if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
+                        {
+                            selectionSound.play("audio/Sounds/selection.wav");   
+                            sleep(1);
+                            startGame=true;      
                         }
                     }
                 }
+            }
             window.display();
         }
+        while(!shipsDone)
+        {
+            message.setString("How would you like to place your ships?");
+            IntroButton placeButtons(sf::Vector2f (600, 500),"Manual","Random");
+            placeButtons.draw(window); 
+            message.setCharacterSize(50);
+            message.setPosition(505,815);
+            message.setFillColor(sf::Color(100, 250, 50, 150));
+            message.setFont(fontStatus);
+            switch (event.type)
+            {   
+            case sf::Event::Closed:
+                window.close();
+                break;
+                exit(1);
+            
+            case sf::Event::MouseButtonPressed:
+                if(event.mouseButton.button == sf::Mouse::Left)
+                {
+                //if (user clicks instructions)
+                    if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
+                    {
+                        selectionSound.play("audio/Sounds/selection.wav");
+                        //showInstructions(window, myScreen);
+                    }
+                //else if (user clicks play)
+                    if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
+                    {
+                        selectionSound.play("audio/Sounds/selection.wav");   
+                        sleep(1);
+                        startGame=true;      
+                    }
+                }
+            //place opponent ships
+            randomlyPlaceShipsOnBoard(board2); 
+            do
+            {
+                
 
+                cout << "1. Manually Place\n2. Randomly Place\n";
+                cin>>placeSelect;
+                cin.ignore();
+                if(placeSelect<1 || placeSelect>2)
+                {
+                    cout << "Invalid Entry. ";
+                }
+            } while (placeSelect<1 || placeSelect>2);
+            //user chose manual placement
+            if(placeSelect==1)
+            {
+                displayPrompt("Manually placing your ships...", fontStatus,window); 
+                manuallyPlaceShipsOnBoard(board1);
+            }
+            //user chose random placement
+            //else if(placeSelect==2)
+            randomlyPlaceShipsOnBoard(board1);
+        }
         trackOne.stop();
         trackTwo.play("audio/music/radarChatter.wav");
         window.display();
-        //cout << "You have chosen to randomly place your ships.\n";
-        randomlyPlaceShipsOnBoard(board1);
-        //place opponent ships
-        randomlyPlaceShipsOnBoard(board2);
 
-        //test console displays
-        // displayBoard(1,board1);
-        // displayBoard(2,board2);
+        
 
+        
         //create and open log file, we can use to test stuff and remove later if wanted
         ofstream logFile;
         logFile.open("battleship.log");
@@ -172,12 +203,8 @@ int main()
         
         do //main game loop
         {   
-            
             i++;
             //DISPLAY MAIN GAME SCREEN and radar
-            //cout<<i;
-            // system("clear");
-
             if(i<200)
             {
                 needleTrace.push_back(RectangleShape());
@@ -185,8 +212,7 @@ int main()
                 needleTrace.back().setPosition(965,501);
                 needleTrace.back().setOrigin(1,10);
                 needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));
-            }
-                  
+            }     
             
             //rendering in the radar shape and texture to display over game board
             sf::CircleShape radar(105);
@@ -195,8 +221,6 @@ int main()
             radar.setTextureRect(sf::IntRect(353, 3, 44, 44));
             radar.setOutlineThickness(8);
             radar.setOutlineColor(sf::Color(60,90,90));
-            
-            
             
             //drawing the needle over the trace
             sf::RectangleShape needle(sf::Vector2f(3, 111));
@@ -207,15 +231,13 @@ int main()
             needle.setOrigin(3,5);
             needle.setRotation(i);  
             
-            
-            
             if(triggerMove==0){window.draw(myScreen.getScreen());displayArrayofTiles(boardSeen, texture, window,  0,0);displayArrayofTiles(board1, texture, window, 974, -2);} 
             else if(triggerMove==1)
-             {   message.setString("   ");
+             {   
+                message.setString("   ");
                 triggerCount=0;
                 triggerMove=2;
                 turn++;
-
             }
             else if(triggerMove==2&&triggerCount==900)
             {
@@ -230,7 +252,6 @@ int main()
                 pending=0;
             }
             else {triggerCount++;}
-            //cout<<triggerCount<<endl;
             
             // displayArrayofTiles(board1, texture, window, 974, -2);//right board
             window.draw(radar);
