@@ -10,9 +10,8 @@
  * @brief Constructs the Intro and Rules buttons
  * @param position the location of the play button
  */
-IntroButton::IntroButton(sf::Vector2f position)
+IntroButton::IntroButton(sf::Vector2f position, std::string s1, std::string s2)
 {
-
     //Create the font by loading from file
     font.loadFromFile("Images/LiquidCrystal-BoldItalic.otf");
     //logoFont.loadFromFile("Images/MachineStd-Bold.otf");
@@ -30,20 +29,16 @@ IntroButton::IntroButton(sf::Vector2f position)
 
     //Labels for play and rule buttons
     playLabel.setFont(font);//Sets the font of the play button based off of what was previous loaded into font
-    playLabel.setString("Play");//The string value that displays on the play button.
+    playLabel.setString(s1);//The string value that displays on the play button.
     playLabel.setCharacterSize(75);//Sets The size of the words on the button
     playLabel.setFillColor(sf::Color::White);//Sets the color of the letters
     playLabel.setPosition(position.x+70, position.y+30);//Sets the posistion offset from the button
 
     rulesLabel.setFont(font);//Sets the font of the rules button
-    rulesLabel.setString("Rules"); //Sets the string value which displays on the button
+    rulesLabel.setString(s2); //Sets the string value which displays on the button
     rulesLabel.setCharacterSize(75);//Sets size of the words on the button
     rulesLabel.setFillColor(sf::Color::White);//Color of the letters
     rulesLabel.setPosition(position.x+540, position.y+30);//Sets posistion offset from the button
-
-    
-    
-
 }
 /**
  * @brief Writes the two buttons and labels onto the window 
@@ -119,4 +114,15 @@ void IntroScreen::setPrivateVariables(sf::Texture &i,float scale)
     screenBckgrnd.setOrigin(0, 0);
     screenBckgrnd.setPosition(0,0);
     
+}
+/**
+ * @brief make buttons blank or change string in buttons
+ * 
+ * @param s1 
+ * @param s2 
+ */
+void IntroButton::makeButtonBlank(string s1, string s2)
+{
+    playLabel.setString(s1);
+    rulesLabel.setString(s2);
 }

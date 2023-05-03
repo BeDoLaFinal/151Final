@@ -11,6 +11,7 @@
 #include <iostream>
 using std::cout;
 using std::endl;
+using std::string;
 using namespace sf;
 /**
  * @brief Class for the intro button and rules button
@@ -18,10 +19,11 @@ using namespace sf;
  */
 class IntroButton{
 public:
-    IntroButton(sf::Vector2f position);
+    IntroButton(sf::Vector2f position, std::string s1="Play", std::string s2="Rules");
     void draw(sf::RenderWindow& window);
     bool isPlayButtonPressed(sf::RenderWindow& window,sf::Vector2i mousePosition);
     bool isRulesButtonPressed(sf::RenderWindow& windowsf,sf::Vector2i mousePosition);
+    void makeButtonBlank(string s1=" ", string s2=" ");
 private:
     sf::RectangleShape playButton;
     sf::RectangleShape rulesButton;

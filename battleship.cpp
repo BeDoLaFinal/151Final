@@ -81,91 +81,158 @@ void displayBoard(int player, char board[][NUM_COLS])
         cout<< endl;
     }
 }
-
+/**
+ * @brief place one ship on board
+ * 
+ * @param board 
+ * @param spot 
+ * @param shipNum 
+ * @param orientation 
+ */
+void placeShip(char board[][NUM_COLS],int spot[2],int shipNum,int orientation)
+{
+    int row=spot[0];
+    int col=spot[1];
+    for(int j=0; j<SHIP_SIZES[shipNum]; j++)
+    {
+        board[row+j][col] = SHIP_SYMBOLS[shipNum];
+    }
+}
 /**
  * @brief   allows the user to place each of the 5 types of ships on his/her game board.
- *          runs through all sships. User selects location and orientation, which is validated and ship is placed if spot ok.
+ *          runs through all ships. User selects location and orientation, which is validated and ship is placed if spot ok.
  * 
  * @param board board to place ships on
  */
-void manuallyPlaceShipsOnBoard(char board[][NUM_COLS]) 
+void manuallyPlaceShipOnBoard(char board[][NUM_COLS],RenderWindow& window, sf::Text& message, sf::Texture &texture, sf::Font& fontStatus, Screen & myScreen, int shipNum) 
 {
     int row, col, orientation;
     bool spotOK;
+    sf::Event thing;
+    int spot[2];
+    String delim;
+    bool stillPlacing;
+
+    while(stillPlacing)
+    {
+        for(int i=0; i<NUM_SHIPS; i++)
+        {
+            while (spotOK==false) //make sure in bounds and not taken
+            {
+                spotOK=true; // initialize to ok spot
+                displayArrayofTiles(board,texture,window,974,-2);
+                // select location in bounds
+                do
+                {
+                    message.setString("Select a location to place the "+SHIP_NAMES[i]+"\nwhich is "+to_string(SHIP_SIZES[i])+" units long.");
+                    while(window.pollEvent(thing))
+                    {
+                        if(thing.type == sf::Event::MouseButtonPressed&&thing.mouseButton.button == sf::Mouse::Left)
+                        {
+                            delim=mouseClickLocation(thing,spot,texture,window,message);
+                        }
+                    }
+                    if(spot[0]<1 || spot[0]>10 || spot[1]<1 || spot[1]>10)
+                    {
+                        message.setString("Out of bounds.");
+                    }
+                } while (spot[0]<1 || spot[0]>10 || spot[1]<1 || spot[1]>10);
+
+                // select orientation
+                row=spot[1];
+                col=spot[0];
+                for(int j=0; j<SHIP_SIZES[i]; j++)
+                {
+                    board[row+j-1][col-1] = SHIP_SYMBOLS[i];
+                }
+            }
+        }
+    }
 
     // for all ships
-    for(int i=0; i<NUM_SHIPS; i++)
-    {
-        do
-        {
-            spotOK=true; // initialize to ok spot
-            displayBoard(0, board); // show user board so far
+    // for(int i=0; i<NUM_SHIPS; i++)
+    // {
+    //     while (spotOK==false) //make sure in bounds and not taken
+    //     {
+    //         spotOK=true; // initialize to ok spot
+    //         displayArrayofTiles(board,texture,window,0,0);
+    //         // select location in bounds
+    //         do
+    //         {
+    //             message.setString("Select a location to place the "+SHIP_NAMES[i]+"\nwhich is "+to_string(SHIP_SIZES[i])+" units long.");
+    //             while(window.pollEvent(event))
+    //             {
+    //                 if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)
+    //                 {
+    //                     delim=mouseClickLocation(event,spot,texture,window,message);
+    //                 }
+    //             }
+    //             if(spot[0]<1 || spot[0]>10 || spot[1]<1 || spot[1]>10)
+    //             {
+    //                 message.setString("Out of bounds.");
+    //             }
+    //         } while (spot[0]<1 || spot[0]>10 || spot[1]<1 || spot[1]>10);
 
-            // select location in bounds
-            do
-            {
-                cout << "Select a location to place the " << SHIP_NAMES[i] << ", which is " << SHIP_SIZES[i] << " units long (row, then column).\n";
-                cin >> row;
-                cin.ignore();
-                cin >> col;
-                cin.ignore();
-                if(row<1 || row>10 || col<1 || col>10)
-                {
-                cout << "Out of bounds. ";
-                }
-            } while (row<1 || row>10 || col<1 || col>10);
+    //         // select orientation
+    //         row=spot[0];
+    //         col=spot[1];
+    //         for(int j=0; j<SHIP_SIZES[i]; j++)
+    //         {
+    //             board[row+j-1][col-1] = SHIP_SYMBOLS[i];
+            // do
+            // {
+            //     message.setString("Select an orientation of the "+SHIP_NAMES[i]);
+            //     IntroButton orientButton(sf::Vector2f (600,500),"Horizontal","Vertical");
+            //     orientButton.draw(window); 
+            //     while(window.pollEvent(event))
+            //     {
+            //         if(event.mouseButton.button == sf::Mouse::Left)
+            //         {
+            //             //user click horizontal
+            //             if(orientButton.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
+            //             {
+            //                 orientation=1;
+            //                 for(int c=0; c<SHIP_SIZES[i]; c++)
+            //                 {
+            //                     if(board[row-1][col+c-1]!='-' || (col+c-1)>9 ) // check if spot is taken or out of bounds
+            //                     {
+            //                         message.setString("Invalid Spot.");
+            //                         spotOK=false;
+            //                     }
+            //                     if(spotOK==true) //place ship
+            //                     {
+            //                         for(int j=0; j<SHIP_SIZES[i]; j++)
+            //                         {
+            //                             board[row-1][col+j-1] = SHIP_SYMBOLS[i];
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //             //user click vertical
+            //             if (orientButton.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
+            //             {
+            //                 orientation=2;
+            //                 for(int c=0; c<SHIP_SIZES[i]; c++)
+            //                 {
+            //                     if(board[row+c-1][col-1]!='-' || (row+c-1)>9 ) // check if spot is taken or out of bounds
+            //                     {
+            //                         message.setString("Invalid Spot.");
+            //                         spotOK=false;
+            //                     }
+            //                 }
+            //                 if(spotOK==true) //place ship
+            //                 {
+            //                     for(int j=0; j<SHIP_SIZES[i]; j++)
+            //                     {
+            //                         board[row+j-1][col-1] = SHIP_SYMBOLS[i];
+            //                     }
+            //                 }   
+            //             }
+            //         }
+            //     }
+            // }while (orientation<1 || orientation>2);
 
-            // select orientation
-            do
-            {
-                cout << "Select an orientation for the " << SHIP_NAMES[i] << endl;
-                cout << "1. Horizontal\n2. Vertical\n";
-                cin >> orientation;
-                cin.ignore();
-                if(orientation==1) // horizontal
-                {
-                    for(int c=0; c<SHIP_SIZES[i]; c++)
-                    {
-                        if(board[row-1][col+c-1]!='-' || (col+c-1)>9 ) // check if spot is taken or out of bounds
-                        {
-                            cout << "Invalid spot.\n";
-                            spotOK=false;
-                        }
-                    }
-                    if(spotOK==true) //place ship
-                    {
-                        for(int j=0; j<SHIP_SIZES[i]; j++)
-                        {
-                            board[row-1][col+j-1] = SHIP_SYMBOLS[i];
-                        }
-                    }
-                }
-                else if(orientation==2) // vertical
-                {
-                    for(int c=0; c<SHIP_SIZES[i]; c++)
-                    {
-                        if(board[row+c-1][col-1]!='-' || (row+c-1)>9 ) // check if spot is taken or out of bounds
-                        {
-                            cout << "Invalid spot.\n";
-                            spotOK=false;
-                        }
-                    }
-                    if(spotOK==true) //place ship
-                    {
-                        for(int j=0; j<SHIP_SIZES[i]; j++)
-                        {
-                            board[row+j-1][col-1] = SHIP_SYMBOLS[i];
-                        }
-                    }  
-                } 
-                if(orientation<1 || orientation>2)
-                    {
-                        cout << "Invalid Entry. ";
-                    }
-            }while (orientation<1 || orientation>2);
 
-        } while (spotOK==false); //make sure in bounds and not taken
-    }
 }
 
 /**

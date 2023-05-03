@@ -304,33 +304,3 @@ void displayPrompt(std::string s, sf::Font &font,RenderWindow &window,sf::Text &
     message.setString(s);
     window.draw(message);
 }
-
-
-
-/**
- * @brief FOR MANUAL PLACEMENT IF NEEDED
- * 
- */
-//User determines ship placement
-            /* do
-            {
-                cout << "Select how you would like to place your ships:\n";
-
-                cout << "1. Manually Place\n2. Randomly Place\n";
-                cin>>placeSelect;
-                cin.ignore();
-                if(placeSelect<1 || placeSelect>2)
-                {
-                    cout << "Invalid Entry. ";
-                }
-            } while (placeSelect<1 || placeSelect>2);*/
-
-            //user chose manual placement
-            /*if(placeSelect==1)
-            {
-                displayPrompt("Manually placing your ships...", fontStatus,window); 
-                manuallyPlaceShipsOnBoard(board1);
-            }*/
-            //user chose random placement
-            //else if(placeSelect==2)
-            //{
