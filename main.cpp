@@ -33,10 +33,10 @@ int main()
     vector<RectangleShape> needleTrace;
     sf::Text message;
     
-    int placeSelect, player, col, row;
-    bool player1=true;
+    int placeSelect, player, col, playerTag, row;
+    
     bool moveOK=false, gameOver1, gameOver2;
-
+    
     int userMiss=0;
     int userHit=0;
     int computerHit=0;
@@ -44,6 +44,8 @@ int main()
     int triggerCount=0;
     int triggerMove=0;
     int hOm=0;
+    int turn=0;
+    int pending=0;
 
     char board1[NUM_ROWS][NUM_COLS]; //initializes array for the board of player 1 (user)
     char board2[NUM_ROWS][NUM_COLS]; //initializes array for the board of player 2 (computer)
@@ -64,7 +66,7 @@ int main()
     //calling window for game display and setting parameters  
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship", sf::Style::Titlebar | sf::Style::Close);
     
-    window.setFramerateLimit(250);
+    window.setFramerateLimit(150);
     Screen myScreen;
     IntroScreen IntroScreen;       
     sf::ContextSettings settings;
@@ -164,14 +166,16 @@ int main()
         gameOver1 = isWinner(board1);
         gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
         player=1;//user goes first
+        playerTag=1;
         message.setString("To start the game \nSelect a Target, Captain.");
         window.draw(myScreen.getScreen());
         
         do //main game loop
         {   
+            
             i++;
             //DISPLAY MAIN GAME SCREEN and radar
-            cout<<i;
+            //cout<<i;
             // system("clear");
 
             if(i<200)
@@ -205,14 +209,15 @@ int main()
             
             
             
-            if(triggerMove==0){window.draw(myScreen.getScreen());displayArrayofTiles(boardSeen, texture, window,  0,0);}//left board 
+            if(triggerMove==0){window.draw(myScreen.getScreen());displayArrayofTiles(boardSeen, texture, window,  0,0);displayArrayofTiles(board1, texture, window, 974, -2);} 
             else if(triggerMove==1)
              {   message.setString("   ");
                 triggerCount=0;
                 triggerMove=2;
+                turn++;
 
             }
-            else if(triggerMove==2&&triggerCount==750)
+            else if(triggerMove==2&&triggerCount==900)
             {
                 displayArrayofTiles(boardSeen, texture, window,  0,0);
                 displayArrayofTiles(board1, texture, window, 974, -2);//right board
@@ -221,8 +226,8 @@ int main()
                 else if(hOm==2)message.setString("You hit an enemy ship!");
                 else if(hOm==3)message.setString("They missed your ship!");
                 else if(hOm==4)message.setString("They hit one of your ships!");
-                if(player==1)
-                {player=switchPlayer(player);}
+                playerTag++;
+                pending=0;
             }
             else {triggerCount++;}
             //cout<<triggerCount<<endl;
@@ -242,15 +247,14 @@ int main()
             message.setPosition(505,815);
             message.setFillColor(sf::Color(100, 250, 50, 150));
             message.setFont(fontStatus);   
-            displayArrayofTiles(board1, texture, window, 974, -2);         
+            if(turn<2)displayArrayofTiles(board1, texture, window, 974, -2);         
             window.draw(message);
             //moveOK=false;
             window.display();//display the layers we've layed down above
-                if (player==1)//user's turn
+                if (playerTag==1&& pending==0)//user's turn
                 { 
                     // logFile << "Player1: ";
-                    do //get valid move location
-                    { 
+                    
                         //GET USER MOVE
                         while(window.pollEvent(event))
                         {
@@ -271,9 +275,10 @@ int main()
                                 mouseClickLocation(event,userMove, texture, window, message);
                                 row=userMove[0];
                                 col=userMove[1];
+                                
                                 moveOK = checkShotIsAvailable(row, col, boardSeen);
                                 if (moveOK)
-                                {                                       
+                                {   pending=1;                            
                                     trackTwo.pause();
                                     hOm=updateBoard(row, col, board2, boardSeen, logFile, userHit,userMiss,fontStatus,window,message); 
                                     if (hOm==1)
@@ -298,11 +303,11 @@ int main()
                             }
                        }
                        
-                    }while (!moveOK);
+                  
                     
                 }
                
-                if(player==2)
+                if(playerTag==2)
                 {   
                    
                     if(!moveOK)//(player==2)//computer's turn
@@ -321,7 +326,7 @@ int main()
 
                         if(moveOK)
                         {  
-                            player=switchPlayer(player);
+                            playerTag=0;
                             trackTwo.pause();
                             hOm=computerUpdateBoard(row,col,board1,logFile,computerHit,computerMiss,window,message);
                             if (hOm==3)
