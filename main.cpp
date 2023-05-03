@@ -66,7 +66,7 @@ int main()
     //calling window for game display and setting parameters  
     sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship", sf::Style::Titlebar | sf::Style::Close);
     
-    window.setFramerateLimit(150);
+    window.setFramerateLimit(60);
     Screen myScreen;
     IntroScreen IntroScreen;       
     sf::ContextSettings settings;
@@ -217,7 +217,7 @@ int main()
                 turn++;
 
             }
-            else if(triggerMove==2&&triggerCount==900)
+            else if(triggerMove==2&&triggerCount==400)
             {
                 displayArrayofTiles(boardSeen, texture, window,  0,0);
                 displayArrayofTiles(board1, texture, window, 974, -2);//right board
@@ -258,12 +258,12 @@ int main()
                         //GET USER MOVE
                         while(window.pollEvent(event))
                         {
-                            if (event.type == sf::Event::MouseMoved)
-                                {
-                                    std::cout << "new mouse x: " << event.mouseMove.x << std::endl;
-                                    std::cout << "new mouse y: " << event.mouseMove.y << std::endl;
-                                }
-                            else if (event.type==sf::Event::Closed)
+                            // if (event.type == sf::Event::MouseMoved)
+                            //     {
+                            //         std::cout << "new mouse x: " << event.mouseMove.x << std::endl;
+                            //         std::cout << "new mouse y: " << event.mouseMove.y << std::endl;
+                                
+                            if (event.type==sf::Event::Closed)
                                  {   
                                     logFile.close();
                                     window.close();
