@@ -20,6 +20,7 @@ int main()
     int i=0, shipNum=0,orientation;
     int userMove[2];
     vector<RectangleShape> needleTrace;
+    
     sf::Text message;
     String delim;
     
@@ -53,7 +54,7 @@ int main()
     Screen myScreen;
     IntroScreen IntroScreen;       
     sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
+    // settings.antialiasingLevel = 8;
     
     sf::Cursor cursor;
     
@@ -74,17 +75,13 @@ int main()
     //calling sounds
     SoundClass hitSound, missSound, selectionSound;
     MusicClass  trackTwo, trackWin, trackLoss;
-    sf::Sound trackOne;
-    
-    //calling main sound with default class instead of overloaded class
-    sf::SoundBuffer bufferOne;
-    if (!bufferOne.loadFromFile("audio/music/trackOne.wav"))
-    {
-        cout<<"Error opening sound file";
-        exit(2);
-    }
 
-    trackOne.setBuffer(bufferOne);
+    sf::Music trackOne;
+    //calling main sound with default class instead of overloaded class
+
+    trackOne.openFromFile("audio/trackOne.wav");
+=======
+  
     trackOne.play();
     sf::Event event;
 
@@ -104,6 +101,14 @@ int main()
                 {   
                 case sf::Event::Closed:
                 {
+
+                    window.draw(IntroScreen.getIntroScreen());
+                    IntroButton introButtons(sf::Vector2f (600, 475));
+                    introButtons.draw(window); 
+                    
+                    switch (event.type)
+                    {   
+
                     window.close();
                     break;
                     exit(1);
@@ -148,6 +153,7 @@ int main()
                 window.draw(message);
                 switch (event.type)
                 {   
+
                     case sf::Event::Closed:
                     {
                         window.close();
@@ -235,7 +241,7 @@ int main()
                         // }
         }
         trackOne.stop();
-        trackTwo.play("audio/music/radarChatter.wav");
+        trackTwo.play("audio/radarChatter.wav");
         window.display();
         
         //create and open log file, we can use to test stuff and remove later if wanted
@@ -247,20 +253,21 @@ int main()
         gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
         player=1;//user goes first
         playerTag=1;
-        message.setString("To start the game \nSelect a Target, Captain.");
+
+        message.setString("To Battle stations! \nSelect a Target, Captain.");
+        window.draw(myScreen.getScreen());
+
         
         do //main game loop
         {   
             i++;
             //DISPLAY MAIN GAME SCREEN and radar
-            if(i<200)
-            {
-                needleTrace.push_back(RectangleShape());
-                needleTrace.back().setSize(sf::Vector2f(2, 116));
-                needleTrace.back().setPosition(965,501);
-                needleTrace.back().setOrigin(1,10);
-                needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));
-            }     
+
+            //cout<<i;
+            // system("clear");
+            traceVector(needleTrace,i);
+            
+
             
             //rendering in the radar shape and texture to display over game board
             sf::CircleShape radar(105);
@@ -287,39 +294,40 @@ int main()
                 triggerMove=2;
                 turn++;
             }
-            else if(triggerMove==2&&triggerCount==400)
+            else if(triggerMove==2&&triggerCount==360)
             {
                 displayArrayofTiles(boardSeen, texture, window,  0,0);
                 displayArrayofTiles(board1, texture, window, 974, -2);//right board
                 triggerMove=0;
                 if(hOm==1)message.setString("You missed!");
                 else if(hOm==2)message.setString("You hit an enemy ship!");
-                else if(hOm==3)message.setString("They missed your ship!");
-                else if(hOm==4)message.setString("They hit one of your ships!");
+                else if(hOm==3)message.setString("They missed your ship!\nWE have the advantage. fire!");
+                else if(hOm==4)message.setString("They hit one of your ships!\nFIRE BACK!");
                 playerTag++;
                 pending=0;
             }
             else {triggerCount++;}
             
             // displayArrayofTiles(board1, texture, window, 974, -2);//right board
-            window.draw(radar);
-            window.draw(needle);
+            // window.draw(radar);
+            // window.draw(needle);
 
             //loop needed to make the needle trace fade correctly
-            for(int k=0; k<needleTrace.size();k++)
-            {
-                needleTrace[k].setRotation((-k)+i);
-                window.draw(needleTrace[k]);
-            }
+            // for(int k=0; k<needleTrace.size();k++)
+            // {
+            //     needleTrace[k].setRotation((-k)+i);
+            //     window.draw(needleTrace[k]);
+            // }
 
             message.setCharacterSize(50);
             message.setPosition(505,815);
             message.setFillColor(sf::Color(100, 250, 50, 150));
             message.setFont(fontStatus);   
             if(turn<2)displayArrayofTiles(board1, texture, window, 974, -2);         
-            window.draw(message);
+            // window.draw(message);
+            drawScreen(window, myScreen, radar, needle, needleTrace, message, i);
             //moveOK=false;
-            window.display();//display the layers we've layed down above
+            //window.display();//display the layers we've layed down above
                 if (playerTag==1&& pending==0)//user's turn
                 { 
                     // logFile << "Player1: ";
@@ -347,8 +355,8 @@ int main()
                             {   hOm=0;
                                
                                 mouseClickLocation(event,userMove, texture, window, message);
-                                row=userMove[0];
-                                col=userMove[1];
+                                row=userMove[0]; std::cout<<userMove[0];
+                                col=userMove[1]; std::cout<<userMove[1];
                                 
                                 moveOK = checkShotIsAvailable(row, col, boardSeen);
                                 if (moveOK)
@@ -367,7 +375,7 @@ int main()
                                         triggerMove=1;
                                     }
                                         
-                                    trackTwo.play("audio/music/radarChatter.wav");
+                                    trackTwo.play("audio/radarChatter.wav");
 
                                 }
                                 else 
@@ -416,7 +424,7 @@ int main()
                                 triggerMove=1; 
                                 // goto jump;
                             }
-                            trackTwo.play("audio/music/radarChatter.wav");                           
+                            trackTwo.play("audio/radarChatter.wav");                           
 
                         }
                         else 

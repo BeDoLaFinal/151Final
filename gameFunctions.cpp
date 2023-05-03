@@ -5,7 +5,7 @@
  * @date    2023-04-23
  * 
  */
-#include <SFML/Graphics.hpp>
+
 #include <vector>
 #include <iostream>
 #include <array>
@@ -14,23 +14,44 @@
 #include <chrono>
 #include <unistd.h>
 #include <thread>
+#include <SFML/Graphics.hpp>
 
 #include "gameFunctions.h"
 #include "classDefinitions/tiles.h"
 
-// void drawScreen(RenderWindow &mwindow, Screen &mscreen, CircleShape &mradar, RectangleShape &mneedle, vector<RectangleShape> trace, Text &mmessage, int counter)
-// {
-//     mwindow.draw(mscreen.getScreen());
-//     mwindow.draw(mradar);
-//     for(int k=0; k<trace.size();k++)
-//             {
-//                 trace[k].setRotation((-k)+counter);
-//                 mwindow.draw(trace[k]);
-//             }
-//     mwindow.draw(mneedle);
-//     mwindow.draw(mmessage);
-//     mwindow.display();
-// };
+void drawScreen(RenderWindow &mwindow, Screen &mscreen, CircleShape &mradar, RectangleShape &mneedle, std::vector<RectangleShape> trace, Text &mmessage, int counter)
+{
+    //mwindow.draw(mscreen.getScreen());
+    mwindow.draw(mradar);
+    for(int k=0; k<trace.size();k++)
+            {
+                trace[k].setRotation((-k)+counter);
+                mwindow.draw(trace[k]);
+            }
+    mwindow.draw(mneedle);
+    mwindow.draw(mmessage);
+    mwindow.display();
+};
+
+/**
+ * @brief 
+ * 
+ * @param trace 
+ * @param k 
+ */
+void traceVector(std::vector <sf::RectangleShape> &trace, int k)
+{
+    if(k<200)
+            {
+                trace.push_back(RectangleShape());
+                trace.back().setSize(sf::Vector2f(2, 116));
+                trace.back().setPosition(965,501);
+                trace.back().setOrigin(1,10);
+                trace.back().setFillColor(sf::Color(100,250,50, 200-(k)));
+            }
+                  
+};
+
 /**
  * @brief   a function to return the mouse position click as an int array
  * @author  Lacey and Dominic
