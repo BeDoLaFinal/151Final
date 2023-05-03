@@ -3,7 +3,7 @@
 
 ## Major Contributions
 * **BEN:** sound class, intro screen class, instructions screen
-* **DOMINIC:** graphical design, tile class, radar
+* **DOMINIC:** graphical design, animation, game loop integration, player interface
 * **LACEY:** screen class, main game loop and logic outline
 
 
