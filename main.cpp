@@ -34,6 +34,7 @@ int main()
     sf::Text message;
     
     int placeSelect, player, col, row;
+    bool player1=true;
     bool moveOK=false, gameOver1, gameOver2;
 
     int userMiss=0;
@@ -61,7 +62,7 @@ int main()
     
 
     //calling window for game display and setting parameters  
-    sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship");
+    sf::RenderWindow window(sf::VideoMode(1920,1080), "Battleship", sf::Style::Titlebar | sf::Style::Close);
     
     window.setFramerateLimit(250);
     Screen myScreen;
@@ -73,8 +74,7 @@ int main()
     
     if (cursor.loadFromSystem(sf::Cursor::Hand))
     {   
-        window.setMouseCursor(cursor);
-        
+        window.setMouseCursor(cursor);        
     }
     
     //set texture file for display tiles/arrays
@@ -82,7 +82,7 @@ int main()
     texture.loadFromFile("Images/SpriteTileTextures.png");
         if (!texture.loadFromFile("Images/SpriteTileTextures.png"))
         { std::cout<<"failed to load texture file";
-        exit (1);
+            return 0;
         }           
     
     
@@ -99,11 +99,11 @@ int main()
     }
     trackOne.setBuffer(bufferOne);
     trackOne.play();
+    sf::Event event;
     //start looping window
     while (window.isOpen())
     {
-        sf::Event event;
-        
+              
         
         while(!startGame)
         {   
@@ -113,43 +113,48 @@ int main()
                     window.draw(IntroScreen.getIntroScreen());
                     IntroButton introButtons(sf::Vector2f (600, 500));
                     introButtons.draw(window); 
-                if (event.type == sf::Event::Closed)
-                {
-                window.close();
-                exit(1);
-                }
-                else if(event.type == sf::Event::MouseButtonPressed&&event.mouseButton.button == sf::Mouse::Left)//user clicks left
-                {
-                    //if (user clicks instructions)
-                    if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
-                    {
-                        selectionSound.play("audio/Sounds/selection.wav");
-                        //showInstructions(window, myScreen);
+                    
+                    switch (event.type)
+                    {   
+                    case sf::Event::Closed:
+                        window.close();
+                        break;
+                        exit(1);
+                    
+                    case sf::Event::MouseButtonPressed:
+                        if(event.mouseButton.button == sf::Mouse::Left)
+                        {
+                        //if (user clicks instructions)
+                            if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
+                            {
+                                selectionSound.play("audio/Sounds/selection.wav");
+                                //showInstructions(window, myScreen);
+                            }
+                        //else if (user clicks play)
+                            if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
+                            {
+                               
+                                selectionSound.play("audio/Sounds/selection.wav");   
+                                sleep(1);
+                                startGame=true;      
+                            }
+                        }
                     }
-                    //else if (user clicks play)
-                    if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
-                    {
-                        // /
-                        selectionSound.play("audio/Sounds/selection.wav");   
-                        sleep(1);
-                        startGame=true;                                 //std::cout <<"They pressed the play button"<<std::endl;
-                        //playGame(window, myScreen);
-                    }
                 }
-            }
             window.display();
         }
+
         trackOne.stop();
         trackTwo.play("audio/music/radarChatter.wav");
         window.display();
-        cout << "You have chosen to randomly place your ships.\n";
+        //cout << "You have chosen to randomly place your ships.\n";
         randomlyPlaceShipsOnBoard(board1);
         //place opponent ships
         randomlyPlaceShipsOnBoard(board2);
 
         //test console displays
-        displayBoard(1,board1);
-        displayBoard(2,board2);
+        // displayBoard(1,board1);
+        // displayBoard(2,board2);
 
         //create and open log file, we can use to test stuff and remove later if wanted
         ofstream logFile;
@@ -161,17 +166,22 @@ int main()
         player=1;//user goes first
         message.setString("To start the game \nSelect a Target, Captain.");
         window.draw(myScreen.getScreen());
-        while (!gameOver1 && !gameOver2) //main game loop
-        {   i++;
+        
+        do //main game loop
+        {   
+            i++;
             //DISPLAY MAIN GAME SCREEN and radar
-            
+            cout<<i;
+            // system("clear");
 
-            if(i<200){
-            needleTrace.push_back(RectangleShape());
-            needleTrace.back().setSize(sf::Vector2f(2, 116));
-            needleTrace.back().setPosition(965,501);
-            needleTrace.back().setOrigin(1,10);
-            needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));}
+            if(i<200)
+            {
+                needleTrace.push_back(RectangleShape());
+                needleTrace.back().setSize(sf::Vector2f(2, 116));
+                needleTrace.back().setPosition(965,501);
+                needleTrace.back().setOrigin(1,10);
+                needleTrace.back().setFillColor(sf::Color(100,250,50, 200-(i)));
+            }
                   
             
             //rendering in the radar shape and texture to display over game board
@@ -197,21 +207,27 @@ int main()
             
             if(triggerMove==0){window.draw(myScreen.getScreen());displayArrayofTiles(boardSeen, texture, window,  0,0);}//left board 
             else if(triggerMove==1)
-            {   message.setString("   ");
+             {   message.setString("   ");
                 triggerCount=0;
                 triggerMove=2;
+
             }
             else if(triggerMove==2&&triggerCount==750)
             {
                 displayArrayofTiles(boardSeen, texture, window,  0,0);
+                displayArrayofTiles(board1, texture, window, 974, -2);//right board
                 triggerMove=0;
                 if(hOm==1)message.setString("You missed!");
                 else if(hOm==2)message.setString("You hit an enemy ship!");
+                else if(hOm==3)message.setString("They missed your ship!");
+                else if(hOm==4)message.setString("They hit one of your ships!");
+                if(player==1)
+                {player=switchPlayer(player);}
             }
             else {triggerCount++;}
-            cout<<triggerCount<<endl;
+            //cout<<triggerCount<<endl;
             
-            displayArrayofTiles(board1, texture, window, 974, -2);//right board
+            // displayArrayofTiles(board1, texture, window, 974, -2);//right board
             window.draw(radar);
             window.draw(needle);
 
@@ -225,20 +241,27 @@ int main()
             message.setCharacterSize(50);
             message.setPosition(505,815);
             message.setFillColor(sf::Color(100, 250, 50, 150));
-            message.setFont(fontStatus);            
+            message.setFont(fontStatus);   
+            displayArrayofTiles(board1, texture, window, 974, -2);         
             window.draw(message);
-
+            //moveOK=false;
             window.display();//display the layers we've layed down above
                 if (player==1)//user's turn
-                {
-                    logFile << "Player1: ";
+                { 
+                    // logFile << "Player1: ";
                     do //get valid move location
                     { 
                         //GET USER MOVE
-                        if(window.pollEvent(event))
+                        while(window.pollEvent(event))
                         {
-                            if (event.type==sf::Event::Closed)
-                                {   logFile.close();
+                            if (event.type == sf::Event::MouseMoved)
+                                {
+                                    std::cout << "new mouse x: " << event.mouseMove.x << std::endl;
+                                    std::cout << "new mouse y: " << event.mouseMove.y << std::endl;
+                                }
+                            else if (event.type==sf::Event::Closed)
+                                 {   
+                                    logFile.close();
                                     window.close();
                                     exit(1);
                                 }
@@ -265,7 +288,7 @@ int main()
                                         triggerMove=1;
                                     }
                                         
-                                    trackTwo.play("audio/radarChatter.wav");
+                                    trackTwo.play("audio/music/radarChatter.wav");
 
                                 }
                                 else 
@@ -273,38 +296,61 @@ int main()
                                     message.setString("Not a valid move. Try again.");
                                 }
                             }
-                        }
+                       }
                        
-                    } while (!moveOK);
+                    }while (!moveOK);
+                    
                 }
-                else if(player==2)//computer's turn
-                {
-                    logFile << "Player2: ";
-                    message.setString("Incoming attack!!!");
-                    do //get valid move location
-                    {
-                        row=rand()%10+1;
-                        col=rand()%10+1;
-                        row--;
-                        col--;
+               
+                if(player==2)
+                {   
+                   
+                    if(!moveOK)//(player==2)//computer's turn
+                    { 
+                        
+                        message.setString("\n Incoming attack!!!");
+                        //drawScreen(window, myScreen, radar, needle, needleTrace, message, i);
+                        window.draw(message); 
+                        window.display();
+                        row=rand()%10;
+                        col=rand()%10;
+                    
                         moveOK = checkShotIsAvailable(row, col, board1);
+                        
+                        
+
                         if(moveOK)
-                        {
+                        {  
+                            player=switchPlayer(player);
                             trackTwo.pause();
-                            int hOm=computerUpdateBoard(row,col,board1,logFile,computerHit,computerMiss,window,message);
-                            if (hOm==1)
+                            hOm=computerUpdateBoard(row,col,board1,logFile,computerHit,computerMiss,window,message);
+                            if (hOm==3)
                             {
                                 missSound.play("audio/Sounds/BombMiss.wav");
+                                triggerMove=1;
+                                // goto jump;
+                                
                             }
-                            else if (hOm==2)
+                            else if (hOm==4)
                             {
-                                hitSound.play("audio/Sounds/BombHit.wav"); 
+                                hitSound.play("audio/Sounds/BombHit.wav");
+                                triggerMove=1; 
+                                // goto jump;
                             }
-                            trackTwo.play("audio/music/radarChatter.wav");
+                            trackTwo.play("audio/music/radarChatter.wav");                           
+
                         }
-                    } while (!moveOK); 
-                }             
-                
+                        else 
+                        {
+                            message.setString("                ");
+                        }
+                    
+                        
+                                
+                    }//while(!moveOK);
+                    moveOK=false;
+                }
+
                 gameOver1 = isWinner(board1);
                 gameOver2 = isWinner(board2); // for computer, only pass board NOT seen by user
 
@@ -312,7 +358,7 @@ int main()
                 {   
                     trackTwo.stop();
                     if (player==1)
-                        trackWin.play("audio/music/winScreen.wav");
+                        {trackWin.play("audio/music/winScreen.wav");}
                     else
                     {
                         trackLoss.play("audio/music/lossScreen.wav");
@@ -333,15 +379,13 @@ int main()
                     logFile << "Player " << switchPlayer(player) << " loses. ";
                     outputStats(logFile, userHit, userMiss, computerHit, computerMiss);
                     logFile.close(); 
-                    //exit(3);
+                    exit(3);
                 }
-                else //game still going
-                {
-                    player=switchPlayer(player);
-                }
-        }
-        logFile.close();       
+                
+                
+        }while(!gameOver1||!gameOver2);
+        //logFile.close();       
     }
-}
-    
 
+    return 0;
+}
