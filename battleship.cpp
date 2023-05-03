@@ -245,12 +245,13 @@ void randomlyPlaceShipsOnBoard(char board[][NUM_COLS])
  * @return int player up next
  */
 int switchPlayer(int player) 
-{
+{   
+    int newP=0;
     if(player==1)
-        return 2;
+        newP= 2;
     else if(player==2)
-        return 1;
-    return 0;
+        newP=1;
+    return newP;
 }
 
 /**
@@ -410,7 +411,19 @@ int updateBoard(int row, int col, char board2[][NUM_COLS], char boardSeen[][NUM_
     }
     return isHit;
 }
-
+/**
+ * @brief update the array for the computer player and return a value to trigger actions
+ * 
+ * @param row 
+ * @param col 
+ * @param board 
+ * @param logFile 
+ * @param computerHit 
+ * @param computerMiss 
+ * @param window 
+ * @param message 
+ * @return int 
+ */
 int computerUpdateBoard(int row, int col, char board[][NUM_COLS], ofstream& logFile, int &computerHit, int &computerMiss,RenderWindow &window,sf::Text &message)  
 {
     int isHit=0;
@@ -418,21 +431,21 @@ int computerUpdateBoard(int row, int col, char board[][NUM_COLS], ofstream& logF
     int shipLength = SHIP_SIZES[hitLocation];
     int shipChar = SHIP_SYMBOLS[hitLocation];
         
-    if (hitLocation==-1)//hit was a miss
+    if (hitLocation==-1)//shot was a miss
     {
         logFile<<row+1<<","<<col+1<<" Miss!"<<endl;
-        message.setString("The enemy missed!");
+        //message.setString("The enemy missed!");
         board[row][col]='m';
         computerMiss++;
-        isHit=1;
+        isHit=3;
     }
     else
     {
         logFile<<row+1<<","<<col+1<<" Hit! ";
-        message.setString("The enemy hit your ship!");
+        //message.setString("The enemy hit your ship!");
         board[row][col]='*';
         computerHit++;
-        isHit=2;
+        isHit=4;
     
         if (checkIfSunk(shipLength,shipChar,board)) //check if sunk
         {
@@ -448,6 +461,7 @@ int computerUpdateBoard(int row, int col, char board[][NUM_COLS], ofstream& logF
     }
     return isHit;
 }
+
 /**
  * @brief completes battleship.log file info after gameplay
  * 

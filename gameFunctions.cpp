@@ -6,6 +6,7 @@
  * 
  */
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include <iostream>
 #include <array>
 #include <string>
@@ -17,13 +18,25 @@
 #include "gameFunctions.h"
 #include "classDefinitions/tiles.h"
 
-
+// void drawScreen(RenderWindow &mwindow, Screen &mscreen, CircleShape &mradar, RectangleShape &mneedle, vector<RectangleShape> trace, Text &mmessage, int counter)
+// {
+//     mwindow.draw(mscreen.getScreen());
+//     mwindow.draw(mradar);
+//     for(int k=0; k<trace.size();k++)
+//             {
+//                 trace[k].setRotation((-k)+counter);
+//                 mwindow.draw(trace[k]);
+//             }
+//     mwindow.draw(mneedle);
+//     mwindow.draw(mmessage);
+//     mwindow.display();
+// };
 /**
- * @brief   a funtion to return the mouse position click as an int array
+ * @brief   a function to return the mouse position click as an int array
  * @author  Lacey and Dominic
  * @return  void // changes array of movement made in main 
  */
-String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderWindow &windowMain, sf::Text &mMessage)
+String mouseClickLocation(sf::Event &click, int (&arr)[2], Texture &texture, RenderWindow &windowMain, Text &mMessage)
 {   
     String mouse;
     std::stringstream ss;
@@ -93,6 +106,7 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
             windowMain.display();
             
             sleep(3);
+            
             windowMain.close();
             exit(2);
         }
