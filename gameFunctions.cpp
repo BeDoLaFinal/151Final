@@ -23,7 +23,7 @@
  * @author  Lacey and Dominic
  * @return  void // changes array of movement made in main 
  */
-String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderWindow &window, sf::Text &message)
+String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderWindow &windowMain, sf::Text &mMessage)
 {   
     String mouse;
     std::stringstream ss;
@@ -76,8 +76,8 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
             clickTile.setTexture(texture);
             clickTile.setTextureRect(sf::IntRect(150, 0, 50, 50));
             clickTile.setPosition(cellX,cellY);
-            window.draw(clickTile);
-            window.display();
+            windowMain.draw(clickTile);
+            windowMain.display();
         }
         if ( click.type== sf::Event::MouseButtonReleased &&click.mouseButton.button == sf::Mouse::Left)
         {
@@ -86,9 +86,14 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
         if (click.mouseButton.x>125 && click.mouseButton.x<320&&click.mouseButton.y>780 && click.mouseButton.y<906)
         {   
             //user clicked quit
-            message.setString("Desertion is punishable \n by death!");
-            window.draw(message);
-            window.display();
+            String exitWarning="\nDesertion is punishable by death!";
+            
+            mMessage.setString(exitWarning);
+            windowMain.draw(mMessage);
+            windowMain.display();
+            
+            sleep(3);
+            windowMain.close();
             exit(2);
         }
     }
@@ -109,7 +114,7 @@ String mouseClickLocation(sf::Event &click,int arr[2], Texture &texture, RenderW
  * @param shiftx a modifier to allow the left or right board to be drawn
  * @param shiftY a modifier to allow the left or right board to be drawn
  */
-void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window, int shiftx, int shiftY)
+void displayArrayofTiles(char ta[10][10], Texture &texture, RenderWindow &window, int shiftx, int shiftY)
 { 
     int x=0;
     int count=0;
@@ -120,21 +125,16 @@ void displayArrayofTiles(char ta[10][10], Texture texture, RenderWindow &window,
     int cruis=0;
     int ship=0;
 
- for(float i=220+shiftx; i<675+shiftx; i+=50)//i=0 is only for test. i should equal the top left corner of tile board, approx 200.
+ for(float i=220+shiftx; i<675+shiftx; i+=50)
     {
         
-        for(float j=199+shiftY; j<659; j+=50) //j=0 is only for test. j should equal the top left corner of tile board, approx 200.
+        for(float j=199+shiftY; j<659; j+=50) 
         {   
             int y= 0+count;            
             sf::Sprite tile(texture);
             tile.setOrigin(25,25);
             tile.setPosition(sf::Vector2f(i+25, j+25));
-            //bool isMiddle()
-                
-                
-            // if(ta[y][x]=='c'||ta[y][x]=='d'||ta[y][x]=='s'||ta[y][x]=='r'||ta[y][x]=='b')
-            //     {ship=1;}
-            //     else ship=0;
+            
             if(ta[y][x]=='c')
             {   
                 carrier+=1;
@@ -270,52 +270,6 @@ void displayPrompt(std::string s, sf::Font &font,RenderWindow &window,sf::Text &
     window.draw(message);
 }
 
-
-/**
- * @brief an attempt to create a multi-thread rendering so the radar would rotate on the background and not affect player input. 
- * SFML does not allow more than one thread to share the same window. 
- * Thoughts are to use a thread to calculate teh position of the radar needle and stream it to the needle rotation command, 
- * but so far I've been unsuccessful. 
- *  
- * 
- */
-// void radarDisplay(RenderWindow &window, Texture& texture, int angle)
-// {   
-
-    
-
-//         sf::CircleShape radar(110);
-
-//         //radar.setFillColor(sf::Color(5,5,5,90));
-//         radar.setPosition(855,391);
-//         radar.setTexture(&texture);
-//         radar.setTextureRect(sf::IntRect(350, 0, 50, 50));
-//         radar.setOutlineThickness(5);
-//         radar.setOutlineColor(sf::Color(110,250,70));
-        
-//         window.draw(radar);
-//         sf::RectangleShape needle(sf::Vector2f(8, 116));
-//         needle.setPosition(965,501);
-//         needle.setFillColor(sf::Color(100, 250, 50, 70));
-//         needle.setOrigin(5,10);
-        
-
-//     while (window.isOpen())
-//     {
-      
-    
-        
-           
-//             needle.setRotation(angle);
-//             //usleep(8000);
-//             window.draw(needle);
-//             window.display();
-//     }
-           
-
-//         }
-
-//         ;
 
 
 /**
