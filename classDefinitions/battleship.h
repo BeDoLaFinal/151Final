@@ -15,6 +15,7 @@
 #include <iomanip>
 #include <fstream>
 #include <unistd.h>
+#include "ScreenClass.h"
 using sf::RenderWindow;
 using namespace std;
 
@@ -31,7 +32,8 @@ const int SHIP_SIZES[] = {5, 4, 3, 3, 2};
 // Prototypes
 void initializeBoard(char board[][NUM_COLS]); //sets each cell in a game board to -
 void displayBoard(int player, char board[][NUM_COLS]); // displays a board to the screen
-void manuallyPlaceShipsOnBoard(char board[][NUM_COLS]); //allows the user to place each of the 5 types of ships on his/her game board.
+void placeShip(char board[][NUM_COLS],int spot[2],int shipNum,int orientation);
+void manuallyPlaceShipOnBoard(char board[][NUM_COLS],RenderWindow& window, sf::Text& message, sf::Texture &texture, sf::Font& fontStatus, Screen& myScreen,int shipNum); //allows the user to place each of the 5 types of ships on his/her game board.
 void randomlyPlaceShipsOnBoard(char board[][NUM_COLS]); //randomly places the 5 types of ships on a given board.
 int switchPlayer(int player); //if start of game, determines who goes first if game already started, switches player up next
 bool checkShotIsAvailable(int row, int col, const char board[NUM_ROWS][NUM_COLS]); //returns true if position entered is still available, otherwise return false.

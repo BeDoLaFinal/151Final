@@ -115,3 +115,14 @@ void IntroScreen::setPrivateVariables(sf::Texture &i,float scale)
     screenBckgrnd.setPosition(0,0);
     
 }
+/**
+ * @brief make buttons blank or change string in buttons
+ * 
+ * @param s1 
+ * @param s2 
+ */
+void IntroButton::makeButtonBlank(string s1, string s2)
+{
+    playLabel.setString(s1);
+    rulesLabel.setString(s2);
+}

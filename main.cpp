@@ -16,15 +16,16 @@
 int main()
 {
     //initilize parameters for game operation
-    bool startGame=false; 
-    int i=0;
+    bool startGame=false,shipsDone=false, manualPlace=false; 
+    int i=0, shipNum=0,orientation;
     int userMove[2];
     vector<RectangleShape> needleTrace;
     sf::Text message;
+    String delim;
     
     int placeSelect, player, col, playerTag, row;
     
-    bool moveOK=false, gameOver1, gameOver2;
+    bool moveOK=false, gameOver1, gameOver2,ship1=false,ship2=false,ship3=false,ship4=false,ship5=false;
     
     int userMiss=0, userHit=0, computerHit=0, computerMiss=0, triggerCount=0, triggerMove=0, hOm=0, turn=0, pending=0;
 
@@ -32,9 +33,10 @@ int main()
     char board2[NUM_ROWS][NUM_COLS]; //initializes array for the board of player 2 (computer)
     char boardSeen[NUM_ROWS][NUM_COLS]; //initializes array for board seen by user (showing hits and misses but not opponent ships)
 
-    initializeBoard(board1);        //user ships
-    initializeBoard(board2);        //computer ships
-    initializeBoard(boardSeen);     //computer board seen by user
+    initializeBoard(board1);            //user ships
+    initializeBoard(board2);            //computer ships
+    initializeBoard(boardSeen);         //computer board seen by user
+    randomlyPlaceShipsOnBoard(board2);  //place opponent ships
 
     sf::Font fontStatus;
     if (!fontStatus.loadFromFile("Images/LiquidCrystal-BoldItalic.otf"))
@@ -64,7 +66,8 @@ int main()
     sf::Texture texture;
     texture.loadFromFile("Images/SpriteTileTextures.png");
     if (!texture.loadFromFile("Images/SpriteTileTextures.png"))
-    { std::cout<<"failed to load texture file";
+    { 
+        std::cout<<"failed to load texture file";
         return 0;
     }      
 
@@ -77,20 +80,20 @@ int main()
     sf::SoundBuffer bufferOne;
     if (!bufferOne.loadFromFile("audio/music/trackOne.wav"))
     {
-        cout<<"error...";
+        cout<<"Error opening sound file";
+        exit(2);
     }
 
     trackOne.setBuffer(bufferOne);
     trackOne.play();
     sf::Event event;
-    bool shipsDone=false;
 
     //start looping window
     while (window.isOpen())
     {  
+        // INTRO SCREEN LOOP
         while(!startGame)
         {   
-            // DISPLAY INTRO SCREEN
             while (window.pollEvent(event))
             {
                 window.draw(IntroScreen.getIntroScreen());
@@ -100,10 +103,11 @@ int main()
                 switch (event.type)
                 {   
                 case sf::Event::Closed:
+                {
                     window.close();
                     break;
                     exit(1);
-                
+                }
                 case sf::Event::MouseButtonPressed:
                     if(event.mouseButton.button == sf::Mouse::Left)
                     {
@@ -118,76 +122,121 @@ int main()
                         {
                             selectionSound.play("audio/Sounds/selection.wav");   
                             sleep(1);
-                            startGame=true;      
+                            startGame=true;     
                         }
                     }
                 }
             }
             window.display();
         }
-        while(!shipsDone)
-        {
-            message.setString("How would you like to place your ships?");
-            IntroButton placeButtons(sf::Vector2f (600, 500),"Manual","Random");
-            placeButtons.draw(window); 
-            message.setCharacterSize(50);
-            message.setPosition(505,815);
-            message.setFillColor(sf::Color(100, 250, 50, 150));
-            message.setFont(fontStatus);
-            switch (event.type)
-            {   
-            case sf::Event::Closed:
-                window.close();
-                break;
-                exit(1);
-            
-            case sf::Event::MouseButtonPressed:
-                if(event.mouseButton.button == sf::Mouse::Left)
-                {
-                //if (user clicks instructions)
-                    if(introButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
-                    {
-                        selectionSound.play("audio/Sounds/selection.wav");
-                        //showInstructions(window, myScreen);
-                    }
-                //else if (user clicks play)
-                    if (introButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
-                    {
-                        selectionSound.play("audio/Sounds/selection.wav");   
-                        sleep(1);
-                        startGame=true;      
-                    }
-                }
-            //place opponent ships
-            randomlyPlaceShipsOnBoard(board2); 
-            do
-            {
-                
 
-                cout << "1. Manually Place\n2. Randomly Place\n";
-                cin>>placeSelect;
-                cin.ignore();
-                if(placeSelect<1 || placeSelect>2)
-                {
-                    cout << "Invalid Entry. ";
-                }
-            } while (placeSelect<1 || placeSelect>2);
-            //user chose manual placement
-            if(placeSelect==1)
+        window.draw(myScreen.getScreen());
+        message.setString("How would you like to place your ships?");
+        message.setCharacterSize(50);
+        message.setPosition(505,815);
+        message.setFillColor(sf::Color(100, 250, 50, 150));
+        message.setFont(fontStatus);
+        IntroButton placeButtons(sf::Vector2f (550, 830),"Manual","Random");
+        placeButtons.draw(window); 
+        // PLACE USER SHIPS LOOP
+        while(!shipsDone&&startGame)
+        {
+            while (window.pollEvent(event))
             {
-                displayPrompt("Manually placing your ships...", fontStatus,window); 
-                manuallyPlaceShipsOnBoard(board1);
+                window.draw(myScreen.getScreen());
+                placeButtons.draw(window); 
+                window.draw(message);
+                switch (event.type)
+                {   
+                    case sf::Event::Closed:
+                    {
+                        window.close();
+                        break;
+                        exit(1);
+                    }
+                    case sf::Event::MouseButtonPressed:
+                    if(event.mouseButton.button == sf::Mouse::Left)
+                    {
+                        //chose manual
+                        if (placeButtons.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
+                        {
+                            selectionSound.play("audio/Sounds/selection.wav");
+                            placeButtons.makeButtonBlank();
+                            manualPlace=true;
+                            shipsDone=true;
+                        }
+                        //chose random
+                        if(placeButtons.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
+                        {
+                            selectionSound.play("audio/Sounds/selection.wav"); 
+                            randomlyPlaceShipsOnBoard(board1);
+                            shipsDone=true;
+                        }
+                    }
+                }
             }
-            //user chose random placement
-            //else if(placeSelect==2)
-            randomlyPlaceShipsOnBoard(board1);
+            window.display();
+        }
+
+        //USER CHOSE MANUAL PLACE
+        window.draw(myScreen.getScreen());
+        placeButtons.makeButtonBlank();
+        if(manualPlace)
+        {
+            initializeBoard(board1);            //user ships
+            displayBoard(1,board1);
+            message.setString("Select a location to place the "+SHIP_NAMES[shipNum]+"\nwhich is "+to_string(SHIP_SIZES[shipNum])+" units long.");
+            while(manualPlace&&shipsDone&&!ship1)
+            {
+                displayArrayofTiles(board1,texture,window,974,-2);
+                window.display();
+                while (window.pollEvent(event))
+                {
+                    window.draw(myScreen.getScreen()); 
+                    window.draw(message);
+                    switch (event.type)
+                    {   
+                        case sf::Event::Closed:
+                        {
+                            window.close();
+                            break;
+                            exit(1);
+                        }
+                        case sf::Event::MouseButtonPressed:
+                        if(event.mouseButton.button == sf::Mouse::Left)
+                        {
+                            if(event.mouseButton.button==sf::Mouse::Left)
+                            {
+                                delim=mouseClickLocation(event,userMove,texture,window,message);
+                                if(delim!="Out of Bounds!\n") ship1=true;
+                                displayBoard(1,board1);
+                            }
+                        }
+                    }
+                }
+                placeShip(board1,userMove,shipNum,orientation);
+                window.display();
+            }
+        
+                        //chose horizontal
+                        // if (shipButton.isPlayButtonPressed(window,sf::Mouse::getPosition(window)))
+                        // {
+                        //     selectionSound.play("audio/Sounds/selection.wav");
+                        //     shipButton.makeButtonBlank();
+                        //     orientation=1;
+                        //     ship1=true;
+                        // }
+                        // //chose vertical
+                        // if(shipButton.isRulesButtonPressed(window,sf::Mouse::getPosition(window)))
+                        // {
+                        //     selectionSound.play("audio/Sounds/selection.wav"); 
+                        //     orientation=2;
+                        //     ship1=true;
+                        // }
         }
         trackOne.stop();
         trackTwo.play("audio/music/radarChatter.wav");
         window.display();
-
-        
-
         
         //create and open log file, we can use to test stuff and remove later if wanted
         ofstream logFile;
@@ -199,7 +248,6 @@ int main()
         player=1;//user goes first
         playerTag=1;
         message.setString("To start the game \nSelect a Target, Captain.");
-        window.draw(myScreen.getScreen());
         
         do //main game loop
         {   
@@ -279,13 +327,8 @@ int main()
                         //GET USER MOVE
                         while(window.pollEvent(event))
                         {
-                            if (event.type == sf::Event::MouseMoved)
-                                {
-                                    std::cout << "new mouse x: " << event.mouseMove.x << std::endl;
-                                    std::cout << "new mouse y: " << event.mouseMove.y << std::endl;
-                                }
-                            else if (event.type==sf::Event::Closed)
-                                 {   
+                            if (event.type==sf::Event::Closed)
+                                {   
                                     logFile.close();
                                     window.close();
                                     exit(1);
@@ -409,7 +452,7 @@ int main()
                 }
                 
                 
-        }while(!gameOver1||!gameOver2);
+        }while(!gameOver1||!gameOver2&&shipsDone);
         //logFile.close();       
     }
 
