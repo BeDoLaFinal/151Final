@@ -188,7 +188,7 @@ int main()
             message.setString("Select a location to place the "+SHIP_NAMES[shipNum]+"\nwhich is "+to_string(SHIP_SIZES[shipNum])+" units long.");
             while(manualPlace&&shipsDone&&!ship1)
             {
-                displayArrayofTiles(board1,texture,window,974,-2);
+                displayArrayofTiles(board1,texture,window,0,0);
                 window.display();
                 while (window.pollEvent(event))
                 {

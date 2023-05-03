@@ -91,11 +91,11 @@ void displayBoard(int player, char board[][NUM_COLS])
  */
 void placeShip(char board[][NUM_COLS],int spot[2],int shipNum,int orientation)
 {
-    int row=spot[0]-1;
-    int col=spot[1]-1;
+    int row=spot[0];
+    int col=spot[1];
     for(int j=0; j<SHIP_SIZES[shipNum]; j++)
     {
-        board[row+j-1][col-1] = SHIP_SYMBOLS[shipNum];
+        board[row+j][col] = SHIP_SYMBOLS[shipNum];
     }
 }
 /**
