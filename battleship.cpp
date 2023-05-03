@@ -139,8 +139,8 @@ void manuallyPlaceShipOnBoard(char board[][NUM_COLS],RenderWindow& window, sf::T
                 } while (spot[0]<1 || spot[0]>10 || spot[1]<1 || spot[1]>10);
 
                 // select orientation
-                row=spot[0];
-                col=spot[1];
+                row=spot[1];
+                col=spot[0];
                 for(int j=0; j<SHIP_SIZES[i]; j++)
                 {
                     board[row+j-1][col-1] = SHIP_SYMBOLS[i];
