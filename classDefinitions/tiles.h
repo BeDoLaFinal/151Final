@@ -12,10 +12,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-enum state {base, shipF, shipM, shipR, clicked, hit, miss};  //maybe this is what we want to use for states of tiles? 
-            //Obviously if we just use an if statement in the class to recognize the array value that is good for rendering, 
-            //but we can define these states by that I think. 
-
 class Tile : public sf::Drawable
 {
 public: 
@@ -59,7 +55,6 @@ public:
     {
         return mBtnState;
     }
-    //void update(sf::Event& e, sf::RenderWindow& window);
     virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const{};
 
 private:
@@ -74,6 +69,5 @@ private:
 };
 
 void needleDesign(sf::RectangleShape needle, int i,sf::RenderWindow &window);
-// void needleTracer(vector <sf::RectangleShape> &needleTrace, int i, sf::RenderWindow &window);
 
 #endif

@@ -1,8 +1,8 @@
 /**
  * @file    ScreenClass.cpp
- * @author  Lacey Hunt (lhunt2@students.nic.edu), Dominic Acia
+ * @author  Lacey Hunt, Dominic Acia
  * @brief   definitions for functions needed to implement Screen class 
- *              declared in "gameObjects.h"
+ *              declared in "ScreenClass.h"
  * @date    2023-04-13
  * 
  */

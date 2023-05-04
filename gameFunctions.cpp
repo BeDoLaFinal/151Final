@@ -1,6 +1,6 @@
 /**
  * @file    gameFunctions.cpp
- * @author  Lacey Hunt (lhunt2@students.nic.edu), Dominic Acia
+ * @author  Lacey Hunt, Dominic Acia
  * @brief   various function definitions needed for gameplay
  * @date    2023-04-23
  * 
@@ -14,48 +14,19 @@
 #include <chrono>
 #include <unistd.h>
 #include <thread>
-#include <SFML/Graphics.hpp>
 
 #include "gameFunctions.h"
 #include "classDefinitions/tiles.h"
 
-void drawScreen(RenderWindow &mwindow, Screen &mscreen, CircleShape &mradar, RectangleShape &mneedle, std::vector<RectangleShape> trace, Text &mmessage, int counter)
-{
-    //mwindow.draw(mscreen.getScreen());
-    mwindow.draw(mradar);
-    for(int k=0; k<trace.size();k++)
-            {
-                trace[k].setRotation((-k)+counter);
-                mwindow.draw(trace[k]);
-            }
-    mwindow.draw(mneedle);
-    mwindow.draw(mmessage);
-    mwindow.display();
-};
-
 /**
- * @brief 
- * 
- * @param trace 
- * @param k 
- */
-void traceVector(std::vector <sf::RectangleShape> &trace, int k)
-{
-    if(k<200)
-            {
-                trace.push_back(RectangleShape());
-                trace.back().setSize(sf::Vector2f(2, 116));
-                trace.back().setPosition(965,501);
-                trace.back().setOrigin(1,10);
-                trace.back().setFillColor(sf::Color(100,250,50, 200-(k)));
-            }
-                  
-};
-
-/**
- * @brief   a function to return the mouse position click as an int array
+ * @brief function to return the mouse position click as an int array
  * @author  Lacey and Dominic
- * @return  void // changes array of movement made in main 
+ * @param click 
+ * @param arr       modifies userMove
+ * @param texture 
+ * @param windowMain 
+ * @param mMessage 
+ * @return String   tells if out of bounds
  */
 String mouseClickLocation(sf::Event &click, int (&arr)[2], Texture &texture, RenderWindow &windowMain, Text &mMessage)
 {   
@@ -64,18 +35,13 @@ String mouseClickLocation(sf::Event &click, int (&arr)[2], Texture &texture, Ren
     ss.str();
 
     if (click.type == sf::Event::MouseButtonPressed&&click.mouseButton.button == sf::Mouse::Left)
-    {
-        // ss<<"the left button was pressed\n";   //for testing
-        // ss<< "mouse x: " << click.mouseButton.x<<"__"; //for testing
-        // ss << "mouse y: " << click.mouseButton.y <<endl; //for testing
-        
+    {        
         int spanX=0;
         int spanY=0;
         int cellX;
         int cellY;
         for(int i=0; i<click.mouseButton.x; i++)
         {   spanX=i*50;
-            //cout<<spanX<<endl;
             if(spanX+220>=click.mouseButton.x)
             {
                 if(click.mouseButton.x<200) 
@@ -83,7 +49,6 @@ String mouseClickLocation(sf::Event &click, int (&arr)[2], Texture &texture, Ren
                     arr[1]=-1;
                     break;
                 }
-                //cout<<i<<endl;
                 arr[1]=i-1;
                 cellX=spanX+170;
                 break;
@@ -113,32 +78,23 @@ String mouseClickLocation(sf::Event &click, int (&arr)[2], Texture &texture, Ren
             windowMain.draw(clickTile);
             windowMain.display();
         }
-        if ( click.type== sf::Event::MouseButtonReleased &&click.mouseButton.button == sf::Mouse::Left)
-        {
-            //window.clear();
-        }
         if (click.mouseButton.x>125 && click.mouseButton.x<320&&click.mouseButton.y>780 && click.mouseButton.y<906)
         {   
             //user clicked quit
             String exitWarning="\nDesertion is punishable by death!";
-            
             mMessage.setString(exitWarning);
             windowMain.draw(mMessage);
             windowMain.display();
-            
             sleep(3);
-            
             windowMain.close();
             exit(2);
         }
     }
-    if(arr[0]>10||arr[1]>10||arr[0]==-1||arr[1]==-1) cout<<"Out of Bounds!\n";
-    else {cout<<"array location: "<<arr[0]<<" "<<arr[1]<<endl;}
+    // if(arr[0]>10||arr[1]>10||arr[0]==-1||arr[1]==-1) cout<<"Out of Bounds!\n";
+    // else {cout<<"array location: "<<arr[0]<<" "<<arr[1]<<endl;}
     mouse = ss.str();
     return mouse;
 }
-
-
 
 /**
  * @brief function to display the correct tile based on player and computer array contents. 
@@ -266,19 +222,14 @@ void displayArrayofTiles(char ta[10][10], Texture &texture, RenderWindow &window
                     window.draw(tile);
                 } 
             }
-            //else ship+=0;
             else if(ta[y][x]=='*')
             {
                 tile.setTextureRect(sf::IntRect(50, 0, 50, 50));
             }
             else if(ta[y][x]=='-'){tile.setTextureRect(sf::IntRect(0, 0, 50, 50));}//should be correct
             else if(ta[y][x]=='m'){tile.setTextureRect(sf::IntRect(100, 0, 50, 50));}//should be correct
-            
-            
-            //else tile.setTextureRect(sf::IntRect(0,0,50,50));
+
             window.draw(tile);
-            //ta[y][x]=boardTile; //assuming arrays are in char Letter/Number format
-            //. . . and reassign here? so we don't have to create a ton at once
             count++;
 
         }

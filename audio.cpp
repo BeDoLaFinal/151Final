@@ -19,12 +19,18 @@ void SoundClass::play(const std::string& filename)
     mSound.setBuffer(mBuffer);
     mSound.play();
 }
-
+/**
+ * @brief pauses sound
+ * 
+ */
 void SoundClass::pause() 
 {
     mSound.pause();
 }
-
+/**
+ * @brief stops sound
+ * 
+ */
 void SoundClass::stop() 
 {
     mSound.stop();

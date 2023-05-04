@@ -12,9 +12,13 @@
 #include <vector>
 #include "classDefinitions/tiles.h"
 
-//after a move we run this function to update the state of the tile that corresponds to the move. This is not a complete function by any means. 
-
-void Tile::setState( char ta[11][11], Tile ta2[11][11] )//I'm assuming we're using Char for the array identifier/input. 
+/**
+ * @brief sets state of tile on board
+ * 
+ * @param ta 
+ * @param ta2 
+ */
+void Tile::setState( char ta[11][11], Tile ta2[11][11] )
 {
     if(ta[arrayLocationx][arrayLocationy]== '-')
     { ta2[arrayLocationx][arrayLocationy].mTexture.loadFromFile("Images/SpriteTileMiss1.png");}
@@ -28,16 +32,23 @@ void Tile::setState( char ta[11][11], Tile ta2[11][11] )//I'm assuming we're usi
     {ta2[arrayLocationx][arrayLocationy].mTexture.loadFromFile("Images/SpriteTileShip3.png");}
 };
 
+/**
+ * @brief used for radar in game
+ * 
+ * @param needle 
+ * @param i 
+ * @param window 
+ */
 void needleDesign(sf::RectangleShape needle, int i, sf::RenderWindow& window)
 {
         
-        needle.setPosition(965,501);
-        needle.setFillColor(sf::Color(100, 250, 50, 210));
-        needle.setOutlineThickness(1);
-        needle.setOutlineColor(sf::Color(10,10,10));
-        needle.setOrigin(3,5);
-        needle.setRotation(i); 
-        window.draw(needle);
+    needle.setPosition(965,501);
+    needle.setFillColor(sf::Color(100, 250, 50, 210));
+    needle.setOutlineThickness(1);
+    needle.setOutlineColor(sf::Color(10,10,10));
+    needle.setOrigin(3,5);
+    needle.setRotation(i); 
+    window.draw(needle);
 };
 
 
