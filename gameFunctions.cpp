@@ -255,3 +255,47 @@ void displayPrompt(std::string s, sf::Font &font,RenderWindow &window,sf::Text &
     message.setString(s);
     window.draw(message);
 }
+
+/**
+ * @brief draw Radar screen
+ * @author Dominic
+ * 
+ * @param mwindow 
+ * @param mscreen 
+ * @param mradar 
+ * @param mneedle 
+ * @param trace 
+ * @param mmessage 
+ * @param counter 
+ */
+void drawScreen(RenderWindow &mwindow, Screen &mscreen, CircleShape &mradar, RectangleShape &mneedle, std::vector<RectangleShape> trace, Text &mmessage, int counter)
+{
+    mwindow.draw(mradar);
+    for(int k=0; k<trace.size();k++)
+    {
+        trace[k].setRotation((-k)+counter);
+        mwindow.draw(trace[k]);
+    }
+    mwindow.draw(mneedle);
+    mwindow.draw(mmessage);
+    mwindow.display();
+}
+
+/**
+ * @brief 
+ * 
+ * @param trace 
+ * @param k 
+ */
+void traceVector(std::vector <sf::RectangleShape> &trace, int k)
+{
+    if(k<200)
+    {
+        trace.push_back(RectangleShape());
+        trace.back().setSize(sf::Vector2f(2, 116));
+        trace.back().setPosition(965,501);
+        trace.back().setOrigin(1,10);
+        trace.back().setFillColor(sf::Color(100,250,50, 200-(k)));
+    }
+
+}
