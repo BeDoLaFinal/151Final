@@ -24,6 +24,7 @@ public:
     bool isPlayButtonPressed(sf::RenderWindow& window,sf::Vector2i mousePosition);
     bool isRulesButtonPressed(sf::RenderWindow& windowsf,sf::Vector2i mousePosition);
     void makeButtonBlank(string s1=" ", string s2=" ");
+    void moveButtons(sf::Vector2f position);
 private:
     sf::RectangleShape playButton;
     sf::RectangleShape rulesButton;
@@ -46,6 +47,7 @@ class IntroScreen
 public:
     IntroScreen();
     RectangleShape getIntroScreen();
+    void setScreen(std::string s);
 private:
     void setPrivateVariables(sf::Texture &i,float scale=1);
     RectangleShape screenBckgrnd;

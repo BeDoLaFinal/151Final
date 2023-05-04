@@ -1,6 +1,6 @@
 /**
  * @file    introScreen.cpp
- * @author  Ben Givens, Dominic Acia
+ * @author  Ben Givens, Dominic Acia, Lacey Hunt
  * @brief   Contains the definitions for the functions in the introscreen.h files
  * @date    2023-04-23
  * 
@@ -14,9 +14,7 @@ IntroButton::IntroButton(sf::Vector2f position, std::string s1, std::string s2)
 {
     //Create the font by loading from file
     font.loadFromFile("Images/LiquidCrystal-BoldItalic.otf");
-    //logoFont.loadFromFile("Images/MachineStd-Bold.otf");
     
-
     //playButton Setup
     playButton.setSize(sf::Vector2f(300,150)); //Sets the size of the button
     playButton.setPosition(position.x, position.y); //Sets the posistion of the button based on the Y and X axis
@@ -82,12 +80,35 @@ bool IntroButton::isRulesButtonPressed(sf::RenderWindow& window,sf::Vector2i mou
     return false;
 }
 /**
+ * @brief make buttons blank or change string in buttons
+ * 
+ * @param s1 
+ * @param s2 
+ */
+void IntroButton::makeButtonBlank(string s1, string s2)
+{
+    playLabel.setString(s1);
+    rulesLabel.setString(s2);
+}
+/**
+ * @brief move buttons to new position
+ * 
+ * @param position 
+ */
+void IntroButton::moveButtons(sf::Vector2f position)
+{
+    playButton.setPosition(position.x, position.y);
+    playLabel.setPosition(position.x+70, position.y+30);
+    rulesButton.setPosition(position.x+480, position.y);
+    rulesLabel.setPosition(position.x+540, position.y+30);
+}
+/**
  * @brief Constructs a the Intro Screen
  * 
  */
 IntroScreen::IntroScreen()
 {
-    if(!mImage.loadFromFile("IntroScreen2.png"))
+    if(!mImage.loadFromFile("Images/IntroScreen2.png"))
     {
         cout<<"Error opening intro screen file.\n";
         exit(1);
@@ -104,6 +125,18 @@ RectangleShape IntroScreen::getIntroScreen()
     return screenBckgrnd;
 }
 /**
+ * @brief change screen image
+ * 
+ * @param s name of new image
+ */
+void IntroScreen::setScreen(std::string s)
+{
+    if(!mImage.loadFromFile(s))
+    {cout<<"Error loading "<<s<<endl;
+    exit(3);}
+}
+
+/**
  * @brief sets background screen specific variables
  * 
  */
@@ -113,16 +146,4 @@ void IntroScreen::setPrivateVariables(sf::Texture &i,float scale)
     screenBckgrnd.setSize({screenSize.x/scale,screenSize.y/scale});
     screenBckgrnd.setOrigin(0, 0);
     screenBckgrnd.setPosition(0,0);
-    
-}
-/**
- * @brief make buttons blank or change string in buttons
- * 
- * @param s1 
- * @param s2 
- */
-void IntroButton::makeButtonBlank(string s1, string s2)
-{
-    playLabel.setString(s1);
-    rulesLabel.setString(s2);
 }
