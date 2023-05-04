@@ -72,8 +72,7 @@ int main()
     sf::Music trackOne;
     //calling main sound with default class instead of overloaded class
 
-    trackOne.openFromFile("audio/trackOne.wav");
-=======
+    trackOne.openFromFile("audio/music/trackOne.wav");
   
     trackOne.play();
     sf::Event event;
@@ -124,7 +123,7 @@ int main()
         }
 
         trackOne.stop();
-        trackTwo.play("audio/radarChatter.wav");
+        trackTwo.play("audio/music/radarChatter.wav");
         window.display();
         
         //initialize gameOver flags to false
@@ -135,18 +134,11 @@ int main()
 
         message.setString("To Battle stations! \nSelect a Target, Captain.");
         window.draw(myScreen.getScreen());
-
-        
         do //main game loop
         {   
             i++;
             //DISPLAY MAIN GAME SCREEN and radar
-
-            //cout<<i;
-            // system("clear");
             traceVector(needleTrace,i);
-            
-
             
             //rendering in the radar shape and texture to display over game board
             sf::CircleShape radar(105);
@@ -180,30 +172,21 @@ int main()
                 triggerMove=0;
                 if(hOm==1)message.setString("You missed!");
                 else if(hOm==2)message.setString("You hit an enemy ship!");
-                else if(hOm==3)message.setString("They missed your ship!\nWE have the advantage. fire!");
+                else if(hOm==3)message.setString("They missed your ship!\nWE have the advantage. Fire!");
                 else if(hOm==4)message.setString("They hit one of your ships!\nFIRE BACK!");
                 playerTag++;
                 pending=0;
             }
             else {triggerCount++;}
-            
-            window.draw(radar);
-            window.draw(needle);
-
-            //loop needed to make the needle trace fade correctly
-            // for(int k=0; k<needleTrace.size();k++)
-            // {
-            //     needleTrace[k].setRotation((-k)+i);
-            //     window.draw(needleTrace[k]);
-            // }
 
             message.setCharacterSize(50);
             message.setPosition(505,815);
             message.setFillColor(sf::Color(100, 250, 50, 150));
             message.setFont(fontStatus);   
-            if(turn<2)displayArrayofTiles(board1, texture, window, 974, -2);         
+            if(turn<2)displayArrayofTiles(board1, texture, window, 974, -2);   
+            drawScreen(window,myScreen,radar,needle,needleTrace,message,i);      
 
-            window.draw(message);
+            //window.draw(message);
             window.display();//display the layers we've layed down above
             
             if (playerTag==1&& pending==0)//user's turn
