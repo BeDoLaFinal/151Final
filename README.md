@@ -32,16 +32,16 @@ $ ./Battleship
 ## How to Play
 
 When you run the program, you will encounter a play screen. Select `RULES` to view instructions, or `PLAY` to begin the game.
+
 <img width="650" alt="Screenshot 2023-05-02 173318" src="https://user-images.githubusercontent.com/112370638/235813077-b988b7d3-eaec-4a21-8d24-dcf05174d263.png">
 
 ### Instructions Page
 If you click the `RULES` button, you will be shown the following game instructions:
 
-<img width="650" alt="Screenshot 2023-05-03 214235" src="https://user-images.githubusercontent.com/112370638/236114238-05c595ff-2bef-4d29-a292-e0ce6227d684.png">
-
+<img width="650" alt="Screenshot 2023-05-03 214235" src="https://user-images.githubusercontent.com/112370638/236131996-aafe799d-f6d7-416e-838f-2bb57366569a.png">
 
 ### Game Play
-- When you click `PLAY`, you will see your five ships placed on the right board. You will be aiming to hit your opponent ships by selecting locations to shoot on the left board.
+- When you click `PLAY`, you will see your five ships which have been randomly placed on the right board. You will be aiming to hit your opponent ships by selecting locations to shoot on the left board.
 <img width="650" alt="Screenshot 2023-05-02 171501" src="https://user-images.githubusercontent.com/112370638/235811400-b6c075b0-91a4-4966-a4db-d7e0080a6235.png">
 
 - On your turn, select a location to shoot. If it is a hit, you will see <img width="20" alt="Screenshot 2023-05-02 172455" src="https://user-images.githubusercontent.com/112370638/235812345-e013a0c4-ee15-4bb6-9f85-a9c424fd350b.png"> and hear an explosion. If it is a miss, you will see <img width="20" alt="Screenshot 2023-05-02 172419" src="https://user-images.githubusercontent.com/112370638/235812409-0278f041-76fa-451a-846c-af4e5b183b0b.png">  and hear a splash.
@@ -62,5 +62,9 @@ If you click the `RULES` button, you will be shown the following game instructio
 
 ### Future Modification Ideas
 * **Make the main more readable:** organize the main code better by following a more general 'create, draw, display' flow rather than breaking the game up into multiple loops that made it hard to follow. We also could have better utilized classes to streamline object creation, which would greatly simplify and shorten the main code.
-* **Add a manual placement option:** allow the user to manually place their ships. We did try to implement this function, but ran into many issues that were difficult to resolve without completely restarting the project architecture.
+* **Add a manual placement option:** allow the user to manually place their ships. We did try to implement this function (see below menu), but ran into many issues that were difficult to resolve without completely restarting the project architecture.
+<img width="500" src="https://user-images.githubusercontent.com/112370638/236132199-461b4674-cac0-4a87-adb0-c05faafc1bae.png">
+
+
+
 * **Make the opponent smart:** add functions that allow the computer to build off its previous moves. If it hits a ship, it should guess around that spot until the ship is sunk and then go back to random guesses. We could even go further by making the random guesses more strategic, based on the patterns in the placement of ships in previous games.
