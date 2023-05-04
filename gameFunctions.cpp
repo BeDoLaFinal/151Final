@@ -5,7 +5,7 @@
  * @date    2023-04-23
  * 
  */
-#include <SFML/Graphics.hpp>
+
 #include <vector>
 #include <iostream>
 #include <array>
@@ -14,6 +14,7 @@
 #include <chrono>
 #include <unistd.h>
 #include <thread>
+
 #include "gameFunctions.h"
 #include "classDefinitions/tiles.h"
 
